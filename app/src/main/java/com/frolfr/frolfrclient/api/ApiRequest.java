@@ -28,7 +28,6 @@ public abstract class ApiRequest {
 
     // TODO: add a responseHandler with instructions for parsing JSON and returning data?
 
-
     protected enum RequestType {
         GET,
         POST

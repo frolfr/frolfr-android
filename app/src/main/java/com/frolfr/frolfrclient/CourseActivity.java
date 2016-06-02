@@ -8,6 +8,7 @@ import android.os.AsyncTask;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -36,6 +37,9 @@ public class CourseActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_courses);
+        Toolbar myToolbar = (Toolbar) findViewById(R.id.courses_toolbar);
+        setSupportActionBar(myToolbar);
+
         if (savedInstanceState == null) {
             Log.d(getClass().getSimpleName(), "Creating courses fragment");
             getSupportFragmentManager().beginTransaction()

@@ -30,7 +30,8 @@
         </activity>
         <activity
             android:name=".CourseActivity"
-            android:label="@string/title_activity_courses" >
+            android:label="@string/title_activity_courses"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" >
         </activity>
     </application>
 
