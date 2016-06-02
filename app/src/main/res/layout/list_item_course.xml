@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal" >
+
+    <TextView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_weight="0.33"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:minHeight="?android:attr/listPreferredItemHeight"
+        android:gravity="center_vertical"
+        android:id="@+id/list_item_course_name"
+        android:text="TESTROW1"/>
+
+    <TextView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_weight="0.33"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:minHeight="?android:attr/listPreferredItemHeight"
+        android:gravity="center_vertical"
+        android:id="@+id/list_item_course_location"
+        android:text="TESTROW2"/>
+
+    <TextView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_weight="0.33"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:minHeight="?android:attr/listPreferredItemHeight"
+        android:gravity="center_vertical"
+        android:id="@+id/list_item_course_lastPlayed"
+        android:text="TESTROW3"/>
+
+</LinearLayout>

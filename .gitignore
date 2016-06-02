@@ -1,0 +1,11 @@
+# Gradle generated files
+.gradle
+
+# Andriod Studio
+# Machine-specific properties (sdk path, etc.)
+local.properties
+/.idea/workspace.xml
+/.idea/libraries
+.DS_Store
+/build
+/captures
