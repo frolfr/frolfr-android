@@ -119,7 +119,7 @@ public class CourseDetailActivityFragment extends Fragment {
                             Log.e(getClass().getSimpleName(), "Failed to parse created_at from json", e);
                         }
                         scorecards[i] = new CourseScorecard(scorecard.getInt("id"), scorecard.getInt("round_id"),
-                                created, scorecard.getInt("total_score"), scorecard.getInt("total_strokes"),
+                                created, scorecard.getInt("total_strokes"), scorecard.getInt("total_score"),
                                 scorecard.getBoolean("is_completed"));
                     }
 

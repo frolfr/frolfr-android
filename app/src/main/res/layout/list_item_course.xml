@@ -3,7 +3,7 @@
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-    android:background="@color/background_material_light">
+    android:background="@color/bright_foreground_inverse_material_light">
 
     <TextView xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_weight="2"
