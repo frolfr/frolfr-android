@@ -1,6 +1,6 @@
 package com.frolfr.frolfrclient;
 
-import android.app.Activity;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -14,12 +14,11 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.frolfr.frolfrclient.api.*;
 import com.frolfr.frolfrclient.api.Courses;
 import com.frolfr.frolfrclient.config.PreferenceKeys;
+import com.frolfr.frolfrclient.entity.Course;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -86,13 +85,16 @@ public class CoursesFragment extends Fragment {
 
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                // TODO:
-                Toast toast = Toast.makeText(getActivity(), "You clicked list item " + position, Toast.LENGTH_SHORT);
+
+                Course selectedCourse = (Course) courseListAdapter.getItem(position);
+
+                Toast toast = Toast.makeText(getActivity(), "You clicked list item " + position + " " + selectedCourse.name,
+                        Toast.LENGTH_SHORT);
                 toast.show();
-//                String forecast = courseListAdapter.getItem(position);
-//                Intent intent = new Intent(this, DetailActivity.class)
-//                        .putExtra(Intent.EXTRA_TEXT, forecast);
-//                startActivity(intent);
+
+                Intent intent = new Intent(getActivity(), CourseDetailActivity.class);
+                intent.putExtra(CourseDetailActivity.COURSE_ID_EXTRA, selectedCourse.id);
+                startActivity(intent);
             }
         });
 
@@ -178,7 +180,7 @@ public class CoursesFragment extends Fragment {
                         } catch (ParseException e) {
                             Log.e(getClass().getSimpleName(), "Failed to parse lastPlayedDate from json", e);
                         }
-                        courseInfo[i] = new Course(course.getString("name"), course.getInt("hole_count"),
+                        courseInfo[i] = new Course(course.getInt("id"), course.getString("name"), course.getInt("hole_count"),
                                 course.getString("location"), lastPlayed);
                     }
 

@@ -4,8 +4,11 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.os.AsyncTask;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -33,12 +36,33 @@ import java.util.ArrayList;
 
 public class CourseActivity extends AppCompatActivity {
 
+    /**
+     * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
+     */
+    private NavigationDrawerFragment mNavigationDrawerFragment;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_courses);
+
         Toolbar myToolbar = (Toolbar) findViewById(R.id.courses_toolbar);
         setSupportActionBar(myToolbar);
+
+//        getActionBar().setHomeButtonEnabled(true);
+
+        mNavigationDrawerFragment = (NavigationDrawerFragment)
+                getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
+
+        // Set up the drawer.
+        if (mNavigationDrawerFragment != null) {
+            mNavigationDrawerFragment.setUp(
+                    R.id.navigation_drawer,
+                    (DrawerLayout) findViewById(R.id.drawer_layout));
+        } else {
+            Log.e(getClass().getSimpleName(), "WHY IS THE NAV DRAWER FRAGMENT NULL???");
+        }
+
 
         if (savedInstanceState == null) {
             Log.d(getClass().getSimpleName(), "Creating courses fragment");

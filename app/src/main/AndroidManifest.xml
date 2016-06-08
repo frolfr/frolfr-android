@@ -33,6 +33,18 @@
             android:label="@string/title_activity_courses"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" >
         </activity>
+        <activity
+            android:name=".NavDrawerActivity"
+            android:label="@string/title_activity_nav_drawer" >
+        </activity>
+        <activity
+            android:name=".CourseDetailActivity"
+            android:label="@string/title_activity_course_detail"
+            android:parentActivityName=".CourseActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.frolfr.frolfrclient.CourseActivity" />
+        </activity>
     </application>
 
 </manifest>
