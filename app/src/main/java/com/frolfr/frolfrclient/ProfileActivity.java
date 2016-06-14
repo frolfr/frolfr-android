@@ -15,15 +15,39 @@ import com.frolfr.frolfrclient.api.Authorization;
 import com.frolfr.frolfrclient.api.Profile;
 import com.frolfr.frolfrclient.config.PreferenceKeys.AuthKeys;
 
-public class ProfileStatistics extends AppCompatActivity {
+import java.util.ArrayList;
+
+public class ProfileActivity extends FrolfrActivity {
+
+    TextView textView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_profile_statistics);
 
+        if (savedInstanceState == null) {
+            ProfileFragment profileFragment = new ProfileFragment();
+
+            Log.d(getClass().getSimpleName(), "Creating profile fragment");
+            getSupportFragmentManager().beginTransaction()
+                    .add(R.id.main_content, profileFragment)
+                    .commit();
+
+        } else {
+            Log.d(getClass().getSimpleName(), "Profile fragment already created");
+        }
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
         new GetProfileStatisticsTask().execute();
     }
+
+    protected void setTextView(TextView textView) {
+        this.textView = textView;
+    }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -75,8 +99,7 @@ public class ProfileStatistics extends AppCompatActivity {
         @Override
         protected void onPostExecute(final String jsonResponse) {
             if (!TextUtils.isEmpty(jsonResponse)) {
-                TextView statsTextView = (TextView) findViewById(R.id.statistics_text);
-                statsTextView.setText(jsonResponse);
+                textView.setText(jsonResponse);
             }
         }
     }
