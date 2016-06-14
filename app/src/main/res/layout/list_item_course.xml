@@ -5,7 +5,7 @@
     android:orientation="horizontal"
     android:background="@color/bright_foreground_inverse_material_light">
 
-    <TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    <TextView
         android:layout_weight="2"
         android:layout_width="0px"
         android:layout_height="wrap_content"
@@ -14,7 +14,7 @@
         android:id="@+id/list_item_course_name"
         android:text="COURSE"/>
 
-    <TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    <TextView
         android:layout_weight="1"
         android:layout_width="0px"
         android:layout_height="wrap_content"
@@ -23,7 +23,7 @@
         android:id="@+id/list_item_course_city"
         android:text="CITY"/>
 
-    <TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    <TextView
         android:layout_weight="1"
         android:layout_width="0px"
         android:layout_height="wrap_content"
