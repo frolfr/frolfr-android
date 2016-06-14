@@ -20,7 +20,7 @@ public class FrolfrActivity extends AppCompatActivity {
     public ListView drawerList;
     public String[] drawerListItems;
 
-    public int currentActivityIdx = 1;
+    public static int currentActivityIdx = 1;
 
     protected void onCreate(Bundle savedInstance) {
         super.onCreate(savedInstance);
@@ -49,16 +49,22 @@ public class FrolfrActivity extends AppCompatActivity {
                     return;
                 }
 
+                Intent intent;
+                Log.d(getClass().getSimpleName(), "Setting activity index to " + position);
+                currentActivityIdx = position;
+
                 switch (position) {
                     case 0:
                         break;
                     case 1:
-                        Intent intent = new Intent(view.getContext(), CourseActivity.class);
+                        intent = new Intent(view.getContext(), CourseActivity.class);
                         startActivity(intent);
                         break;
                     case 2:
                         break;
                     case 3:
+                        intent = new Intent(view.getContext(), ProfileActivity.class);
+                        startActivity(intent);
                         break;
                 }
 

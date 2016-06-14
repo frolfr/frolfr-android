@@ -111,10 +111,4 @@ public class CourseFragment extends Fragment {
         public void onFragmentInteraction(Uri uri);
     }
 
-
-    @Override
-    public void onStart() {
-        super.onStart();
-    }
-
 }

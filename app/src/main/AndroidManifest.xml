@@ -25,8 +25,9 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ProfileStatistics"
-            android:label="@string/title_activity_profile_statistics" >
+            android:name=".ProfileActivity"
+            android:label="@string/title_activity_profile_statistics"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" >
         </activity>
         <activity
             android:name=".CourseActivity"
