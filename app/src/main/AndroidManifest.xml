@@ -34,12 +34,9 @@
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" >
         </activity>
         <activity
-            android:name=".NavDrawerActivity"
-            android:label="@string/title_activity_nav_drawer" >
-        </activity>
-        <activity
-            android:name=".CourseDetailActivity"
+            android:name=".CourseScorecardActivity"
             android:label="@string/title_activity_course_detail"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
             android:parentActivityName=".CourseActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

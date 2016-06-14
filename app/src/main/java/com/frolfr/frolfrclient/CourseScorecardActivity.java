@@ -2,15 +2,13 @@ package com.frolfr.frolfrclient;
 
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
-import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ListView;
 import android.widget.Toast;
 
 import com.frolfr.frolfrclient.api.CourseScorecards;
@@ -27,61 +25,93 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
-/**
- * A placeholder fragment containing a simple view.
- */
-public class CourseDetailActivityFragment extends Fragment {
+public class CourseScorecardActivity extends FrolfrActivity {
 
+    public static String COURSE_ID_EXTRA = "course_id";
     private int courseId;
     private CourseScorecardArrayAdapter courseScorecardArrayAdapter;
 
-    public CourseDetailActivityFragment() {
-    }
-
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
 
-        courseScorecardArrayAdapter = new CourseScorecardArrayAdapter(
-                getActivity(),
-                R.layout.list_item_course_scorecard,
-                new ArrayList<CourseScorecard>()
-        );
+        if (savedInstanceState == null) {
+            CourseScorecardFragment courseDetailFragment = new CourseScorecardFragment();
 
-        View rootView = inflater.inflate(R.layout.fragment_course_detail_player_history, container, false);
+            Log.d(getClass().getSimpleName(), "Creating course detail fragment");
+            getSupportFragmentManager().beginTransaction()
+                    .add(R.id.main_content, courseDetailFragment)
+                    .commit();
 
-        ListView courseScorecardsListView = (ListView) rootView.findViewById(R.id.list_view_course_scorecards);
-        if (courseScorecardsListView != null) {
-            Log.d(getClass().getSimpleName(), "Found the scorecards list view!");
+            // The ArrayAdapter will take data from a source and
+            // use it to populate the ListView it's attached to.
+            courseScorecardArrayAdapter =
+                    new CourseScorecardArrayAdapter(
+                            this,
+                            R.layout.list_item_course_scorecard, // The name of the layout ID.
+                            new ArrayList<CourseScorecard>());
+
+        } else {
+            Log.d(getClass().getSimpleName(), "CourseDetail fragment already created");
         }
-        courseScorecardsListView.setAdapter(courseScorecardArrayAdapter);
-        courseScorecardsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-
-                CourseScorecard selectedCourseScorecard = (CourseScorecard) courseScorecardArrayAdapter.getItem(position);
-
-                Toast toast = Toast.makeText(getActivity(), "You clicked list item " + position + ": " + selectedCourseScorecard.id,
-                        Toast.LENGTH_SHORT);
-                toast.show();
-
-//                Intent intent = new Intent(getActivity(), CourseDetailActivity.class);
-//                intent.putExtra(CourseDetailActivity.COURSE_NAME_EXTRA, selectedCourse.name);
-//                startActivity(intent);
-            }
-        });
-
-        return rootView;
     }
 
 
     @Override
     public void onStart() {
         super.onStart();
-        courseId = getActivity().getIntent().getIntExtra(CourseDetailActivity.COURSE_ID_EXTRA, 0);
+        courseId = getIntent().getIntExtra(CourseScorecardActivity.COURSE_ID_EXTRA, 0);
         new GetPlayerScorecardsForCourse().execute(courseId);
     }
+
+
+    public CourseScorecardArrayAdapter getCourseScorecardArrayAdapter() {
+        return courseScorecardArrayAdapter;
+    }
+
+    public AdapterView.OnItemClickListener getOnCourseScorecardClickListener() {
+        return new AdapterView.OnItemClickListener() {
+
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
+
+                CourseScorecard selectedCourseScorecard = (CourseScorecard) courseScorecardArrayAdapter.getItem(position);
+
+                Toast toast = Toast.makeText(view.getContext(), "You clicked list item " + position + ": " + selectedCourseScorecard.id,
+                        Toast.LENGTH_SHORT);
+                toast.show();
+
+//                Intent intent = new Intent(getActivity(), CourseScorecardActivity.class);
+//                intent.putExtra(CourseScorecardActivity.COURSE_NAME_EXTRA, selectedCourse.name);
+//                startActivity(intent);
+            }
+        };
+    }
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_course_detail, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_settings) {
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+
 
 
     /**
@@ -94,7 +124,7 @@ public class CourseDetailActivityFragment extends Fragment {
         @Override
         protected CourseScorecard[] doInBackground(Integer ... courseIds) {
             Log.d(getClass().getSimpleName(), "doInBackground - GetPlayerScorecardForCourse");
-            SharedPreferences preferences = getActivity().getSharedPreferences(PreferenceKeys.AuthKeys.class.getName(), getActivity().MODE_PRIVATE);
+            SharedPreferences preferences = getSharedPreferences(PreferenceKeys.AuthKeys.class.getName(), MODE_PRIVATE);
             String email = preferences.getString(PreferenceKeys.AuthKeys.EMAIL.toString(), null);
             String authToken = preferences.getString(PreferenceKeys.AuthKeys.TOKEN.toString(), null);
 
@@ -123,8 +153,6 @@ public class CourseDetailActivityFragment extends Fragment {
                                 scorecard.getBoolean("is_completed"));
                     }
 
-                    Log.d(getClass().getSimpleName(), "Found " + scorecards.length + " scorecards");
-
                     return scorecards;
 
                 } catch (JSONException e) {
@@ -142,10 +170,8 @@ public class CourseDetailActivityFragment extends Fragment {
             if (courseScorecards == null)
                 return;
             for (CourseScorecard scorecard : courseScorecards) {
-                Log.d(getClass().getSimpleName(), "Adding scorecard #" + scorecard.id + " to array adapter");
                 courseScorecardArrayAdapter.add(scorecard);
             }
-            Log.d(getClass().getSimpleName(), "Scorecard adapter has " + courseScorecardArrayAdapter.getCount() + " rows");
         }
     }
 }
