@@ -1,6 +1,7 @@
 package com.frolfr.frolfrclient;
 
 import android.app.Activity;
+import android.graphics.Typeface;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -46,6 +47,12 @@ public class CourseScorecardArrayAdapter extends ArrayAdapter {
         cv.date.setText(df.format(scorecard.created));
         cv.strokes.setText(scorecard.totalStrokes + "");
         cv.score.setText((scorecard.totalScore > 0 ? "+" : "") + scorecard.totalScore);
+
+        if (!scorecard.isCompleted) {
+            cv.date.setTypeface(Typeface.defaultFromStyle(Typeface.ITALIC));
+            cv.strokes.setTypeface(Typeface.defaultFromStyle(Typeface.ITALIC));
+            cv.score.setTypeface(Typeface.defaultFromStyle(Typeface.ITALIC));
+        }
 
         return convertView;
     }

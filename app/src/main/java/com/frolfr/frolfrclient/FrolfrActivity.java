@@ -6,21 +6,34 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Created by wowens on 6/12/16.
  */
-public class FrolfrActivity extends AppCompatActivity {
+public abstract class FrolfrActivity extends AppCompatActivity {
 
     public DrawerLayout drawerLayout;
     public ListView drawerList;
     public String[] drawerListItems;
 
     public static int currentActivityIdx = 1;
+    private static Map<Integer, Class> drawerMap;
+    {{
+        drawerMap = new HashMap<Integer, Class>();
+        drawerMap.put(0, null /*RoundActivty.class*/);
+        drawerMap.put(1, CourseActivity.class);
+        drawerMap.put(2, null /*FriendActivity.class*/);
+        drawerMap.put(3, ProfileActivity.class);
+    }}
 
     protected void onCreate(Bundle savedInstance) {
         super.onCreate(savedInstance);
@@ -49,29 +62,68 @@ public class FrolfrActivity extends AppCompatActivity {
                     return;
                 }
 
-                Intent intent;
-                Log.d(getClass().getSimpleName(), "Setting activity index to " + position);
-                currentActivityIdx = position;
-
-                switch (position) {
-                    case 0:
-                        break;
-                    case 1:
-                        intent = new Intent(view.getContext(), CourseActivity.class);
-                        startActivity(intent);
-                        break;
-                    case 2:
-                        break;
-                    case 3:
-                        intent = new Intent(view.getContext(), ProfileActivity.class);
-                        startActivity(intent);
-                        break;
-                }
+                Intent intent = new Intent(view.getContext(), drawerMap.get(position));
+                startActivity(intent);
 
                 // TODO: does starting the next activity prevent this from being called?
+                Log.d(getClass().getSimpleName(), "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
                 drawerLayout.closeDrawers();
             }
         });
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        for (Map.Entry<Integer, Class> mapEntry : drawerMap.entrySet()) {
+            if (this.getClass() == mapEntry.getValue()) {
+                currentActivityIdx = mapEntry.getKey();
+                Log.d(getClass().getSimpleName(), "Set currentActivityIdx to " + currentActivityIdx + " and selecting it");
+                drawerList.setSelection(currentActivityIdx);
+                return;
+            }
+        }
+        Log.d(getClass().getSimpleName(), "Did not find current activity in the drawerMap!");
+        currentActivityIdx = -1;
+    }
+
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_courses, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        switch(id) {
+            case R.id.action_settings:
+                return true;
+            case R.id.action_newgame:
+                launchNewGameActivity();
+                return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+
+    protected void launchNewGameActivity() {
+        Intent intent = new Intent(getApplicationContext(), NewGameActivity.class);
+        startActivity(intent);
+    }
+
+    protected void launchNewGameActivity(String courseId) {
+        Intent intent = new Intent(getApplicationContext(), NewGameActivity.class);
+        intent.putExtra(NewGameActivity.EXTRA_COURSE_ID, courseId);
+        startActivity(intent);
     }
 
 }

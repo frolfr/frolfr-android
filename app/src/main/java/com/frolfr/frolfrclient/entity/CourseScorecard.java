@@ -1,11 +1,12 @@
 package com.frolfr.frolfrclient.entity;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
  * Created by wowens on 1/26/16.
  */
-public class CourseScorecard {
+public class CourseScorecard implements Serializable {
 
     public int id;
     public int roundId;

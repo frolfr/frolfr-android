@@ -31,12 +31,48 @@
     </LinearLayout>
 
     <!-- The navigation drawer -->
+    <!--<android.support.design.widget.NavigationView-->
+        <!--android:id="@id/navigation">-->
+        <!--<menu xmlns:android="http://schemas.android.com/apk/res/android"-->
+            <!--android:layout_marginTop="?attr/actionBarSize"-->
+            <!--android:layout_width="200dp"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:layout_gravity="start"-->
+            <!--android:id="@+id/drawer_list"-->
+            <!--android:background="@color/background_material_light"-->
+            <!--android:choiceMode="singleChoice"-->
+            <!--android:listSelector="@android:color/darker_gray" >-->
+
+            <!--<group android:checkableBehavior="single">-->
+                <!--<item-->
+                    <!--android:id="@+id/gameItem"-->
+                    <!--android:icon="@drawable/ic_one"-->
+                    <!--android:title="First" />-->
+                <!--<item-->
+                    <!--android:id="@+id/courseItem"-->
+                    <!--android:icon="@drawable/ic_two"-->
+                    <!--android:title="Second" />-->
+                <!--<item-->
+                    <!--android:id="@+id/friendItem"-->
+                    <!--android:icon="@drawable/ic_three"-->
+                    <!--android:title="Third" />-->
+                <!--<item-->
+                    <!--android:id="@+id/profileItem"-->
+                    <!--android:icon="@drawable/ic_three"-->
+                    <!--android:title="Fourth" />-->
+            <!--</group>-->
+
+        <!--</menu>-->
+    <!--</android.support.design.widget.NavigationView>-->
+
     <ListView
         android:layout_marginTop="?attr/actionBarSize"
         android:layout_height="match_parent"
         android:layout_width="250dp"
         android:layout_gravity="start"
         android:id="@+id/drawer_list"
-        android:background="@color/background_material_light"/>
+        android:background="@color/background_material_light"
+        android:choiceMode="singleChoice"
+        android:listSelector="@android:color/darker_gray"/>
 
 </android.support.v4.widget.DrawerLayout>
