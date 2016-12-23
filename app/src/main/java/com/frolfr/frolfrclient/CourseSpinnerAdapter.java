@@ -17,12 +17,17 @@ import java.util.List;
 /**
  * Created by wowens on 1/24/16.
  */
-public class CourseArrayAdapter extends ArrayAdapter {
+public class CourseSpinnerAdapter extends ArrayAdapter {
 
     private static final DateFormat df = new SimpleDateFormat("MMM dd, yyyy");
 
-    public CourseArrayAdapter(Activity activity, int listLayout, List<Course> rows) {
+    public CourseSpinnerAdapter(Activity activity, int listLayout, List<Course> rows) {
         super(activity, listLayout, rows);
+    }
+
+    @Override
+    public View getDropDownView(int position, View convertView, ViewGroup parent) {
+        return getView(position, convertView, parent);
     }
 
     @Override
@@ -30,27 +35,29 @@ public class CourseArrayAdapter extends ArrayAdapter {
         ColumnView cv;
         if (convertView == null) {
             LayoutInflater inflater = ((Activity)getContext()).getLayoutInflater();
-            convertView = inflater.inflate(R.layout.list_item_course, null);
+            convertView = inflater.inflate(android.R.layout.simple_list_item_1, null);
             cv = new ColumnView();
-            cv.name = (TextView) convertView.findViewById(R.id.list_item_course_name);
-            cv.location = (TextView) convertView.findViewById(R.id.list_item_course_location);
-            cv.lastPlayed = (TextView) convertView.findViewById(R.id.list_item_course_last_played);
+            cv.name = (TextView) convertView.findViewById(android.R.id.text1);
             convertView.setTag(cv);
+            Log.d(getClass().getSimpleName(), "Creating new view in spinner");
         } else {
             cv = (ColumnView) convertView.getTag();
+            Log.d(getClass().getSimpleName(), "Reusing view in spinner, " + cv.toString());
         }
 
         Course course = (Course) getItem(position);
 
-        cv.name.setText(course.name);
-        cv.location.setText(course.location);
-        cv.lastPlayed.setText(df.format(course.lastPlayed));
+        String location = course.location;
+
+        cv.name.setText(course.name + " - " + location);
+
+        Log.i(getClass().getSimpleName(), "Created view for " + cv.name.getText());
 
         return convertView;
     }
 
     protected static class ColumnView {
-        protected TextView name, location, lastPlayed;
+        protected TextView name;
     }
 
 }

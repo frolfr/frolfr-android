@@ -1,6 +1,9 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools" tools:context="com.frolfr.frolfrclient.CourseActivity">
+    <item android:id="@+id/action_newgame" android:title="@string/action_newgame"
+        android:orderInCategory="0" app:showAsAction="always"/>
+        <!--android:onClick="onNewGameClick"-->
     <item android:id="@+id/action_settings" android:title="@string/action_settings"
         android:orderInCategory="100" app:showAsAction="never" />
 </menu>

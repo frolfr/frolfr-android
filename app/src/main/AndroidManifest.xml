@@ -43,6 +43,23 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.frolfr.frolfrclient.CourseActivity" />
         </activity>
+        <activity
+            android:name=".CourseScorecardDetailActivity"
+            android:label="@string/title_activity_scorecard_detail"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+            android:parentActivityName=".CourseScorecardActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.frolfr.frolfrclient.CourseScorecardActivity" />
+        </activity>
+        <activity android:name=".NewGameActivity"
+            android:label="NewGame"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+            android:parentActivityName=".CourseActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.frolfr.frolfrclient.CourseActivity" />
+        </activity>
     </application>
 
 </manifest>

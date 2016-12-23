@@ -1,5 +1,6 @@
 package com.frolfr.frolfrclient;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -75,15 +76,11 @@ public class CourseScorecardActivity extends FrolfrActivity {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
 
-                CourseScorecard selectedCourseScorecard = (CourseScorecard) courseScorecardArrayAdapter.getItem(position);
+                CourseScorecard scorecard = (CourseScorecard) courseScorecardArrayAdapter.getItem(position);
 
-                Toast toast = Toast.makeText(view.getContext(), "You clicked list item " + position + ": " + selectedCourseScorecard.id,
-                        Toast.LENGTH_SHORT);
-                toast.show();
-
-//                Intent intent = new Intent(getActivity(), CourseScorecardActivity.class);
-//                intent.putExtra(CourseScorecardActivity.COURSE_NAME_EXTRA, selectedCourse.name);
-//                startActivity(intent);
+                Intent intent = new Intent(view.getContext(), CourseScorecardDetailActivity.class);
+                intent.putExtra(CourseScorecardDetailActivity.SCORECARD_EXTRA, scorecard);
+                startActivity(intent);
             }
         };
     }
