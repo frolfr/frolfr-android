@@ -10,6 +10,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.frolfr.frolfrclient.entity.CourseScorecard;
+import com.frolfr.frolfrclient.entity.RoundDetail;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -21,6 +22,9 @@ public class CourseScorecardDetailFragment extends Fragment {
 
     private static final DateFormat df = new SimpleDateFormat("MM/dd/yy");
 
+    private TextView courseName;
+    private TextView datePlayed;
+
     public CourseScorecardDetailFragment() {
     }
 
@@ -30,14 +34,18 @@ public class CourseScorecardDetailFragment extends Fragment {
 
         View rootView = inflater.inflate(R.layout.fragment_course_scorecard_detail, container, false);
 
-        CourseScorecard scorecard = ((CourseScorecardDetailActivity) getActivity()).getCourseScorecard();
+        RoundDetail roundDetail = ((CourseScorecardDetailActivity) getActivity()).getRoundDetail();
 
-        TextView courseName = (TextView) rootView.findViewById(R.id.courseNameText);
-        TextView datePlayed = (TextView) rootView.findViewById(R.id.scorecardDateText);
+        courseName = (TextView) rootView.findViewById(R.id.courseNameText);
+        datePlayed = (TextView) rootView.findViewById(R.id.scorecardDateText);
 
-        courseName.setText("Disc Golf Park X");  // TODO
-        datePlayed.setText(df.format(scorecard.created));
+        // TODO - scorecard lists. update all these views on ajax callback
 
         return rootView;
+    }
+
+    public void update(RoundDetail roundDetail) {
+        courseName.setText(roundDetail.getCourseName());
+        datePlayed.setText(df.format(roundDetail.getCreated()));
     }
 }

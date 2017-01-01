@@ -79,7 +79,7 @@ public class CourseScorecardActivity extends FrolfrActivity {
                 CourseScorecard scorecard = (CourseScorecard) courseScorecardArrayAdapter.getItem(position);
 
                 Intent intent = new Intent(view.getContext(), CourseScorecardDetailActivity.class);
-                intent.putExtra(CourseScorecardDetailActivity.SCORECARD_EXTRA, scorecard);
+                intent.putExtra(CourseScorecardDetailActivity.ROUND_ID_EXTRA, scorecard.roundId);
                 startActivity(intent);
             }
         };
