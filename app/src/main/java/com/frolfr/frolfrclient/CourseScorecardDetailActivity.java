@@ -30,7 +30,7 @@ public class CourseScorecardDetailActivity extends FrolfrActivity {
     private RoundScorecard roundScorecard;
 
     private List<Scorecard> scorecards;
-    private ListAdapter scorecardAdapter;
+    private PlayerScorecardAdapter scorecardAdapter;
 
 
     @Override
@@ -155,7 +155,9 @@ public class CourseScorecardDetailActivity extends FrolfrActivity {
                         JSONObject sc = scorecards.getJSONObject(i);
                         String user = sc.getString("user_initials");
                         List<HoleDetail> scoreDetail = new ArrayList<>(holeCount);
-                        for (int turnId : (int[])sc.get("turn_ids")) {
+                        JSONArray turnArray = sc.getJSONArray("turn_ids");
+                        for (int j=0; j<turnArray.length(); j++) {
+                            int turnId = turnArray.getInt(j);
                             scoreDetail.add(turnMap.get(turnId));
                         }
                         Scorecard scorecard = new Scorecard(user, scoreDetail);
@@ -181,7 +183,8 @@ public class CourseScorecardDetailActivity extends FrolfrActivity {
             String roundName = roundScorecard.getCourseName() + " | " + df.format(roundScorecard.getCreated());
             setTitle(roundName);
             scorecards.addAll(roundScorecard.getScorecards());
-            scorecardAdapter.notify();  // TODO no notifyDataSetChanged() ?
+
+            scorecardAdapter.notifyDataSetChanged();
         }
     }
 

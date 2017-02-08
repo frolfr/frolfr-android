@@ -32,7 +32,7 @@ public class PlayerScorecardAdapter extends ArrayAdapter {
         ColumnView cv;
         if (convertView == null) {
             LayoutInflater inflater = ((Activity)getContext()).getLayoutInflater();
-            convertView = inflater.inflate(R.layout.list_item_scorecard, null);
+            convertView = inflater.inflate(R.layout.list_item_course_scorecard_detail, null);
             cv = new ColumnView();
             cv.playerName = (TextView) convertView.findViewById(R.id.scorecardDetailHeader);
             cv.scores = (ListView) convertView.findViewById(R.id.list_view_course_scorecard_detail);
