@@ -35,14 +35,8 @@ public class CourseScorecardDetailFragment extends Fragment {
 
         playerList = (ListView) rootView.findViewById(R.id.list_view_course_scorecard_detail);
 
-        // TODO - scorecard lists. update all these views on ajax callback
+        playerList.setAdapter(((CourseScorecardDetailActivity)getActivity()).getScorecardAdapter());
 
         return rootView;
-    }
-
-    public void update(RoundScorecard roundScorecard) {
-        String roundName = roundScorecard.getCourseName() + " | " + df.format(roundScorecard.getCreated());
-        getActivity().setTitle(roundName);
-        playerList.setAdapter(new PlayerScorecardAdapter(getActivity(), 0, roundScorecard.getScorecards()));
     }
 }

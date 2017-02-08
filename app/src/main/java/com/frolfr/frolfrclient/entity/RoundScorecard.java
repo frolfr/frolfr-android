@@ -24,11 +24,11 @@ public class RoundScorecard {
         this.created = created;
     }
 
-    public void addScores(String user, List<HoleDetail> scoreDetail) {
+    public void addScorecard(Scorecard scorecard) {
         if (scorecards == null)
             scorecards = new ArrayList<>();
 
-        scorecards.add(new Scorecard(user, scoreDetail));
+        scorecards.add(scorecard);
     }
 
     public int getRoundId() {
