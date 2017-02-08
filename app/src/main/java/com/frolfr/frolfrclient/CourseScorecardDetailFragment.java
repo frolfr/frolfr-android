@@ -2,15 +2,13 @@ package com.frolfr.frolfrclient;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
-import android.widget.TextView;
 
-import com.frolfr.frolfrclient.entity.CourseScorecard;
-import com.frolfr.frolfrclient.entity.RoundDetail;
+import com.frolfr.frolfrclient.entity.RoundScorecard;
+import com.frolfr.frolfrclient.entity.Scorecard;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -22,8 +20,7 @@ public class CourseScorecardDetailFragment extends Fragment {
 
     private static final DateFormat df = new SimpleDateFormat("MM/dd/yy");
 
-    private TextView courseName;
-    private TextView datePlayed;
+    ListView playerList;
 
     public CourseScorecardDetailFragment() {
     }
@@ -34,18 +31,18 @@ public class CourseScorecardDetailFragment extends Fragment {
 
         View rootView = inflater.inflate(R.layout.fragment_course_scorecard_detail, container, false);
 
-        RoundDetail roundDetail = ((CourseScorecardDetailActivity) getActivity()).getRoundDetail();
+        RoundScorecard scorecard = ((CourseScorecardDetailActivity) getActivity()).getRoundScorecard();
 
-        courseName = (TextView) rootView.findViewById(R.id.courseNameText);
-        datePlayed = (TextView) rootView.findViewById(R.id.scorecardDateText);
+        playerList = (ListView) rootView.findViewById(R.id.list_view_course_scorecard_detail);
 
         // TODO - scorecard lists. update all these views on ajax callback
 
         return rootView;
     }
 
-    public void update(RoundDetail roundDetail) {
-        courseName.setText(roundDetail.getCourseName());
-        datePlayed.setText(df.format(roundDetail.getCreated()));
+    public void update(RoundScorecard roundScorecard) {
+        String roundName = roundScorecard.getCourseName() + " | " + df.format(roundScorecard.getCreated());
+        getActivity().setTitle(roundName);
+        playerList.setAdapter(new PlayerScorecardAdapter(getActivity(), 0, roundScorecard.getScorecards()));
     }
 }

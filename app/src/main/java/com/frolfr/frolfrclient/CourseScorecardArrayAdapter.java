@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-import com.frolfr.frolfrclient.entity.CourseScorecard;
+import com.frolfr.frolfrclient.entity.Round;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -22,7 +22,7 @@ public class CourseScorecardArrayAdapter extends ArrayAdapter {
 
     private static final DateFormat df = new SimpleDateFormat("MMM dd, yyyy");
 
-    public CourseScorecardArrayAdapter(Activity activity, int listLayout, List<CourseScorecard> rows) {
+    public CourseScorecardArrayAdapter(Activity activity, int listLayout, List<Round> rows) {
         super(activity, listLayout, rows);
     }
 
@@ -43,7 +43,7 @@ public class CourseScorecardArrayAdapter extends ArrayAdapter {
             cv = (ColumnView) convertView.getTag();
         }
 
-        CourseScorecard scorecard = (CourseScorecard) getItem(position);
+        Round scorecard = (Round) getItem(position);
         cv.date.setText(df.format(scorecard.created));
         cv.strokes.setText(scorecard.totalStrokes + "");
         cv.score.setText((scorecard.totalScore > 0 ? "+" : "") + scorecard.totalScore);

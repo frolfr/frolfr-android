@@ -21,8 +21,8 @@ import java.net.URL;
 public abstract class ApiRequest {
 
     // TODO: Allow for dev/prod modes
-//    protected final String baseUrl = "https://frolfr.herokuapp.com";
-    protected final String baseUrl = "http://10.0.2.2:3000";
+    protected final String baseUrl = "https://frolfr.herokuapp.com";
+//    protected final String baseUrl = "http://10.0.2.2:8080";    // "http://10.0.2.15:8080"
     protected String uri;
     protected RequestType requestType;
     protected String postBody = null;

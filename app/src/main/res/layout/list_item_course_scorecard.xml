@@ -9,7 +9,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:minHeight="?android:attr/listPreferredItemHeight"
-        android:gravity="left"
+        android:gravity="left|center"
         android:id="@+id/list_item_scorecard_date"
         android:text="Scorecard Date"/>
 
@@ -18,7 +18,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:minHeight="?android:attr/listPreferredItemHeight"
-        android:gravity="center_vertical"
+        android:gravity="center"
         android:id="@+id/list_item_scorecard_total_strokes"
         android:text="Total Strokes"/>
 
@@ -27,7 +27,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:minHeight="?android:attr/listPreferredItemHeight"
-        android:gravity="right"
+        android:gravity="right|center"
         android:id="@+id/list_item_scorecard_total_score"
         android:text="Total Score"/>
 
