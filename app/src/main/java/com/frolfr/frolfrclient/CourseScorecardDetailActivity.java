@@ -8,8 +8,10 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import android.widget.ListAdapter;
 import com.frolfr.frolfrclient.api.Round;
 import com.frolfr.frolfrclient.config.PreferenceKeys;
+import com.frolfr.frolfrclient.entity.HoleDetail;
 import com.frolfr.frolfrclient.entity.RoundScorecard;
 import com.frolfr.frolfrclient.entity.Scorecard;
 
@@ -20,18 +22,25 @@ import org.json.JSONObject;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.util.*;
 
 public class CourseScorecardDetailActivity extends FrolfrActivity {
 
     public static String ROUND_ID_EXTRA = "round_id";
     private RoundScorecard roundScorecard;
 
+    private List<Scorecard> scorecards;
+    private ListAdapter scorecardAdapter;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         if (savedInstanceState == null) {
+
+            scorecards = new ArrayList<>();
+            scorecardAdapter = new PlayerScorecardAdapter(this, 0, scorecards);
 
             CourseScorecardDetailFragment scorecardDetailFragment = new CourseScorecardDetailFragment();
 
@@ -84,6 +93,9 @@ public class CourseScorecardDetailActivity extends FrolfrActivity {
         return roundScorecard;
     }
 
+    public ListAdapter getScorecardAdapter() {
+        return scorecardAdapter;
+    }
 
     /**
      * Represents an asynchronous call to get a player's scorecard for a given course
@@ -110,6 +122,7 @@ public class CourseScorecardDetailActivity extends FrolfrActivity {
                     Log.d(getClass().getSimpleName(), "Got JSON response for round: " + jsonResponse);
                     json = new JSONObject(jsonResponse);
 
+                    // setup base round scorecard information
                     JSONObject round = json.getJSONObject("round");
                     JSONArray turns = json.getJSONArray("turns");
                     JSONArray scorecards = json.getJSONArray("scorecards");
@@ -125,23 +138,31 @@ public class CourseScorecardDetailActivity extends FrolfrActivity {
 
                     RoundScorecard roundScorecard = new RoundScorecard(roundId[0], courseName, created, holeCount);
 
-//                    JSONArray scorecardArr = json.getJSONArray("course_scorecards");
-//                    Round[] scorecards = new Round[scorecardArr.length()];
-//                    for (int i=0; i<scorecardArr.length(); i++) {
-//                        JSONObject scorecard = scorecardArr.getJSONObject(i);
-//                        Date created = null;
-//                        try {
-//                            created = df.parse(scorecard.getString("created_at"));
-//                        } catch (ParseException e) {
-//                            Log.e(getClass().getSimpleName(), "Failed to parse created_at from json", e);
-//                        }
-//                        scorecards[i] = new Round(scorecard.getInt("id"), scorecard.getInt("round_id"),
-//                                created, scorecard.getInt("total_strokes"), scorecard.getInt("total_score"),
-//                                scorecard.getBoolean("is_completed"));
-//                    }
-//
-//                    return scorecards;
-                    return new RoundScorecard(roundId[0], null, null, null);
+                    // create hashmap of turn id to turn
+                    Map<Integer, HoleDetail> turnMap = new HashMap<>();
+                    for (int i=0; i<turns.length(); i++) {
+                        JSONObject turn = turns.getJSONObject(i);
+                        int turnId = turn.getInt("id");
+                        int hole = turn.getInt("hole_number");
+                        int strokes = turn.getInt("strokes");
+                        int par = turn.getInt("par");
+                        HoleDetail holeDetail = new HoleDetail(hole, strokes, par);
+                        turnMap.put(turnId, holeDetail);
+                    }
+
+                    // create individual player scorecards
+                    for (int i=0; i<scorecards.length(); i++) {
+                        JSONObject sc = scorecards.getJSONObject(i);
+                        String user = sc.getString("user_initials");
+                        List<HoleDetail> scoreDetail = new ArrayList<>(holeCount);
+                        for (int turnId : (int[])sc.get("turn_ids")) {
+                            scoreDetail.add(turnMap.get(turnId));
+                        }
+                        Scorecard scorecard = new Scorecard(user, scoreDetail);
+                        roundScorecard.addScorecard(scorecard);
+                    }
+
+                    return roundScorecard;
 
                 } catch (JSONException e) {
                     Log.e(getClass().getSimpleName(), "Malformed JSON response:\n" + jsonResponse, e);
@@ -154,13 +175,13 @@ public class CourseScorecardDetailActivity extends FrolfrActivity {
         @Override
         protected void onPostExecute(final RoundScorecard roundScorecardRet) {
             Log.d(getClass().getSimpleName(), "onPostExecute - GetRoundDetail");
+
             roundScorecard = roundScorecardRet;
-//            courseScorecardArrayAdapter.clear();
-//            if (courseScorecards == null)
-//                return;
-//            for (Round scorecard : courseScorecards) {
-//                courseScorecardArrayAdapter.add(scorecard);
-//            }
+
+            String roundName = roundScorecard.getCourseName() + " | " + df.format(roundScorecard.getCreated());
+            setTitle(roundName);
+            scorecards.addAll(roundScorecard.getScorecards());
+            scorecardAdapter.notify();  // TODO no notifyDataSetChanged() ?
         }
     }
 
