@@ -37,7 +37,7 @@ public class HoleDetailAdapter extends ArrayAdapter {
 
         HoleDetail holeDetail = (HoleDetail) getItem(position);
 
-        cv.score.setText(holeDetail.getStrokes());
+        cv.score.setText(holeDetail.getStrokes() + "");
         // TODO - ART
         switch (holeDetail.getScoreType()) {
             case DOUBLE_BOGIE:
