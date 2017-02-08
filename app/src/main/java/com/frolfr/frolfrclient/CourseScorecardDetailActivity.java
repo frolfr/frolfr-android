@@ -1,6 +1,5 @@
 package com.frolfr.frolfrclient;
 
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -8,14 +7,11 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.AdapterView;
 
-import com.frolfr.frolfrclient.api.CourseScorecards;
 import com.frolfr.frolfrclient.api.Round;
 import com.frolfr.frolfrclient.config.PreferenceKeys;
-import com.frolfr.frolfrclient.entity.CourseScorecard;
-import com.frolfr.frolfrclient.entity.RoundDetail;
+import com.frolfr.frolfrclient.entity.RoundScorecard;
+import com.frolfr.frolfrclient.entity.Scorecard;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -24,13 +20,12 @@ import org.json.JSONObject;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 
 public class CourseScorecardDetailActivity extends FrolfrActivity {
 
     public static String ROUND_ID_EXTRA = "round_id";
-    private RoundDetail roundDetail;
+    private RoundScorecard roundScorecard;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,29 +77,30 @@ public class CourseScorecardDetailActivity extends FrolfrActivity {
     }
 
 
-    public void setRoundDeatil(RoundDetail roundDetail) {
-        this.roundDetail = roundDetail;
+    public void setRoundDeatil(RoundScorecard roundScorecard) {
+        this.roundScorecard = roundScorecard;
     }
-    public RoundDetail getRoundDetail() {
-        return roundDetail;
+    public RoundScorecard getRoundScorecard() {
+        return roundScorecard;
     }
 
 
     /**
      * Represents an asynchronous call to get a player's scorecard for a given course
      */
-    public class GetRoundDetail extends AsyncTask<Integer, Void, RoundDetail> {
+    public class GetRoundDetail extends AsyncTask<Integer, Void, RoundScorecard> {
 
         private final DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
 
         @Override
-        protected RoundDetail doInBackground(Integer ... roundId) {
+        protected RoundScorecard doInBackground(Integer ... roundId) {
             Log.d(getClass().getSimpleName(), "doInBackground - GetRoundDetail");
             SharedPreferences preferences = getSharedPreferences(PreferenceKeys.AuthKeys.class.getName(), MODE_PRIVATE);
             String email = preferences.getString(PreferenceKeys.AuthKeys.EMAIL.toString(), null);
             String authToken = preferences.getString(PreferenceKeys.AuthKeys.TOKEN.toString(), null);
 
             Round.RoundRequest scorecardRequest = new Round.RoundRequest(roundId[0]);
+
             String jsonResponse = scorecardRequest.execute(email, authToken);
 
             if (!TextUtils.isEmpty(jsonResponse)) {
@@ -114,8 +110,23 @@ public class CourseScorecardDetailActivity extends FrolfrActivity {
                     Log.d(getClass().getSimpleName(), "Got JSON response for round: " + jsonResponse);
                     json = new JSONObject(jsonResponse);
 
+                    JSONObject round = json.getJSONObject("round");
+                    JSONArray turns = json.getJSONArray("turns");
+                    JSONArray scorecards = json.getJSONArray("scorecards");
+
+                    String courseName = round.getString("course_name");
+                    Date created = null;
+                    try {
+                        created = df.parse(round.getString("created_at"));
+                    } catch (ParseException e) {
+                        Log.e(getClass().getSimpleName(), "Failed to parse round create date", e);
+                    }
+                    int holeCount = round.getInt("hole_count");
+
+                    RoundScorecard roundScorecard = new RoundScorecard(roundId[0], courseName, created, holeCount);
+
 //                    JSONArray scorecardArr = json.getJSONArray("course_scorecards");
-//                    CourseScorecard[] scorecards = new CourseScorecard[scorecardArr.length()];
+//                    Round[] scorecards = new Round[scorecardArr.length()];
 //                    for (int i=0; i<scorecardArr.length(); i++) {
 //                        JSONObject scorecard = scorecardArr.getJSONObject(i);
 //                        Date created = null;
@@ -124,13 +135,13 @@ public class CourseScorecardDetailActivity extends FrolfrActivity {
 //                        } catch (ParseException e) {
 //                            Log.e(getClass().getSimpleName(), "Failed to parse created_at from json", e);
 //                        }
-//                        scorecards[i] = new CourseScorecard(scorecard.getInt("id"), scorecard.getInt("round_id"),
+//                        scorecards[i] = new Round(scorecard.getInt("id"), scorecard.getInt("round_id"),
 //                                created, scorecard.getInt("total_strokes"), scorecard.getInt("total_score"),
 //                                scorecard.getBoolean("is_completed"));
 //                    }
 //
 //                    return scorecards;
-                    return new RoundDetail(roundId[0], null, null, null);
+                    return new RoundScorecard(roundId[0], null, null, null);
 
                 } catch (JSONException e) {
                     Log.e(getClass().getSimpleName(), "Malformed JSON response:\n" + jsonResponse, e);
@@ -141,13 +152,13 @@ public class CourseScorecardDetailActivity extends FrolfrActivity {
         }
 
         @Override
-        protected void onPostExecute(final RoundDetail roundDetailRet) {
+        protected void onPostExecute(final RoundScorecard roundScorecardRet) {
             Log.d(getClass().getSimpleName(), "onPostExecute - GetRoundDetail");
-            roundDetail = roundDetailRet;
+            roundScorecard = roundScorecardRet;
 //            courseScorecardArrayAdapter.clear();
 //            if (courseScorecards == null)
 //                return;
-//            for (CourseScorecard scorecard : courseScorecards) {
+//            for (Round scorecard : courseScorecards) {
 //                courseScorecardArrayAdapter.add(scorecard);
 //            }
         }

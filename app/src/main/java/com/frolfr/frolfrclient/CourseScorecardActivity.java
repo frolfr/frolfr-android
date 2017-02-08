@@ -10,11 +10,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.Toast;
 
 import com.frolfr.frolfrclient.api.CourseScorecards;
 import com.frolfr.frolfrclient.config.PreferenceKeys;
-import com.frolfr.frolfrclient.entity.CourseScorecard;
+import com.frolfr.frolfrclient.entity.Round;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -29,6 +28,7 @@ import java.util.Date;
 public class CourseScorecardActivity extends FrolfrActivity {
 
     public static String COURSE_ID_EXTRA = "course_id";
+    public static String COURSE_NAME_EXTRA = "course_name";
     private int courseId;
     private CourseScorecardArrayAdapter courseScorecardArrayAdapter;
 
@@ -50,7 +50,7 @@ public class CourseScorecardActivity extends FrolfrActivity {
                     new CourseScorecardArrayAdapter(
                             this,
                             R.layout.list_item_course_scorecard, // The name of the layout ID.
-                            new ArrayList<CourseScorecard>());
+                            new ArrayList<Round>());
 
         } else {
             Log.d(getClass().getSimpleName(), "CourseDetail fragment already created");
@@ -62,6 +62,8 @@ public class CourseScorecardActivity extends FrolfrActivity {
     public void onStart() {
         super.onStart();
         courseId = getIntent().getIntExtra(CourseScorecardActivity.COURSE_ID_EXTRA, 0);
+        String courseName = getIntent().getStringExtra(COURSE_NAME_EXTRA);
+        setTitle(courseName);
         new GetPlayerScorecardsForCourse().execute(courseId);
     }
 
@@ -76,7 +78,7 @@ public class CourseScorecardActivity extends FrolfrActivity {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
 
-                CourseScorecard scorecard = (CourseScorecard) courseScorecardArrayAdapter.getItem(position);
+                Round scorecard = (Round) courseScorecardArrayAdapter.getItem(position);
 
                 Intent intent = new Intent(view.getContext(), CourseScorecardDetailActivity.class);
                 intent.putExtra(CourseScorecardDetailActivity.ROUND_ID_EXTRA, scorecard.roundId);
@@ -114,12 +116,12 @@ public class CourseScorecardActivity extends FrolfrActivity {
     /**
      * Represents an asynchronous call to get a player's scorecard for a given course
      */
-    public class GetPlayerScorecardsForCourse extends AsyncTask<Integer, Void, CourseScorecard[]> {
+    public class GetPlayerScorecardsForCourse extends AsyncTask<Integer, Void, Round[]> {
 
         private final DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
 
         @Override
-        protected CourseScorecard[] doInBackground(Integer ... courseIds) {
+        protected Round[] doInBackground(Integer ... courseIds) {
             Log.d(getClass().getSimpleName(), "doInBackground - GetPlayerScorecardForCourse");
             SharedPreferences preferences = getSharedPreferences(PreferenceKeys.AuthKeys.class.getName(), MODE_PRIVATE);
             String email = preferences.getString(PreferenceKeys.AuthKeys.EMAIL.toString(), null);
@@ -136,7 +138,7 @@ public class CourseScorecardActivity extends FrolfrActivity {
                     json = new JSONObject(jsonResponse);
 
                     JSONArray scorecardArr = json.getJSONArray("course_scorecards");
-                    CourseScorecard[] scorecards = new CourseScorecard[scorecardArr.length()];
+                    Round[] scorecards = new Round[scorecardArr.length()];
                     for (int i=0; i<scorecardArr.length(); i++) {
                         JSONObject scorecard = scorecardArr.getJSONObject(i);
                         Date created = null;
@@ -145,7 +147,7 @@ public class CourseScorecardActivity extends FrolfrActivity {
                         } catch (ParseException e) {
                             Log.e(getClass().getSimpleName(), "Failed to parse created_at from json", e);
                         }
-                        scorecards[i] = new CourseScorecard(scorecard.getInt("id"), scorecard.getInt("round_id"),
+                        scorecards[i] = new Round(scorecard.getInt("id"), scorecard.getInt("round_id"),
                                 created, scorecard.getInt("total_strokes"), scorecard.getInt("total_score"),
                                 scorecard.getBoolean("is_completed"));
                     }
@@ -161,12 +163,12 @@ public class CourseScorecardActivity extends FrolfrActivity {
         }
 
         @Override
-        protected void onPostExecute(final CourseScorecard[] courseScorecards) {
+        protected void onPostExecute(final Round[] rounds) {
             Log.d(getClass().getSimpleName(), "onPostExecute - GetPlayerScorecardsForCourse");
             courseScorecardArrayAdapter.clear();
-            if (courseScorecards == null)
+            if (rounds == null)
                 return;
-            for (CourseScorecard scorecard : courseScorecards) {
+            for (Round scorecard : rounds) {
                 courseScorecardArrayAdapter.add(scorecard);
             }
         }

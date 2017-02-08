@@ -16,29 +16,29 @@ import com.frolfr.frolfrclient.entity.Course;
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link CourseFragment.OnFragmentInteractionListener} interface
+ * {@link CoursesFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link CourseFragment#newInstance} factory method to
+ * Use the {@link CoursesFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class CourseFragment extends Fragment {
+public class CoursesFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
-     * @return A new instance of fragment CourseFragment.
+     * @return A new instance of fragment CoursesFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static CourseFragment newInstance() {
-        CourseFragment fragment = new CourseFragment();
+    public static CoursesFragment newInstance() {
+        CoursesFragment fragment = new CoursesFragment();
 //        Bundle args = new Bundle();
 //        fragment.setArguments(args);
         return fragment;
     }
 
-    public CourseFragment() {}
+    public CoursesFragment() {}
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -47,10 +47,7 @@ public class CourseFragment extends Fragment {
     }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-// TODO: I should still call this though, right?
-//        View rootView = super.onCreateView(inflater, container, savedInstanceState);
-
-        View rootView = inflater.inflate(R.layout.fragment_course, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_courses, container, false);
 
         CourseActivity courseActivity = (CourseActivity) getActivity();
 
@@ -65,6 +62,7 @@ public class CourseFragment extends Fragment {
 
                 Intent intent = new Intent(getActivity(), CourseScorecardActivity.class);
                 intent.putExtra(CourseScorecardActivity.COURSE_ID_EXTRA, selectedCourse.id);
+                intent.putExtra(CourseScorecardActivity.COURSE_NAME_EXTRA, selectedCourse.name);
                 startActivity(intent);
             }
         });

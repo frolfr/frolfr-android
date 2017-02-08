@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingBottom="@dimen/activity_vertical_margin"
-    tools:context="com.frolfr.frolfrclient.CourseFragment">
+    tools:context="com.frolfr.frolfrclient.CoursesFragment">
 
     <!--
         TODO: accordian-like layout where you expand rows grouped by state?
@@ -32,14 +32,7 @@
             android:layout_width="0px"
             android:layout_height="fill_parent"
             android:layout_weight="1"
-            android:text="City"
-            android:textSize="8pt"
-            android:gravity="center"/>
-        <TextView
-            android:layout_width="0px"
-            android:layout_height="fill_parent"
-            android:layout_weight="1"
-            android:text="State"
+            android:text="Last Played"
             android:textSize="8pt"
             android:gravity="right"/>
 

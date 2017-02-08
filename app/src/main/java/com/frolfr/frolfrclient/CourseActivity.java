@@ -6,8 +6,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 
 import com.frolfr.frolfrclient.api.Courses;
@@ -33,11 +31,11 @@ public class CourseActivity extends FrolfrActivity {
         super.onCreate(savedInstanceState);
 
         if (savedInstanceState == null) {
-            CourseFragment courseFragment = new CourseFragment();
+            CoursesFragment coursesFragment = new CoursesFragment();
 
             Log.d(getClass().getSimpleName(), "Creating courses fragment");
             getSupportFragmentManager().beginTransaction()
-                    .add(R.id.main_content, courseFragment)
+                    .add(R.id.main_content, coursesFragment)
                     .commit();
 
             // The ArrayAdapter will take data from a source and
