@@ -1,4 +1,4 @@
-package com.frolfr.frolfrclient;
+package com.frolfr.frolfrclient.activity.newgame;
 
 import android.app.Activity;
 import android.util.Log;

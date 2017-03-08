@@ -1,4 +1,4 @@
-package com.frolfr.frolfrclient;
+package com.frolfr.frolfrclient.activity.coursescorecard;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -11,9 +11,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 
+import com.frolfr.frolfrclient.FrolfrActivity;
+import com.frolfr.frolfrclient.R;
 import com.frolfr.frolfrclient.api.CourseScorecards;
 import com.frolfr.frolfrclient.config.PreferenceKeys;
 import com.frolfr.frolfrclient.entity.Round;
+import com.frolfr.frolfrclient.activity.scorecard.CourseScorecardDetailActivity;
 
 import org.json.JSONArray;
 import org.json.JSONException;

@@ -1,4 +1,4 @@
-package com.frolfr.frolfrclient;
+package com.frolfr.frolfrclient.activity.scorecard;
 
 import android.app.Activity;
 import android.view.LayoutInflater;
@@ -8,8 +8,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.frolfr.frolfrclient.entity.HoleDetail;
-import com.frolfr.frolfrclient.entity.SCORE_TYPE;
+import com.frolfr.frolfrclient.R;
 import com.frolfr.frolfrclient.entity.Scorecard;
 
 import java.text.DateFormat;

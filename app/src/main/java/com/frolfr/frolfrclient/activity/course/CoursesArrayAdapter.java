@@ -1,13 +1,13 @@
-package com.frolfr.frolfrclient;
+package com.frolfr.frolfrclient.activity.course;
 
 import android.app.Activity;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import com.frolfr.frolfrclient.R;
 import com.frolfr.frolfrclient.entity.Course;
 
 import java.text.DateFormat;
@@ -17,11 +17,11 @@ import java.util.List;
 /**
  * Created by wowens on 1/24/16.
  */
-public class CourseArrayAdapter extends ArrayAdapter {
+public class CoursesArrayAdapter extends ArrayAdapter {
 
     private static final DateFormat df = new SimpleDateFormat("MMM dd, yyyy");
 
-    public CourseArrayAdapter(Activity activity, int listLayout, List<Course> rows) {
+    public CoursesArrayAdapter(Activity activity, int listLayout, List<Course> rows) {
         super(activity, listLayout, rows);
     }
 
