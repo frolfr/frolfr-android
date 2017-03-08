@@ -11,7 +11,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 
-import com.frolfr.frolfrclient.FrolfrActivity;
+import com.frolfr.frolfrclient.activity.FrolfrActivity;
 import com.frolfr.frolfrclient.R;
 import com.frolfr.frolfrclient.api.CourseScorecards;
 import com.frolfr.frolfrclient.config.PreferenceKeys;
@@ -26,7 +26,10 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
+import java.util.List;
 
 public class CourseScorecardsActivity extends FrolfrActivity {
 
@@ -119,12 +122,19 @@ public class CourseScorecardsActivity extends FrolfrActivity {
     /**
      * Represents an asynchronous call to get a player's scorecard for a given course
      */
-    public class GetPlayerScorecardsForCourse extends AsyncTask<Integer, Void, Round[]> {
+    public class GetPlayerScorecardsForCourse extends AsyncTask<Integer, Void, List<Round>> {
 
         private final DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
 
+        private final Comparator<Round> recentRoundComparator = new Comparator<Round>() {
+            @Override
+            public int compare(Round r1, Round r2) {
+                return r2.getCreated().compareTo(r1.getCreated());
+            }
+        };
+
         @Override
-        protected Round[] doInBackground(Integer ... courseIds) {
+        protected List<Round> doInBackground(Integer ... courseIds) {
             Log.d(getClass().getSimpleName(), "doInBackground - GetPlayerScorecardForCourse");
             SharedPreferences preferences = getSharedPreferences(PreferenceKeys.AuthKeys.class.getName(), MODE_PRIVATE);
             String email = preferences.getString(PreferenceKeys.AuthKeys.EMAIL.toString(), null);
@@ -141,7 +151,7 @@ public class CourseScorecardsActivity extends FrolfrActivity {
                     json = new JSONObject(jsonResponse);
 
                     JSONArray scorecardArr = json.getJSONArray("course_scorecards");
-                    Round[] scorecards = new Round[scorecardArr.length()];
+                    List<Round> scorecards = new ArrayList<>(scorecardArr.length());
                     for (int i=0; i<scorecardArr.length(); i++) {
                         JSONObject scorecard = scorecardArr.getJSONObject(i);
                         Date created = null;
@@ -150,10 +160,12 @@ public class CourseScorecardsActivity extends FrolfrActivity {
                         } catch (ParseException e) {
                             Log.e(getClass().getSimpleName(), "Failed to parse created_at from json", e);
                         }
-                        scorecards[i] = new Round(scorecard.getInt("id"), scorecard.getInt("round_id"),
+                        scorecards.add(new Round(scorecard.getInt("id"), scorecard.getInt("round_id"),
                                 created, scorecard.getInt("total_strokes"), scorecard.getInt("total_score"),
-                                scorecard.getBoolean("is_completed"));
+                                scorecard.getBoolean("is_completed")));
                     }
+
+                    Collections.sort(scorecards, recentRoundComparator);
 
                     return scorecards;
 
@@ -166,7 +178,7 @@ public class CourseScorecardsActivity extends FrolfrActivity {
         }
 
         @Override
-        protected void onPostExecute(final Round[] rounds) {
+        protected void onPostExecute(final List<Round> rounds) {
             Log.d(getClass().getSimpleName(), "onPostExecute - GetPlayerScorecardsForCourse");
             courseScorecardsArrayAdapter.clear();
             if (rounds == null)

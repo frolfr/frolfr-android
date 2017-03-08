@@ -9,7 +9,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 
-import com.frolfr.frolfrclient.FrolfrActivity;
+import com.frolfr.frolfrclient.activity.FrolfrActivity;
 import com.frolfr.frolfrclient.R;
 import com.frolfr.frolfrclient.api.Profile;
 import com.frolfr.frolfrclient.config.PreferenceKeys.AuthKeys;

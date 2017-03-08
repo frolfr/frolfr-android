@@ -20,4 +20,20 @@ public class Course {
         this.location = location;
         this.lastPlayed = lastPlayed;
     }
+
+    public int getId() {
+        return id;
+    }
+    public String getName() {
+        return name;
+    }
+    public int getHoleCount() {
+        return holeCount;
+    }
+    public String getLocation() {
+        return location;
+    }
+    public Date getLastPlayed() {
+        return lastPlayed;
+    }
 }

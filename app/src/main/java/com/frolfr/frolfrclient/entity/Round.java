@@ -24,4 +24,23 @@ public class Round implements Serializable {
         this.totalScore = totalScore;
         this.isCompleted = isCompleted;
     }
+
+    public int getId() {
+        return id;
+    }
+    public int getRoundId() {
+        return roundId;
+    }
+    public Date getCreated() {
+        return created;
+    }
+    public int getTotalStrokes() {
+        return totalStrokes;
+    }
+    public int getTotalScore() {
+        return totalScore;
+    }
+    public boolean isCompleted() {
+        return isCompleted;
+    }
 }

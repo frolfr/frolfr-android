@@ -10,7 +10,7 @@ import android.view.MenuItem;
 
 import android.widget.ListAdapter;
 
-import com.frolfr.frolfrclient.FrolfrActivity;
+import com.frolfr.frolfrclient.activity.FrolfrActivity;
 import com.frolfr.frolfrclient.R;
 import com.frolfr.frolfrclient.api.Round;
 import com.frolfr.frolfrclient.config.PreferenceKeys;
@@ -150,7 +150,7 @@ public class RoundScorecardActivity extends FrolfrActivity {
                         JSONObject turn = turns.getJSONObject(i);
                         int turnId = turn.getInt("id");
                         int hole = turn.getInt("hole_number");
-                        int strokes = turn.getInt("strokes");
+                        int strokes = turn.getInt("strokes");           // TODO strokes can be null on incomplete scorecards
                         int par = turn.getInt("par");
                         HoleDetail holeDetail = new HoleDetail(hole, strokes, par);
                         turnMap.put(turnId, holeDetail);

@@ -9,7 +9,7 @@ import android.util.Log;
 import android.widget.ArrayAdapter;
 
 import com.frolfr.frolfrclient.activity.coursescorecards.CourseScorecardsActivity;
-import com.frolfr.frolfrclient.FrolfrActivity;
+import com.frolfr.frolfrclient.activity.FrolfrActivity;
 import com.frolfr.frolfrclient.R;
 import com.frolfr.frolfrclient.api.Courses;
 import com.frolfr.frolfrclient.config.PreferenceKeys;
@@ -23,7 +23,11 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
+import java.util.List;
 
 public class CoursesActivity extends FrolfrActivity {
 
@@ -80,12 +84,22 @@ public class CoursesActivity extends FrolfrActivity {
     /**
      * Represents an asynchronous call to get Profile Statistics
      */
-    public class GetCourseInfoTask extends AsyncTask<ArrayAdapter, Void, Course[]> {
+    public class GetCourseInfoTask extends AsyncTask<ArrayAdapter, Void, List<Course>> {
 
         private final DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
 
+        /**
+         * Sort courses by most recent date played first
+         */
+        private final Comparator<Course> recentScorecardComparator = new Comparator<Course>() {
+            @Override
+            public int compare(Course c1, Course c2) {
+                return c2.getLastPlayed().compareTo(c1.getLastPlayed());
+            }
+        };
+
         @Override
-        protected Course[] doInBackground(ArrayAdapter... params) {
+        protected List<Course> doInBackground(ArrayAdapter... params) {
             Log.d(getClass().getSimpleName(), "doInBackground - GetCourseInfoTask");
             SharedPreferences preferences = getSharedPreferences(PreferenceKeys.AuthKeys.class.getName(), MODE_PRIVATE);
             String email = preferences.getString(PreferenceKeys.AuthKeys.EMAIL.toString(), null);
@@ -100,7 +114,7 @@ public class CoursesActivity extends FrolfrActivity {
                     json = new JSONObject(jsonResponse);
                     JSONArray courseArr = json.getJSONArray("courses");
 
-                    Course[] courseInfo = new Course[courseArr.length()];
+                    List<Course> courseInfo = new ArrayList<>(courseArr.length());
                     for (int i=0; i<courseArr.length(); i++) {
                         JSONObject course = courseArr.getJSONObject(i);
                         Date lastPlayed = null;
@@ -109,9 +123,11 @@ public class CoursesActivity extends FrolfrActivity {
                         } catch (ParseException e) {
                             Log.e(getClass().getSimpleName(), "Failed to parse lastPlayedDate from json", e);
                         }
-                        courseInfo[i] = new Course(course.getInt("id"), course.getString("name"), course.getInt("hole_count"),
-                                course.getString("location"), lastPlayed);
+                        courseInfo.add(new Course(course.getInt("id"), course.getString("name"), course.getInt("hole_count"),
+                                course.getString("location"), lastPlayed));
                     }
+
+                    Collections.sort(courseInfo, recentScorecardComparator);
 
                     return courseInfo;
 
@@ -124,7 +140,7 @@ public class CoursesActivity extends FrolfrActivity {
         }
 
         @Override
-        protected void onPostExecute(final Course[] courseResults) {
+        protected void onPostExecute(final List<Course> courseResults) {
             Log.d(getClass().getSimpleName(), "onPostExecute - GetCourseInfoTask");
             courseListAdapter.clear();
             if (courseResults == null)
