@@ -22,6 +22,7 @@ public class RoundScorecard {
         this.roundId = roundId;
         this.courseName = courseName;
         this.created = created;
+        this.holeCount = holeCount;
     }
 
     public void addScorecard(Scorecard scorecard) {

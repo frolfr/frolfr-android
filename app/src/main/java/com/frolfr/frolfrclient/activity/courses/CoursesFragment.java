@@ -1,4 +1,4 @@
-package com.frolfr.frolfrclient.activity.course;
+package com.frolfr.frolfrclient.activity.courses;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
-import com.frolfr.frolfrclient.activity.coursescorecard.CourseScorecardActivity;
+import com.frolfr.frolfrclient.activity.coursescorecards.CourseScorecardsActivity;
 import com.frolfr.frolfrclient.R;
 import com.frolfr.frolfrclient.entity.Course;
 
@@ -62,9 +62,9 @@ public class CoursesFragment extends Fragment {
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
                 Course selectedCourse = (Course) ((CoursesArrayAdapter) adapterView.getAdapter()).getItem(position);
 
-                Intent intent = new Intent(getActivity(), CourseScorecardActivity.class);
-                intent.putExtra(CourseScorecardActivity.COURSE_ID_EXTRA, selectedCourse.id);
-                intent.putExtra(CourseScorecardActivity.COURSE_NAME_EXTRA, selectedCourse.name);
+                Intent intent = new Intent(getActivity(), CourseScorecardsActivity.class);
+                intent.putExtra(CourseScorecardsActivity.COURSE_ID_EXTRA, selectedCourse.id);
+                intent.putExtra(CourseScorecardsActivity.COURSE_NAME_EXTRA, selectedCourse.name);
                 startActivity(intent);
             }
         });

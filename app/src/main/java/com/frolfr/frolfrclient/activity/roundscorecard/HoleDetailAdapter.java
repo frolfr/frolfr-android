@@ -1,4 +1,4 @@
-package com.frolfr.frolfrclient.activity.scorecard;
+package com.frolfr.frolfrclient.activity.roundscorecard;
 
 import android.app.Activity;
 import android.view.LayoutInflater;

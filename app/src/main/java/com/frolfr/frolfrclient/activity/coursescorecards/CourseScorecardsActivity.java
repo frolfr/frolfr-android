@@ -1,4 +1,4 @@
-package com.frolfr.frolfrclient.activity.coursescorecard;
+package com.frolfr.frolfrclient.activity.coursescorecards;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -16,7 +16,7 @@ import com.frolfr.frolfrclient.R;
 import com.frolfr.frolfrclient.api.CourseScorecards;
 import com.frolfr.frolfrclient.config.PreferenceKeys;
 import com.frolfr.frolfrclient.entity.Round;
-import com.frolfr.frolfrclient.activity.scorecard.CourseScorecardDetailActivity;
+import com.frolfr.frolfrclient.activity.roundscorecard.RoundScorecardActivity;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -28,19 +28,19 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
-public class CourseScorecardActivity extends FrolfrActivity {
+public class CourseScorecardsActivity extends FrolfrActivity {
 
     public static String COURSE_ID_EXTRA = "course_id";
     public static String COURSE_NAME_EXTRA = "course_name";
     private int courseId;
-    private CourseScorecardArrayAdapter courseScorecardArrayAdapter;
+    private CourseScorecardsArrayAdapter courseScorecardsArrayAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         if (savedInstanceState == null) {
-            CourseScorecardFragment courseDetailFragment = new CourseScorecardFragment();
+            CourseScorecardsFragment courseDetailFragment = new CourseScorecardsFragment();
 
             Log.d(getClass().getSimpleName(), "Creating course detail fragment");
             getSupportFragmentManager().beginTransaction()
@@ -49,8 +49,8 @@ public class CourseScorecardActivity extends FrolfrActivity {
 
             // The ArrayAdapter will take data from a source and
             // use it to populate the ListView it's attached to.
-            courseScorecardArrayAdapter =
-                    new CourseScorecardArrayAdapter(
+            courseScorecardsArrayAdapter =
+                    new CourseScorecardsArrayAdapter(
                             this,
                             R.layout.list_item_course_scorecard, // The name of the layout ID.
                             new ArrayList<Round>());
@@ -64,15 +64,15 @@ public class CourseScorecardActivity extends FrolfrActivity {
     @Override
     public void onStart() {
         super.onStart();
-        courseId = getIntent().getIntExtra(CourseScorecardActivity.COURSE_ID_EXTRA, 0);
+        courseId = getIntent().getIntExtra(CourseScorecardsActivity.COURSE_ID_EXTRA, 0);
         String courseName = getIntent().getStringExtra(COURSE_NAME_EXTRA);
         setTitle(courseName);
         new GetPlayerScorecardsForCourse().execute(courseId);
     }
 
 
-    public CourseScorecardArrayAdapter getCourseScorecardArrayAdapter() {
-        return courseScorecardArrayAdapter;
+    public CourseScorecardsArrayAdapter getCourseScorecardsArrayAdapter() {
+        return courseScorecardsArrayAdapter;
     }
 
     public AdapterView.OnItemClickListener getOnCourseScorecardClickListener() {
@@ -81,10 +81,10 @@ public class CourseScorecardActivity extends FrolfrActivity {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
 
-                Round scorecard = (Round) courseScorecardArrayAdapter.getItem(position);
+                Round scorecard = (Round) courseScorecardsArrayAdapter.getItem(position);
 
-                Intent intent = new Intent(view.getContext(), CourseScorecardDetailActivity.class);
-                intent.putExtra(CourseScorecardDetailActivity.ROUND_ID_EXTRA, scorecard.roundId);
+                Intent intent = new Intent(view.getContext(), RoundScorecardActivity.class);
+                intent.putExtra(RoundScorecardActivity.ROUND_ID_EXTRA, scorecard.roundId);
                 startActivity(intent);
             }
         };
@@ -168,11 +168,11 @@ public class CourseScorecardActivity extends FrolfrActivity {
         @Override
         protected void onPostExecute(final Round[] rounds) {
             Log.d(getClass().getSimpleName(), "onPostExecute - GetPlayerScorecardsForCourse");
-            courseScorecardArrayAdapter.clear();
+            courseScorecardsArrayAdapter.clear();
             if (rounds == null)
                 return;
             for (Round scorecard : rounds) {
-                courseScorecardArrayAdapter.add(scorecard);
+                courseScorecardsArrayAdapter.add(scorecard);
             }
         }
     }

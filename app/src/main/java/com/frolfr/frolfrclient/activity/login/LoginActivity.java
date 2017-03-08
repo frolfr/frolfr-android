@@ -28,7 +28,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.frolfr.frolfrclient.activity.course.CoursesActivity;
+import com.frolfr.frolfrclient.activity.courses.CoursesActivity;
 import com.frolfr.frolfrclient.R;
 import com.frolfr.frolfrclient.api.Authorization;
 import com.frolfr.frolfrclient.config.PreferenceKeys.AuthKeys;
