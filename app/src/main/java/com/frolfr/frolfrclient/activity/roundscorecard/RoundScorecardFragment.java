@@ -48,7 +48,7 @@ public class RoundScorecardFragment extends Fragment {
         RoundScorecard scorecard = ((RoundScorecardActivity) getActivity()).getRoundScorecard();
 
         for (Scorecard s : scorecard.getScorecards()) {
-            View playerScorecard = getActivity().getLayoutInflater().inflate(R.layout.list_item_round_scorecard, playerScorecardLayout, true);
+            View playerScorecard = getActivity().getLayoutInflater().inflate(R.layout.list_item_round_scorecard, playerScorecardLayout, false);
 
             TextView scorecardHeader = (TextView) playerScorecard.findViewById(R.id.scorecardDetailHeader);
             scorecardHeader.setText(s.getUser());
@@ -56,7 +56,9 @@ public class RoundScorecardFragment extends Fragment {
             ListView roundDetail = (ListView) playerScorecard.findViewById(R.id.list_view_course_scorecard_detail);
             roundDetail.setAdapter(new HoleDetailAdapter(getActivity(), 0, s.getScoreDetail()));
 
-            Log.d(getClass().getSimpleName(), "Created player scorecard for " + s.getUser());
+            playerScorecardLayout.addView(playerScorecard);
+
+            Log.d(getClass().getSimpleName(), "Created player scorecard for " + s.getUser() + ". There are now " + playerScorecardLayout.getChildCount() + " scorecards");
         }
     }
 }

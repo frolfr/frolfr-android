@@ -108,6 +108,7 @@ public class RoundScorecardActivity extends FrolfrActivity {
     public class GetRoundDetail extends AsyncTask<Integer, Void, RoundScorecard> {
 
         private final DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+        private final DateFormat displayDf = new SimpleDateFormat("MM/dd/yy");
 
         @Override
         protected RoundScorecard doInBackground(Integer ... roundId) {
@@ -185,7 +186,7 @@ public class RoundScorecardActivity extends FrolfrActivity {
 
             roundScorecard = roundScorecardRet;
 
-            String roundName = roundScorecard.getCourseName() + " | " + df.format(roundScorecard.getCreated());
+            String roundName = roundScorecard.getCourseName() + " | " + displayDf.format(roundScorecard.getCreated());
             setTitle(roundName);
             scorecards.addAll(roundScorecard.getScorecards());
 
