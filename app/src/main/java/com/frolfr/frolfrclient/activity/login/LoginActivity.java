@@ -1,4 +1,4 @@
-package com.frolfr.frolfrclient;
+package com.frolfr.frolfrclient.activity.login;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -28,6 +28,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.frolfr.frolfrclient.activity.course.CoursesActivity;
+import com.frolfr.frolfrclient.R;
 import com.frolfr.frolfrclient.api.Authorization;
 import com.frolfr.frolfrclient.config.PreferenceKeys.AuthKeys;
 
@@ -289,7 +291,7 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
 
             if (authToken != null) {
                 Log.d(getClass().getSimpleName(), "OnPostExecute - success. Launching ProfileStats activity and calling finish()");
-                Intent landingPageIntent = new Intent(getApplicationContext() /*TODO: yes?*/, CourseActivity.class);
+                Intent landingPageIntent = new Intent(getApplicationContext() /*TODO: yes?*/, CoursesActivity.class);
                 SharedPreferences preferences = getSharedPreferences(AuthKeys.class.getName(), MODE_PRIVATE);
                 preferences.edit()
                         .putString(AuthKeys.TOKEN.toString(), authToken)

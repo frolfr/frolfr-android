@@ -1,9 +1,7 @@
-package com.frolfr.frolfrclient;
+package com.frolfr.frolfrclient.activity.playerprofile;
 
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -11,11 +9,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 
-import com.frolfr.frolfrclient.api.Authorization;
+import com.frolfr.frolfrclient.FrolfrActivity;
+import com.frolfr.frolfrclient.R;
 import com.frolfr.frolfrclient.api.Profile;
 import com.frolfr.frolfrclient.config.PreferenceKeys.AuthKeys;
-
-import java.util.ArrayList;
 
 public class ProfileActivity extends FrolfrActivity {
 
