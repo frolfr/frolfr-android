@@ -13,6 +13,10 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import com.frolfr.frolfrclient.activity.course.CoursesActivity;
+import com.frolfr.frolfrclient.activity.newgame.NewGameActivity;
+import com.frolfr.frolfrclient.activity.playerprofile.ProfileActivity;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -30,7 +34,7 @@ public abstract class FrolfrActivity extends AppCompatActivity {
     {{
         drawerMap = new HashMap<Integer, Class>();
         drawerMap.put(0, null /*RoundActivty.class*/);
-        drawerMap.put(1, CourseActivity.class);
+        drawerMap.put(1, CoursesActivity.class);
         drawerMap.put(2, null /*FriendActivity.class*/);
         drawerMap.put(3, ProfileActivity.class);
     }}

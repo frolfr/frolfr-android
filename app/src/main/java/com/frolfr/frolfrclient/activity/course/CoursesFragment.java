@@ -1,4 +1,4 @@
-package com.frolfr.frolfrclient;
+package com.frolfr.frolfrclient.activity.course;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -10,6 +10,8 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import com.frolfr.frolfrclient.activity.coursescorecard.CourseScorecardActivity;
+import com.frolfr.frolfrclient.R;
 import com.frolfr.frolfrclient.entity.Course;
 
 
@@ -49,16 +51,16 @@ public class CoursesFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_courses, container, false);
 
-        CourseActivity courseActivity = (CourseActivity) getActivity();
+        CoursesActivity coursesActivity = (CoursesActivity) getActivity();
 
         // Get a reference to the ListView, and attach this adapter to it.
         ListView listView = (ListView) rootView.findViewById(R.id.list_view_courses);
-        listView.setAdapter(courseActivity.getCourseListAdapter());
+        listView.setAdapter(coursesActivity.getCourseListAdapter());
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                Course selectedCourse = (Course) ((CourseArrayAdapter) adapterView.getAdapter()).getItem(position);
+                Course selectedCourse = (Course) ((CoursesArrayAdapter) adapterView.getAdapter()).getItem(position);
 
                 Intent intent = new Intent(getActivity(), CourseScorecardActivity.class);
                 intent.putExtra(CourseScorecardActivity.COURSE_ID_EXTRA, selectedCourse.id);

@@ -1,4 +1,4 @@
-package com.frolfr.frolfrclient;
+package com.frolfr.frolfrclient.activity.coursescorecard;
 
 import android.app.Activity;
 import android.graphics.Typeface;
@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import com.frolfr.frolfrclient.R;
 import com.frolfr.frolfrclient.entity.Round;
 
 import java.text.DateFormat;

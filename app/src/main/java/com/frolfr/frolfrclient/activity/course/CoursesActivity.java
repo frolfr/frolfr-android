@@ -1,21 +1,16 @@
-package com.frolfr.frolfrclient;
+package com.frolfr.frolfrclient.activity.course;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.database.DataSetObserver;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Spinner;
-import android.widget.SpinnerAdapter;
 
+import com.frolfr.frolfrclient.activity.coursescorecard.CourseScorecardActivity;
+import com.frolfr.frolfrclient.FrolfrActivity;
+import com.frolfr.frolfrclient.R;
 import com.frolfr.frolfrclient.api.Courses;
 import com.frolfr.frolfrclient.config.PreferenceKeys;
 import com.frolfr.frolfrclient.entity.Course;
@@ -30,36 +25,32 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
-/**
- * Created by wowens on 7/16/16.
- */
-public class NewGameActivity extends FrolfrActivity {
+public class CoursesActivity extends FrolfrActivity {
 
-    public static final String EXTRA_COURSE_ID = "courseId";
-
-    private CourseSpinnerAdapter courseAdapter;
-    private int selectedCourseId = -1;
+    private CoursesArrayAdapter courseListAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         if (savedInstanceState == null) {
+            CoursesFragment coursesFragment = new CoursesFragment();
 
-            courseAdapter = new CourseSpinnerAdapter(
-                    this,
-                    android.R.layout.simple_list_item_1,
-                    new ArrayList<Course>());
-
-            NewGameFragment newGameFragment = new NewGameFragment();
-
-            Log.d(getClass().getSimpleName(), "Created new game fragment");
+            Log.d(getClass().getSimpleName(), "Creating courses fragment");
             getSupportFragmentManager().beginTransaction()
-                    .add(R.id.main_content, newGameFragment)
+                    .add(R.id.main_content, coursesFragment)
                     .commit();
 
+            // The ArrayAdapter will take data from a source and
+            // use it to populate the ListView it's attached to.
+            courseListAdapter =
+                    new CoursesArrayAdapter(
+                            this,
+                            R.layout.list_item_course, // The name of the layout ID.
+                            new ArrayList<Course>());
+
         } else {
-            Log.d(getClass().getSimpleName(), "NewGameFragment fragment already created");
+            Log.d(getClass().getSimpleName(), "CoursesActivity fragment already created");
         }
 
     }
@@ -71,10 +62,17 @@ public class NewGameActivity extends FrolfrActivity {
     }
 
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_new_game, menu);
-        return true;
+
+    public void onCourseItemClicked(Course selectedCourse) {
+        Intent intent = new Intent(this, CourseScorecardActivity.class);
+        intent.putExtra(CourseScorecardActivity.COURSE_ID_EXTRA, selectedCourse.id);
+        startActivity(intent);
+    }
+
+
+
+    public CoursesArrayAdapter getCourseListAdapter() {
+        return courseListAdapter;
     }
 
 
@@ -127,30 +125,12 @@ public class NewGameActivity extends FrolfrActivity {
 
         @Override
         protected void onPostExecute(final Course[] courseResults) {
-            Log.d(getClass().getSimpleName(), "Updating courses with " + courseResults.length + " results");
-            courseAdapter.clear();
+            Log.d(getClass().getSimpleName(), "onPostExecute - GetCourseInfoTask");
+            courseListAdapter.clear();
             if (courseResults == null)
                 return;
             for (Course course : courseResults)
-                courseAdapter.add(course);
+                courseListAdapter.add(course);
         }
-    }
-
-    public CourseSpinnerAdapter getCourseAdapter() {
-        return courseAdapter;
-    }
-
-    public void setSelectedCourseId(int courseId) {
-        this.selectedCourseId = courseId;
-    }
-
-    public void startGame(View v) {
-        Log.d(getClass().getSimpleName(), "Starting new game on course: " + "???");
-
-        // TODO - first, allow the user to add players
-        // then launch a new activity, passing in the users and course selected
-//        Intent intent = new Intent(this, ActiveGameActivity.class);
-//        intent.putExtra(ActiveGameActivity.COURSE_ID_EXTRA, selectedCourse.id);
-//        startActivity(intent);
     }
 }

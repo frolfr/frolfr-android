@@ -1,4 +1,4 @@
-package com.frolfr.frolfrclient;
+package com.frolfr.frolfrclient.activity.scorecard;
 
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
@@ -9,6 +9,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import android.widget.ListAdapter;
+
+import com.frolfr.frolfrclient.FrolfrActivity;
+import com.frolfr.frolfrclient.R;
 import com.frolfr.frolfrclient.api.Round;
 import com.frolfr.frolfrclient.config.PreferenceKeys;
 import com.frolfr.frolfrclient.entity.HoleDetail;

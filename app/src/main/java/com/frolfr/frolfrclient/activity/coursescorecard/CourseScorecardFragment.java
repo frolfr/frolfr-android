@@ -1,4 +1,4 @@
-package com.frolfr.frolfrclient;
+package com.frolfr.frolfrclient.activity.coursescorecard;
 
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
@@ -7,6 +7,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+
+import com.frolfr.frolfrclient.R;
 
 /**
  * A placeholder fragment containing a simple view.
