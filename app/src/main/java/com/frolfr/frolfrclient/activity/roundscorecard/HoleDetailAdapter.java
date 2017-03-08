@@ -1,6 +1,7 @@
 package com.frolfr.frolfrclient.activity.roundscorecard;
 
 import android.app.Activity;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,15 +42,20 @@ public class HoleDetailAdapter extends ArrayAdapter {
         // TODO - ART
         switch (holeDetail.getScoreType()) {
             case DOUBLE_BOGIE:
-                cv.score.append("_db"); break;
+                cv.score.setBackgroundColor(Color.RED);
+                break;
             case BOGIE:
-                cv.score.append("_b"); break;
+                cv.score.setBackgroundColor(Color.MAGENTA);
+                break;
             case PAR:
-                cv.score.append(""); break;
+                cv.score.setBackgroundColor(Color.WHITE);
+                break;
             case BIRDIE:
-                cv.score.append("_b!"); break;
+                cv.score.setBackgroundColor(Color.GREEN);
+                break;
             case EAGLE:
-                cv.score.append("_e!!"); break;
+                cv.score.setBackgroundColor(Color.BLUE);
+                break;
         }
 
         return convertView;

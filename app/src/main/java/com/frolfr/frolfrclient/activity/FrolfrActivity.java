@@ -1,4 +1,4 @@
-package com.frolfr.frolfrclient;
+package com.frolfr.frolfrclient.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,6 +13,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import com.frolfr.frolfrclient.R;
 import com.frolfr.frolfrclient.activity.courses.CoursesActivity;
 import com.frolfr.frolfrclient.activity.newgame.NewGameActivity;
 import com.frolfr.frolfrclient.activity.playerprofile.ProfileActivity;
