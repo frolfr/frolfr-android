@@ -1,4 +1,4 @@
-package com.frolfr.frolfrclient.activity.scorecard;
+package com.frolfr.frolfrclient.activity.roundscorecard;
 
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
@@ -27,13 +27,15 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-public class CourseScorecardDetailActivity extends FrolfrActivity {
+public class RoundScorecardActivity extends FrolfrActivity {
 
     public static String ROUND_ID_EXTRA = "round_id";
     private RoundScorecard roundScorecard;
 
     private List<Scorecard> scorecards;
     private PlayerScorecardAdapter scorecardAdapter;
+
+    RoundScorecardFragment scorecardDetailFragment;
 
 
     @Override
@@ -45,7 +47,7 @@ public class CourseScorecardDetailActivity extends FrolfrActivity {
             scorecards = new ArrayList<>();
             scorecardAdapter = new PlayerScorecardAdapter(this, 0, scorecards);
 
-            CourseScorecardDetailFragment scorecardDetailFragment = new CourseScorecardDetailFragment();
+            scorecardDetailFragment = new RoundScorecardFragment();
 
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.main_content, scorecardDetailFragment)
@@ -188,6 +190,8 @@ public class CourseScorecardDetailActivity extends FrolfrActivity {
             scorecards.addAll(roundScorecard.getScorecards());
 
             scorecardAdapter.notifyDataSetChanged();
+
+            scorecardDetailFragment.displayPlayerScorecards();
         }
     }
 

@@ -30,35 +30,35 @@
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" >
         </activity>
         <activity
-            android:name=".activity.course.CoursesActivity"
+            android:name=".activity.courses.CoursesActivity"
             android:label="@string/title_activity_courses"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" >
         </activity>
         <activity
-            android:name=".activity.coursescorecard.CourseScorecardActivity"
+            android:name=".activity.coursescorecards.CourseScorecardsActivity"
             android:label="@string/title_activity_course_detail"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"
-            android:parentActivityName=".activity.course.CoursesActivity" >
+            android:parentActivityName=".activity.courses.CoursesActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activity.course.CoursesActivity" />
+                android:value=".activity.courses.CoursesActivity" />
         </activity>
         <activity
-            android:name=".activity.scorecard.CourseScorecardDetailActivity"
+            android:name=".activity.roundscorecard.RoundScorecardActivity"
             android:label="@string/title_activity_scorecard_detail"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"
-            android:parentActivityName=".activity.coursescorecard.CourseScorecardActivity" >
+            android:parentActivityName=".activity.coursescorecards.CourseScorecardsActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activity.coursescorecard.CourseScorecardActivity" />
+                android:value=".activity.coursescorecards.CourseScorecardsActivity" />
         </activity>
         <activity android:name=".activity.newgame.NewGameActivity"
             android:label="NewGame"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"
-            android:parentActivityName=".activity.course.CoursesActivity" >
+            android:parentActivityName=".activity.courses.CoursesActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activity.course.CoursesActivity" />
+                android:value=".activity.courses.CoursesActivity" />
         </activity>
     </application>
 

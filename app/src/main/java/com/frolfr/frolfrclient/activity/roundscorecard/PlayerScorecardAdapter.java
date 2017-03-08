@@ -1,4 +1,4 @@
-package com.frolfr.frolfrclient.activity.scorecard;
+package com.frolfr.frolfrclient.activity.roundscorecard;
 
 import android.app.Activity;
 import android.view.LayoutInflater;
@@ -20,6 +20,8 @@ import java.util.List;
  */
 public class PlayerScorecardAdapter extends ArrayAdapter {
 
+    // TODO - remove once I vet dynamically adding "player scorecards" to the fragment_round_scorecard works fine
+
     private static final DateFormat df = new SimpleDateFormat("MM/dd/yy");
 
     public PlayerScorecardAdapter(Activity activity, int listLayout, List<Scorecard> scorecards) {
@@ -31,7 +33,7 @@ public class PlayerScorecardAdapter extends ArrayAdapter {
         ColumnView cv;
         if (convertView == null) {
             LayoutInflater inflater = ((Activity)getContext()).getLayoutInflater();
-            convertView = inflater.inflate(R.layout.list_item_course_scorecard_detail, null);
+            convertView = inflater.inflate(R.layout.list_item_round_scorecard, null);
             cv = new ColumnView();
             cv.playerName = (TextView) convertView.findViewById(R.id.scorecardDetailHeader);
             cv.scores = (ListView) convertView.findViewById(R.id.list_view_course_scorecard_detail);

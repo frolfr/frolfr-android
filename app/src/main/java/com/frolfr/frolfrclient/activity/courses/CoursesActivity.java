@@ -1,4 +1,4 @@
-package com.frolfr.frolfrclient.activity.course;
+package com.frolfr.frolfrclient.activity.courses;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -8,7 +8,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.widget.ArrayAdapter;
 
-import com.frolfr.frolfrclient.activity.coursescorecard.CourseScorecardActivity;
+import com.frolfr.frolfrclient.activity.coursescorecards.CourseScorecardsActivity;
 import com.frolfr.frolfrclient.FrolfrActivity;
 import com.frolfr.frolfrclient.R;
 import com.frolfr.frolfrclient.api.Courses;
@@ -64,8 +64,8 @@ public class CoursesActivity extends FrolfrActivity {
 
 
     public void onCourseItemClicked(Course selectedCourse) {
-        Intent intent = new Intent(this, CourseScorecardActivity.class);
-        intent.putExtra(CourseScorecardActivity.COURSE_ID_EXTRA, selectedCourse.id);
+        Intent intent = new Intent(this, CourseScorecardsActivity.class);
+        intent.putExtra(CourseScorecardsActivity.COURSE_ID_EXTRA, selectedCourse.id);
         startActivity(intent);
     }
 

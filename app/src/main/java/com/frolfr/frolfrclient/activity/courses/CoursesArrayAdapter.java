@@ -1,4 +1,4 @@
-package com.frolfr.frolfrclient.activity.course;
+package com.frolfr.frolfrclient.activity.courses;
 
 import android.app.Activity;
 import android.view.LayoutInflater;

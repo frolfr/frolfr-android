@@ -28,9 +28,9 @@ public class ProfileFragment extends Fragment {
 //            Log.d(getClass().getSimpleName(), "Found the scorecards list view!");
 //        }
 //
-//        CourseScorecardActivity activity = (CourseScorecardActivity) getActivity();
+//        CourseScorecardsActivity activity = (CourseScorecardsActivity) getActivity();
 //
-//        courseScorecardsListView.setAdapter(activity.getCourseScorecardArrayAdapter());
+//        courseScorecardsListView.setAdapter(activity.getCourseScorecardsArrayAdapter());
 //        courseScorecardsListView.setOnItemClickListener(activity.getOnCourseScorecardClickListener());
 
         return rootView;

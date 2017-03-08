@@ -1,4 +1,4 @@
-package com.frolfr.frolfrclient.activity.coursescorecard;
+package com.frolfr.frolfrclient.activity.coursescorecards;
 
 import android.app.Activity;
 import android.graphics.Typeface;
@@ -19,11 +19,11 @@ import java.util.List;
 /**
  * Created by wowens on 1/24/16.
  */
-public class CourseScorecardArrayAdapter extends ArrayAdapter {
+public class CourseScorecardsArrayAdapter extends ArrayAdapter {
 
     private static final DateFormat df = new SimpleDateFormat("MMM dd, yyyy");
 
-    public CourseScorecardArrayAdapter(Activity activity, int listLayout, List<Round> rows) {
+    public CourseScorecardsArrayAdapter(Activity activity, int listLayout, List<Round> rows) {
         super(activity, listLayout, rows);
     }
 

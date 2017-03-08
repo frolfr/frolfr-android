@@ -13,7 +13,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-import com.frolfr.frolfrclient.activity.course.CoursesActivity;
+import com.frolfr.frolfrclient.activity.courses.CoursesActivity;
 import com.frolfr.frolfrclient.activity.newgame.NewGameActivity;
 import com.frolfr.frolfrclient.activity.playerprofile.ProfileActivity;
 
