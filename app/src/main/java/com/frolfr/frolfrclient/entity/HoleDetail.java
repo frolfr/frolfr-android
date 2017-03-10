@@ -10,10 +10,12 @@ public class HoleDetail {
     Integer scoreDiff;
     SCORE_TYPE scoreType;
 
-    public HoleDetail(int hole, int strokes, int par) {
+    public HoleDetail(int hole, Integer strokes, int par) {
         this.hole = hole;
         this.strokes = strokes;
-        this.scoreDiff = par - strokes;
+        if (strokes != null) {
+            this.scoreDiff = par - strokes;
+        }
         this.scoreType = SCORE_TYPE.byScoreDiff(scoreDiff);
     }
 

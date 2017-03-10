@@ -38,24 +38,29 @@ public class HoleDetailAdapter extends ArrayAdapter {
 
         HoleDetail holeDetail = (HoleDetail) getItem(position);
 
-        cv.score.setText(holeDetail.getStrokes() + "");
+        String strokes = holeDetail.getStrokes() == null ? "-" : holeDetail.getStrokes()+"";
+        cv.score.setText(strokes);
         // TODO - ART
-        switch (holeDetail.getScoreType()) {
-            case DOUBLE_BOGIE:
-                cv.score.setBackgroundColor(Color.RED);
-                break;
-            case BOGIE:
-                cv.score.setBackgroundColor(Color.MAGENTA);
-                break;
-            case PAR:
-                cv.score.setBackgroundColor(Color.WHITE);
-                break;
-            case BIRDIE:
-                cv.score.setBackgroundColor(Color.GREEN);
-                break;
-            case EAGLE:
-                cv.score.setBackgroundColor(Color.BLUE);
-                break;
+        if (holeDetail.getScoreType() != null) {
+            switch (holeDetail.getScoreType()) {
+                case DOUBLE_BOGIE:
+                    cv.score.setBackgroundColor(Color.RED);
+                    break;
+                case BOGIE:
+                    cv.score.setBackgroundColor(Color.MAGENTA);
+                    break;
+                case PAR:
+                    cv.score.setBackgroundColor(Color.WHITE);
+                    break;
+                case BIRDIE:
+                    cv.score.setBackgroundColor(Color.GREEN);
+                    break;
+                case EAGLE:
+                    cv.score.setBackgroundColor(Color.BLUE);
+                    break;
+            }
+        } else {
+            cv.score.setBackgroundColor(Color.GRAY);
         }
 
         return convertView;

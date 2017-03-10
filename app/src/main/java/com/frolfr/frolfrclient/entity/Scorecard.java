@@ -22,7 +22,7 @@ public class Scorecard {
         while (holeIter.hasNext()) {
             HoleDetail detail = holeIter.next();
             if (detail.getScoreDiff() != null)
-                this.totalScore += holeIter.next().getScoreDiff();
+                this.totalScore += detail.getScoreDiff();
         }
     }
 
