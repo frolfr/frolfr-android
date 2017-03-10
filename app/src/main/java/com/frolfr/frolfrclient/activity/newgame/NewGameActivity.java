@@ -55,6 +55,11 @@ public class NewGameActivity extends FrolfrActivity {
 
         } else {
             Log.d(getClass().getSimpleName(), "NewGameFragment fragment already created");
+
+            courseAdapter = new CourseSpinnerAdapter(
+                    this,
+                    android.R.layout.simple_list_item_1,
+                    new ArrayList<Course>());
         }
 
     }

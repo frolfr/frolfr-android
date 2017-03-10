@@ -55,6 +55,10 @@ public class RoundScorecardActivity extends FrolfrActivity {
 
         } else {
             // Fragment already created
+
+            scorecards = new ArrayList<>();
+            scorecardAdapter = new PlayerScorecardAdapter(this, 0, scorecards);
+            scorecardDetailFragment = (RoundScorecardFragment) getSupportFragmentManager().findFragmentById(R.id.main_content);
         }
     }
 
@@ -150,7 +154,11 @@ public class RoundScorecardActivity extends FrolfrActivity {
                         JSONObject turn = turns.getJSONObject(i);
                         int turnId = turn.getInt("id");
                         int hole = turn.getInt("hole_number");
-                        int strokes = turn.getInt("strokes");           // TODO strokes can be null on incomplete scorecards
+                        Integer strokes = null;
+                        // TODO - why is this JSON lib interpreting null as a String? JSON 1 vs JSON 2?
+                        if (turn.get("strokes") != null && turn.get("strokes") instanceof Integer) {
+                            strokes = turn.getInt("strokes");
+                        }
                         int par = turn.getInt("par");
                         HoleDetail holeDetail = new HoleDetail(hole, strokes, par);
                         turnMap.put(turnId, holeDetail);
@@ -174,6 +182,7 @@ public class RoundScorecardActivity extends FrolfrActivity {
 
                 } catch (JSONException e) {
                     Log.e(getClass().getSimpleName(), "Malformed JSON response:\n" + jsonResponse, e);
+                    e.printStackTrace();
                 }
 
             }

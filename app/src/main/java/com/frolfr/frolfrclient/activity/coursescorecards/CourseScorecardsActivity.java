@@ -60,6 +60,14 @@ public class CourseScorecardsActivity extends FrolfrActivity {
 
         } else {
             Log.d(getClass().getSimpleName(), "CourseDetail fragment already created");
+
+            // The ArrayAdapter will take data from a source and
+            // use it to populate the ListView it's attached to.
+            courseScorecardsArrayAdapter =
+                    new CourseScorecardsArrayAdapter(
+                            this,
+                            R.layout.list_item_course_scorecard, // The name of the layout ID.
+                            new ArrayList<Round>());
         }
     }
 
