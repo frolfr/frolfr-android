@@ -2,6 +2,8 @@ package com.frolfr.frolfrclient.activity.roundscorecard;
 
 import android.app.Activity;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
+import android.support.annotation.DrawableRes;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -44,19 +46,19 @@ public class HoleDetailAdapter extends ArrayAdapter {
         if (holeDetail.getScoreType() != null) {
             switch (holeDetail.getScoreType()) {
                 case DOUBLE_BOGIE:
-                    cv.score.setBackgroundColor(Color.RED);
+                    cv.score.setBackgroundResource(R.drawable.double_bogie);
                     break;
                 case BOGIE:
-                    cv.score.setBackgroundColor(Color.MAGENTA);
+                    cv.score.setBackgroundResource(R.drawable.bogie);
                     break;
                 case PAR:
                     cv.score.setBackgroundColor(Color.WHITE);
                     break;
                 case BIRDIE:
-                    cv.score.setBackgroundColor(Color.GREEN);
+                    cv.score.setBackgroundResource(R.drawable.birdie);
                     break;
                 case EAGLE:
-                    cv.score.setBackgroundColor(Color.BLUE);
+                    cv.score.setBackgroundResource(R.drawable.eagle);
                     break;
             }
         } else {
