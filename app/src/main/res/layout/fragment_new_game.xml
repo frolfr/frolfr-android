@@ -40,9 +40,7 @@
         android:id="@+id/textView3"
         android:layout_below="@id/textView2"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:textColor="@color/wallet_holo_blue_light"
-        android:textColorHighlight="@color/wallet_highlighted_text_holo_light"/>
+        android:layout_alignParentStart="true"/>
 
     <Button
         android:layout_width="wrap_content"

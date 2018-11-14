@@ -1,7 +1,6 @@
 package com.frolfr.frolfrclient.activity.roundscorecard;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,6 +15,8 @@ import com.frolfr.frolfrclient.entity.Scorecard;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+
+import androidx.fragment.app.Fragment;
 
 /**
  * A placeholder fragment containing a simple view.
