@@ -64,6 +64,13 @@ public class LoginActivity extends Activity /*implements LoaderCallbacks<Cursor>
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        SharedPreferences preferences = getSharedPreferences(AuthKeys.class.getName(), MODE_PRIVATE);
+        String existingAuthToken = preferences.getString(AuthKeys.TOKEN.toString(), null);
+        if (existingAuthToken != null) {
+            goToMainActivity();
+        }
+
         setContentView(R.layout.activity_login);
 
 //        if (ContextCompat.checkSelfPermission(this,
@@ -322,14 +329,12 @@ public class LoginActivity extends Activity /*implements LoaderCallbacks<Cursor>
 
             if (authToken != null) {
                 Log.d(getClass().getSimpleName(), "OnPostExecute - success. Launching ProfileStats activity and calling finish()");
-                Intent landingPageIntent = new Intent(getApplicationContext() /*TODO: yes?*/, CoursesActivity.class);
                 SharedPreferences preferences = getSharedPreferences(AuthKeys.class.getName(), MODE_PRIVATE);
                 preferences.edit()
                         .putString(AuthKeys.TOKEN.toString(), authToken)
                         .putString(AuthKeys.EMAIL.toString(), mEmail)
                         .apply();
-                startActivity(landingPageIntent);
-                finish();
+                goToMainActivity();
             } else {
                 Log.d(getClass().getSimpleName(), "OnPostExecute - failure. Bad password?");
                 mPasswordView.setError(getString(R.string.error_incorrect_password));
@@ -342,6 +347,12 @@ public class LoginActivity extends Activity /*implements LoaderCallbacks<Cursor>
             mAuthTask = null;
 //            showProgress(false);
         }
+    }
+
+    private void goToMainActivity() {
+        Intent landingPageIntent = new Intent(getApplicationContext() /*TODO: yes?*/, CoursesActivity.class);
+        startActivity(landingPageIntent);
+        finish();
     }
 }
 
