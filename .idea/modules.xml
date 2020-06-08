@@ -2,8 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" group="frolfr-android/app" />
-      <module fileurl="file://$PROJECT_DIR$/frolfr-android.iml" filepath="$PROJECT_DIR$/frolfr-android.iml" group="frolfr-android" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/Frolfr.iml" filepath="$PROJECT_DIR$/.idea/modules/Frolfr.iml" group="Frolfr" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/app.iml" group="Frolfr/app" />
     </modules>
   </component>
 </project>
