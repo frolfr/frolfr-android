@@ -1,2 +1,2 @@
 # frolfr-android
-A potential android client for Frolfr
+Android client for Frolfr
