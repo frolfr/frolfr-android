@@ -43,32 +43,24 @@ public class CourseScorecardsActivity extends FrolfrActivity {
         super.onCreate(savedInstanceState);
 
         if (savedInstanceState == null) {
-            CourseScorecardsFragment courseDetailFragment = new CourseScorecardsFragment();
+            CourseScorecardsFragment courseScorecardsFragment = new CourseScorecardsFragment();
 
             Log.d(getClass().getSimpleName(), "Creating course detail fragment");
             getSupportFragmentManager().beginTransaction()
-                    .add(R.id.main_content, courseDetailFragment)
+                    .add(R.id.main_content, courseScorecardsFragment)
                     .commit();
-
-            // The ArrayAdapter will take data from a source and
-            // use it to populate the ListView it's attached to.
-            courseScorecardsArrayAdapter =
-                    new CourseScorecardsArrayAdapter(
-                            this,
-                            R.layout.list_item_course_scorecard, // The name of the layout ID.
-                            new ArrayList<Round>());
 
         } else {
             Log.d(getClass().getSimpleName(), "CourseDetail fragment already created");
-
-            // The ArrayAdapter will take data from a source and
-            // use it to populate the ListView it's attached to.
-            courseScorecardsArrayAdapter =
-                    new CourseScorecardsArrayAdapter(
-                            this,
-                            R.layout.list_item_course_scorecard, // The name of the layout ID.
-                            new ArrayList<Round>());
         }
+
+        // The ArrayAdapter will take data from a source and
+        // use it to populate the ListView it's attached to.
+        courseScorecardsArrayAdapter =
+                new CourseScorecardsArrayAdapter(
+                        this,
+                        R.layout.list_item_course_scorecard, // The name of the layout ID.
+                        new ArrayList<Round>());
     }
 
 

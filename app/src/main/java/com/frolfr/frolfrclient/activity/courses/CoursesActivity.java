@@ -44,23 +44,17 @@ public class CoursesActivity extends FrolfrActivity {
                     .add(R.id.main_content, coursesFragment)
                     .commit();
 
-            courseListAdapter =
-                    new CoursesArrayAdapter(
-                            this,
-                            R.layout.list_item_course, // The name of the layout ID.
-                            new ArrayList<Course>());
-
         } else {
             Log.d(getClass().getSimpleName(), "CoursesActivity fragment already created");
-
-            // The ArrayAdapter will take data from a source and
-            // use it to populate the ListView it's attached to.
-            courseListAdapter =
-                    new CoursesArrayAdapter(
-                            this,
-                            R.layout.list_item_course, // The name of the layout ID.
-                            new ArrayList<Course>());
         }
+
+        // The ArrayAdapter will take data from a source and
+        // use it to populate the ListView it's attached to.
+        courseListAdapter =
+                new CoursesArrayAdapter(
+                        this,
+                        R.layout.list_item_course, // The name of the layout ID.
+                        new ArrayList<Course>());
 
     }
 
@@ -69,13 +63,6 @@ public class CoursesActivity extends FrolfrActivity {
         super.onStart();
         new GetCourseInfoTask().execute();
     }
-
-    @Override
-    public void onSaveInstanceState(Bundle savedInstanceState) {
-        super.onSaveInstanceState(savedInstanceState);
-//        TODO - save all Course information so we don't have to re-issue web requests
-    }
-
 
 
     public void onCourseItemClicked(Course selectedCourse) {

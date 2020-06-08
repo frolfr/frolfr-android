@@ -19,6 +19,7 @@ import com.frolfr.frolfrclient.activity.courses.CoursesActivity;
 import com.frolfr.frolfrclient.activity.newgame.NewGameActivity;
 import com.frolfr.frolfrclient.activity.playerprofile.ProfileActivity;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -35,7 +36,7 @@ public abstract class FrolfrActivity extends AppCompatActivity {
     private static Map<Integer, Class> drawerMap;
     {{
         drawerMap = new HashMap<Integer, Class>();
-        drawerMap.put(0, null /*RoundActivty.class*/);
+        drawerMap.put(0, null /*RoundActivity.class*/);
         drawerMap.put(1, CoursesActivity.class);
         drawerMap.put(2, null /*FriendActivity.class*/);
         drawerMap.put(3, ProfileActivity.class);
