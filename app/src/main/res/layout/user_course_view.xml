@@ -1,7 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TextView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:textSize="24sp"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
     android:paddingStart="16dp"
     android:paddingEnd="16dp"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content" />
+    android:textSize="24sp">
+
+    <TextView
+        android:id="@+id/user_course_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="4dp"
+        android:text=""
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Perkerson Park" />
+
+    <TextView
+        android:id="@+id/user_course_location"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="4dp"
+        android:text=""
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/user_course_name"
+        app:layout_constraintTop_toBottomOf="@+id/user_course_name"
+        tools:text="Atlanta, GA" />
+
+    <TextView
+        android:id="@+id/user_course_dotify"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:text="᛫"
+        android:textSize="12sp"
+        app:layout_constraintStart_toEndOf="@+id/user_course_location"
+        app:layout_constraintTop_toTopOf="@+id/user_course_location" />
+
+    <TextView
+        android:id="@+id/user_course_hole_count"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:textSize="12sp"
+        app:layout_constraintStart_toEndOf="@+id/user_course_dotify"
+        app:layout_constraintTop_toTopOf="@+id/user_course_location"
+        tools:text="18" />
+
+    <TextView
+        android:id="@+id/user_course_last_played"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="8dp"
+        android:text=""
+        android:textAlignment="textEnd"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="04/20/20" />
+</androidx.constraintlayout.widget.ConstraintLayout>
