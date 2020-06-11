@@ -12,7 +12,7 @@
         tools:layout="@layout/fragment_courses" >
         <action
             android:id="@+id/action_nav_courses_to_courseDetailFragment"
-            app:destination="@id/courseDetailFragment" />
+            app:destination="@id/user_course_scorecards_fragment" />
     </fragment>
     <fragment
         android:id="@+id/nav_friends"
@@ -25,10 +25,10 @@
         android:label="@string/menu_profile"
         tools:layout="@layout/fragment_profile" />
     <fragment
-        android:id="@+id/courseDetailFragment"
-        android:name="com.frolfr.ui.courseDetail.CourseDetailFragment"
-        android:label="@string/fragment_course_detail"
-        tools:layout="@layout/fragment_course_detail">
+        android:id="@+id/user_course_scorecards_fragment"
+        android:name="com.frolfr.ui.userCourseScorecards.UserCourseScorecardsFragment"
+        android:label="@string/fragment_user_course_scorecards"
+        tools:layout="@layout/fragment_user_course_scorecards">
         <argument
             android:name="courseId"
             app:argType="integer" />

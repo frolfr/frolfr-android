@@ -21,7 +21,7 @@
         android:onClick="@{() -> clickListener.onClick(userCourse)}">
 
         <TextView
-            android:id="@+id/user_course_name"
+            android:id="@+id/user_scorecard_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
@@ -34,15 +34,15 @@
             tools:text="Perkerson Park" />
 
         <TextView
-            android:id="@+id/user_course_location"
+            android:id="@+id/user_scorecard_strokes"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
             android:text=""
             android:textSize="12sp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/user_course_name"
-            app:layout_constraintTop_toBottomOf="@+id/user_course_name"
+            app:layout_constraintStart_toStartOf="@+id/user_scorecard_date"
+            app:layout_constraintTop_toBottomOf="@+id/user_scorecard_date"
             app:userCourseLocation="@{userCourse}"
             tools:text="Atlanta, GA" />
 
@@ -53,8 +53,8 @@
             android:layout_marginStart="4dp"
             android:text="᛫"
             android:textSize="12sp"
-            app:layout_constraintStart_toEndOf="@+id/user_course_location"
-            app:layout_constraintTop_toTopOf="@+id/user_course_location" />
+            app:layout_constraintStart_toEndOf="@+id/user_scorecard_strokes"
+            app:layout_constraintTop_toTopOf="@+id/user_scorecard_strokes" />
 
         <TextView
             android:id="@+id/user_course_hole_count"
@@ -63,7 +63,7 @@
             android:layout_marginStart="4dp"
             android:textSize="12sp"
             app:layout_constraintStart_toEndOf="@+id/user_course_dotify"
-            app:layout_constraintTop_toTopOf="@+id/user_course_location"
+            app:layout_constraintTop_toTopOf="@+id/user_scorecard_strokes"
             tools:text="18"
             app:userCourseHoleCount="@{userCourse}"  />
 

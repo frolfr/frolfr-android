@@ -56,6 +56,11 @@ interface FrolfrApiService {
 
     @GET("available_courses")
     suspend fun availableCourses(): AvailableCoursesResponse
+
+    @GET("course_scorecards")
+    suspend fun userCourseScorecards(
+        @Query("course_id") courseId: Int
+    ): UserCourseScorecardsResponse
 }
 
 object FrolfrApi {

@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="userScorecard"
+            type="com.frolfr.api.model.UserScorecard" />
+        <variable
+            name="clickListener"
+            type="com.frolfr.ui.userCourseScorecards.UserScorecardClickListener" />
+    </data>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:onClick="@{() -> clickListener.onClick(userScorecard)}">
+
+        <TextView
+            android:id="@+id/user_scorecard_date"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1.5"
+            android:text=""
+            android:textAlignment="textStart"
+            android:textSize="18sp"
+            app:date="@{userScorecard}"
+            tools:text="04/20/20" />
+
+        <TextView
+            android:id="@+id/user_scorecard_strokes"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:paddingRight="24dp"
+            android:text=""
+            android:textAlignment="center"
+            android:textSize="18sp"
+            app:strokes="@{userScorecard}"
+            tools:text="57" />
+
+        <TextView
+            android:id="@+id/user_scorecard_score"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:paddingRight="24dp"
+            android:text=""
+            android:textAlignment="center"
+            android:textSize="18sp"
+            app:score="@{userScorecard}"
+            tools:text="-2" />
+
+        <TextView
+            android:id="@+id/user_scorecard_rating"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:paddingRight="24dp"
+            android:text=""
+            android:textAlignment="textEnd"
+            android:textSize="18sp"
+            app:rating="@{userScorecard}"
+            tools:text="916" />
+    </LinearLayout>
+</layout>
