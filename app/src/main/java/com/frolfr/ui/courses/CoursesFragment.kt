@@ -1,7 +1,6 @@
 package com.frolfr.ui.courses
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,14 +8,9 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.fragment.findNavController
 import com.frolfr.R
-import com.frolfr.api.FrolfrApi
-import com.frolfr.api.model.Course
 import com.frolfr.databinding.FragmentCoursesBinding
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.launch
 
 class CoursesFragment : Fragment() {
 
@@ -38,17 +32,23 @@ class CoursesFragment : Fragment() {
 
         binding.coursesViewModel = coursesViewModel
 
-        val courseAdapter = CourseAdapter(coursesViewModel.PageOnListEndListener())
+        val courseAdapter = CourseAdapter(UserCourseListener {
+            courseId -> coursesViewModel.onCourseClicked(courseId)
+        }, coursesViewModel.PageOnListEndListener())
 
         // TODO needed, or can I use binding?
         coursesViewModel.courses.observe(viewLifecycleOwner, Observer {
             courseAdapter.submitList(coursesViewModel.courses.value)
         })
 
+        coursesViewModel.navigateToCourseDetail.observe(viewLifecycleOwner, Observer {courseId ->
+            courseId?.let {
+                this.findNavController().navigate(CoursesFragmentDirections.actionNavCoursesToCourseDetailFragment(courseId))
+                coursesViewModel.onCourseNavigated()
+            }
+        })
+
         binding.userCoursesList.adapter = courseAdapter
-        binding.userCoursesList.setOnClickListener { view ->
-            // TODO is this for each item, or the view group?
-        }
 
         return binding.root
     }

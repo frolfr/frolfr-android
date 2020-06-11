@@ -9,7 +9,11 @@
         android:id="@+id/nav_courses"
         android:name="com.frolfr.ui.courses.CoursesFragment"
         android:label="@string/menu_courses"
-        tools:layout="@layout/fragment_courses" />
+        tools:layout="@layout/fragment_courses" >
+        <action
+            android:id="@+id/action_nav_courses_to_courseDetailFragment"
+            app:destination="@id/courseDetailFragment" />
+    </fragment>
     <fragment
         android:id="@+id/nav_friends"
         android:name="com.frolfr.ui.friends.FriendsFragment"
@@ -20,4 +24,13 @@
         android:name="com.frolfr.ui.profile.ProfileFragment"
         android:label="@string/menu_profile"
         tools:layout="@layout/fragment_profile" />
+    <fragment
+        android:id="@+id/courseDetailFragment"
+        android:name="com.frolfr.ui.courseDetail.CourseDetailFragment"
+        android:label="@string/fragment_course_detail"
+        tools:layout="@layout/fragment_course_detail">
+        <argument
+            android:name="courseId"
+            app:argType="integer" />
+    </fragment>
 </navigation>

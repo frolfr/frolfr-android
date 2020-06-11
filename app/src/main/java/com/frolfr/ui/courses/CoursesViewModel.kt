@@ -23,11 +23,23 @@ class CoursesViewModel : ViewModel() {
         value = emptyList()
     }
 
+    private val _navigateToCourseDetail = MutableLiveData<Int>()
+    val navigateToCourseDetail
+        get() = _navigateToCourseDetail
+
     private var viewModelJob = Job()
     private val coroutineScope = CoroutineScope(viewModelJob + Dispatchers.Main)
 
     init {
         loadCoursePage(1)
+    }
+
+    fun onCourseClicked(courseId: Int) {
+        _navigateToCourseDetail.value = courseId
+    }
+
+    fun onCourseNavigated() {
+        _navigateToCourseDetail.value = null
     }
 
 

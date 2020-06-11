@@ -7,15 +7,13 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.frolfr.api.model.Course
 import com.frolfr.databinding.UserCourseViewBinding
-import java.text.DateFormat
-import java.text.SimpleDateFormat
 
-class CourseAdapter(private val listEndListener: ListEndListener) :
+class CourseAdapter(private val clickListener: UserCourseListener, private val listEndListener: ListEndListener) :
     ListAdapter<Course, CourseItemViewHolder>(UserCourseDiffCallback()) {
 
     override fun onBindViewHolder(holder: CourseItemViewHolder, position: Int) {
         val course = getItem(position)
-        holder.bind(course)
+        holder.bind(course, clickListener)
         if (position == (itemCount - 1)) {
             listEndListener.onListEnd()
         }
@@ -34,8 +32,12 @@ abstract class ListEndListener {
 class CourseItemViewHolder private constructor(private val binding: UserCourseViewBinding) :
     RecyclerView.ViewHolder(binding.root) {
 
-    fun bind(course: Course) {
+    fun bind(
+        course: Course,
+        clickListener: UserCourseListener
+    ) {
         binding.userCourse = course
+        binding.clickListener = clickListener
         binding.executePendingBindings()
     }
 
@@ -56,4 +58,8 @@ class UserCourseDiffCallback : DiffUtil.ItemCallback<Course>() {
     override fun areContentsTheSame(oldItem: Course, newItem: Course): Boolean {
         return oldItem == newItem
     }
+}
+
+class UserCourseListener(val clickListener: (courseId: Int) -> Unit) {
+    fun onClick(course: Course) = clickListener(course.id);
 }

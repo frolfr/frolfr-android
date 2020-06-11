@@ -7,6 +7,9 @@
         <variable
             name="userCourse"
             type="com.frolfr.api.model.Course" />
+        <variable
+            name="clickListener"
+            type="com.frolfr.ui.courses.UserCourseListener" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -14,7 +17,8 @@
         android:layout_height="wrap_content"
         android:paddingStart="16dp"
         android:paddingEnd="16dp"
-        android:textSize="24sp">
+        android:textSize="24sp"
+        android:onClick="@{() -> clickListener.onClick(userCourse)}">
 
         <TextView
             android:id="@+id/user_course_name"
