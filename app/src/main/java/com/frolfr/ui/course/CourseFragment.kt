@@ -11,6 +11,7 @@ import androidx.navigation.fragment.navArgs
 import androidx.viewpager2.widget.ViewPager2
 import com.frolfr.R
 import com.frolfr.databinding.FragmentCourseBinding
+import com.google.android.material.tabs.TabLayoutMediator
 
 class CourseFragment : Fragment() {
 
@@ -46,8 +47,19 @@ class CourseFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         courseTabPagerAdapter = CourseTabPagerAdapter(binding.courseViewModel!!.course.value!!.id,
             childFragmentManager, lifecycle)
         viewPager.adapter = courseTabPagerAdapter
+
+        val tabLayout = binding.tabLayoutCourse
+        TabLayoutMediator(tabLayout, viewPager) { tab, position ->
+            // TODO not this
+            tab.text = when (position) {
+                0 -> getString(R.string.course_tab_overview)
+                1 -> getString(R.string.course_tab_scorecards)
+                else -> getString(R.string.course_tab_leaderboard)
+            }
+        }.attach()
     }
 }
