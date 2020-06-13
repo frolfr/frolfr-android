@@ -1,4 +1,4 @@
-package com.frolfr.ui.userCourseScorecards
+package com.frolfr.ui.course.tab.userCourseScorecards
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

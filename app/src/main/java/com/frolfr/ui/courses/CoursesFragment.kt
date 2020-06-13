@@ -33,7 +33,7 @@ class CoursesFragment : Fragment() {
         binding.coursesViewModel = coursesViewModel
 
         val courseAdapter = CourseAdapter(UserCourseListener {
-            courseId -> coursesViewModel.onCourseClicked(courseId)
+            course -> coursesViewModel.onCourseClicked(course)
         }, coursesViewModel.PageOnListEndListener())
 
         // TODO needed, or can I use binding?
@@ -41,9 +41,9 @@ class CoursesFragment : Fragment() {
             courseAdapter.submitList(coursesViewModel.courses.value)
         })
 
-        coursesViewModel.navigateToCourseDetail.observe(viewLifecycleOwner, Observer {courseId ->
-            courseId?.let {
-                this.findNavController().navigate(CoursesFragmentDirections.actionNavCoursesToCourseDetailFragment(courseId))
+        coursesViewModel.navigateToCourseDetail.observe(viewLifecycleOwner, Observer {course ->
+            course?.let {
+                this.findNavController().navigate(CoursesFragmentDirections.actionNavCoursesToCourseFragment(course, course.name))
                 coursesViewModel.onCourseNavigated()
             }
         })

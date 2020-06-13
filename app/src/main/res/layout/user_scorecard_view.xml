@@ -9,7 +9,7 @@
             type="com.frolfr.api.model.UserScorecard" />
         <variable
             name="clickListener"
-            type="com.frolfr.ui.userCourseScorecards.UserScorecardClickListener" />
+            type="com.frolfr.ui.course.tab.userCourseScorecards.UserScorecardClickListener" />
     </data>
 
     <LinearLayout

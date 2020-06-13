@@ -1,4 +1,4 @@
-package com.frolfr.ui.userCourseScorecards
+package com.frolfr.ui.course.tab.userCourseScorecards
 
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
@@ -30,8 +30,7 @@ fun TextView.setScore(item: UserScorecard) {
     val score = item.score
     text = when {
         score > 0 -> "+$score"
-        score < 0 -> "-$score"
-        else -> "even"
+        else -> "$score"
     }
 }
 

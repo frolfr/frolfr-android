@@ -6,7 +6,7 @@
     <data>
         <variable
             name="userCourseScorecardsViewModel"
-            type="com.frolfr.ui.userCourseScorecards.UserCourseScorecardsViewModel" />
+            type="com.frolfr.ui.course.tab.userCourseScorecards.UserCourseScorecardsViewModel" />
     </data>
 
     <LinearLayout
@@ -73,7 +73,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            tools:context=".ui.userCourseScorecards.UserCourseScorecardsFragment" >
+            tools:context=".ui.course.tab.userCourseScorecards.UserCourseScorecardsFragment" >
         </androidx.recyclerview.widget.RecyclerView>
 
     </LinearLayout>

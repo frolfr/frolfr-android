@@ -8,6 +8,18 @@
             <LayoutPositions>
               <option name="myPositions">
                 <map>
+                  <entry key="courseFragment">
+                    <value>
+                      <LayoutPositions>
+                        <option name="myPosition">
+                          <Point>
+                            <option name="x" value="218" />
+                            <option name="y" value="12" />
+                          </Point>
+                        </option>
+                      </LayoutPositions>
+                    </value>
+                  </entry>
                   <entry key="nav_courses">
                     <value>
                       <LayoutPositions>
@@ -19,7 +31,7 @@
                         </option>
                         <option name="myPositions">
                           <map>
-                            <entry key="action_nav_courses_to_courseDetailFragment">
+                            <entry key="action_nav_courses_to_courseFragment">
                               <value>
                                 <LayoutPositions />
                               </value>
@@ -53,13 +65,13 @@
                       </LayoutPositions>
                     </value>
                   </entry>
-                  <entry key="userCourseRoundsFragment">
+                  <entry key="user_course_scorecards_fragment">
                     <value>
                       <LayoutPositions>
                         <option name="myPosition">
                           <Point>
-                            <option name="x" value="12" />
-                            <option name="y" value="12" />
+                            <option name="x" value="420" />
+                            <option name="y" value="5" />
                           </Point>
                         </option>
                       </LayoutPositions>

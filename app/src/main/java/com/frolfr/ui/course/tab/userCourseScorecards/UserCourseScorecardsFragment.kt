@@ -1,4 +1,4 @@
-package com.frolfr.ui.userCourseScorecards
+package com.frolfr.ui.course.tab.userCourseScorecards
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -13,7 +13,8 @@ import com.frolfr.R
 import com.frolfr.api.model.Course
 import com.frolfr.databinding.FragmentUserCourseScorecardsBinding
 
-class UserCourseScorecardsFragment : Fragment() {
+// TODO implement a CourseTabFragment interface
+class UserCourseScorecardsFragment(val courseId: Int) : Fragment() {
 
     private lateinit var userCourseScorecardsViewModel: UserCourseScorecardsViewModel
     private lateinit var binding: FragmentUserCourseScorecardsBinding
@@ -31,12 +32,11 @@ class UserCourseScorecardsFragment : Fragment() {
         val fragmentArgs by navArgs<UserCourseScorecardsFragmentArgs>()
 
         userCourseScorecardsViewModel =
-            ViewModelProviders.of(this).get(UserCourseScorecardsViewModel::class.java)
+            ViewModelProviders.of(this, UserCourseScorecardsViewModelFactory(courseId))
+                .get(UserCourseScorecardsViewModel::class.java)
 
         binding.userCourseScorecardsViewModel = userCourseScorecardsViewModel
 
-        // TODO fetch data from API
-        userCourseScorecardsViewModel.course.value = Course(fragmentArgs.courseId, "ATL", "GA", "US", "Perkerson Park", "complete", "ATL, GA", emptyList(), "2020-05-24T14:27:32.068Z", emptyList(), emptyList(), 18)
         userCourseScorecardsViewModel.userScorecards.value = emptyList()
 
         val userScorecardAdapter = UserScorecardAdapter(UserScorecardClickListener {

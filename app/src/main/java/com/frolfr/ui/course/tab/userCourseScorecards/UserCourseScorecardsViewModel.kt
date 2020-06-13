@@ -1,4 +1,4 @@
-package com.frolfr.ui.userCourseScorecards
+package com.frolfr.ui.course.tab.userCourseScorecards
 
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
@@ -11,11 +11,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
-class UserCourseScorecardsViewModel : ViewModel() {
-
-    val course = MutableLiveData<Course>().apply {
-        value = null
-    }
+class UserCourseScorecardsViewModel(private val courseId: Int) : ViewModel() {
 
     val userScorecards = MutableLiveData<List<UserScorecard>>().apply {
         value = emptyList()
@@ -43,7 +39,7 @@ class UserCourseScorecardsViewModel : ViewModel() {
     private fun loadUserScorecards() {
         coroutineScope.launch {
             try {
-                val userScorecardsResponse = FrolfrApi.retrofitService.userCourseScorecards(course.value!!.id)
+                val userScorecardsResponse = FrolfrApi.retrofitService.userCourseScorecards(courseId)
                 val scorecardsDesc = userScorecardsResponse.userScorecards.sortedByDescending {
                     it.date
                 }

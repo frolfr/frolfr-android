@@ -23,7 +23,7 @@ class CoursesViewModel : ViewModel() {
         value = emptyList()
     }
 
-    private val _navigateToCourseDetail = MutableLiveData<Int>()
+    private val _navigateToCourseDetail = MutableLiveData<Course>()
     val navigateToCourseDetail
         get() = _navigateToCourseDetail
 
@@ -34,8 +34,8 @@ class CoursesViewModel : ViewModel() {
         loadCoursePage(1)
     }
 
-    fun onCourseClicked(courseId: Int) {
-        _navigateToCourseDetail.value = courseId
+    fun onCourseClicked(course: Course) {
+        _navigateToCourseDetail.value = course
     }
 
     fun onCourseNavigated() {

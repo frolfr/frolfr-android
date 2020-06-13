@@ -60,6 +60,6 @@ class UserCourseDiffCallback : DiffUtil.ItemCallback<Course>() {
     }
 }
 
-class UserCourseListener(val clickListener: (courseId: Int) -> Unit) {
-    fun onClick(course: Course) = clickListener(course.id);
+class UserCourseListener(val clickListener: (course: Course) -> Unit) {
+    fun onClick(course: Course) = clickListener(course);
 }

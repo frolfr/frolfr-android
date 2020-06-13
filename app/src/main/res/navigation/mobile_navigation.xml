@@ -11,8 +11,8 @@
         android:label="@string/menu_courses"
         tools:layout="@layout/fragment_courses" >
         <action
-            android:id="@+id/action_nav_courses_to_courseDetailFragment"
-            app:destination="@id/user_course_scorecards_fragment" />
+            android:id="@+id/action_nav_courses_to_courseFragment"
+            app:destination="@id/courseFragment" />
     </fragment>
     <fragment
         android:id="@+id/nav_friends"
@@ -26,11 +26,22 @@
         tools:layout="@layout/fragment_profile" />
     <fragment
         android:id="@+id/user_course_scorecards_fragment"
-        android:name="com.frolfr.ui.userCourseScorecards.UserCourseScorecardsFragment"
+        android:name="com.frolfr.ui.course.tab.userCourseScorecards.UserCourseScorecardsFragment"
         android:label="@string/fragment_user_course_scorecards"
         tools:layout="@layout/fragment_user_course_scorecards">
         <argument
             android:name="courseId"
             app:argType="integer" />
+    </fragment>
+    <fragment
+        android:id="@+id/courseFragment"
+        android:name="com.frolfr.ui.course.CourseFragment"
+        android:label="{courseName}">
+        <argument
+            android:name="course"
+            app:argType="com.frolfr.api.model.Course" />
+        <argument
+            android:name="courseName"
+            app:argType="string" />
     </fragment>
 </navigation>
