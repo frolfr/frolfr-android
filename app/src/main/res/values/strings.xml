@@ -27,4 +27,6 @@
     <string name="course_tab_overview">Overview</string>
     <string name="course_tab_scorecards">Scorecards</string>
     <string name="course_tab_leaderboard">Leaderboard</string>
+    
+    <string name="scorecard_strokes">(%d)</string>
 </resources>

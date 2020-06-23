@@ -103,7 +103,7 @@ class LoginActivity : AppCompatActivity() {
     private fun updateUiWithUser(model: LoggedInUserView) {
         val welcome = getString(R.string.welcome)
         val email = model.email
-        // TODO : initiate successful logged in experience
+        // TODO: welcome by first name instead -- needs another ajax call (could cache locally)
         Toast.makeText(
             applicationContext,
             "$welcome $email!",

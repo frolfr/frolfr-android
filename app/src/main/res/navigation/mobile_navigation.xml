@@ -43,5 +43,19 @@
         <argument
             android:name="courseName"
             app:argType="string" />
+        <action
+            android:id="@+id/action_courseFragment_to_scorecardFragment"
+            app:destination="@id/scorecardFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/scorecardFragment"
+        android:name="com.frolfr.ui.scorecard.ScorecardFragment"
+        android:label="{courseName}">
+        <argument
+            android:name="scorecardId"
+            app:argType="integer" />
+        <argument
+            android:name="courseName"
+            app:argType="string" />
     </fragment>
 </navigation>

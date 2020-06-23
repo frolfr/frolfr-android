@@ -1,0 +1,274 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="scorecardViewModel"
+            type="com.frolfr.ui.scorecard.ScorecardViewModel" />
+        <variable
+            name="scorecardSectionIndex"
+            type="int" />
+    </data>
+
+    <LinearLayout
+        android:id="@+id/layout_scorecard_section"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/layout_scorecard_section_header"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#676767"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:layout_weight="1"
+                android:textColor="#FFFFFF"
+                tools:text="Front 9"
+                android:text="@{scorecardViewModel.getSectionHeader(scorecardSectionIndex)}" />
+
+            <ImageSwitcher
+                android:id="@+id/imageswitcher_scorecard_section_header"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_vertical"
+                android:layout_marginRight="8dp"
+                android:foreground="@android:drawable/arrow_down_float" />
+        </LinearLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/layout_scorecard_section_body"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/text_header_hole"
+                android:layout_width="48dp"
+                android:layout_height="0dp"
+                android:background="#DDDDDD"
+                android:gravity="right|center_vertical"
+                android:paddingRight="8dp"
+                android:text="HOLE"
+                android:textSize="12sp"
+                app:layout_constraintBottom_toBottomOf="@+id/layout_hole_numbers"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/layout_hole_numbers" />
+
+            <LinearLayout
+                android:id="@+id/layout_hole_numbers"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:background="#DDDDDD"
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/text_header_hole"
+                app:layout_constraintTop_toBottomOf="parent">
+
+                <TextView
+                    android:id="@+id/text_hole1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@{scorecardViewModel.getHoleNumberStr(scorecardSectionIndex, 1)}"
+                    android:textAlignment="center"
+                    tools:text="10" />
+
+                <TextView
+                    android:id="@+id/text_hole2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@{scorecardViewModel.getHoleNumberStr(scorecardSectionIndex, 2)}"
+                    android:textAlignment="center"
+                    tools:text="11" />
+
+                <TextView
+                    android:id="@+id/text_hole3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@{scorecardViewModel.getHoleNumberStr(scorecardSectionIndex, 3)}"
+                    android:textAlignment="center"
+                    tools:text="12" />
+
+                <TextView
+                    android:id="@+id/text_hole4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@{scorecardViewModel.getHoleNumberStr(scorecardSectionIndex, 4)}"
+                    android:textAlignment="center"
+                    tools:text="13" />
+
+                <TextView
+                    android:id="@+id/text_hole5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@{scorecardViewModel.getHoleNumberStr(scorecardSectionIndex, 5)}"
+                    android:textAlignment="center"
+                    tools:text="14" />
+
+                <TextView
+                    android:id="@+id/text_hole6"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@{scorecardViewModel.getHoleNumberStr(scorecardSectionIndex, 6)}"
+                    android:textAlignment="center"
+                    tools:text="15" />
+
+                <TextView
+                    android:id="@+id/text_hole7"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@{scorecardViewModel.getHoleNumberStr(scorecardSectionIndex, 7)}"
+                    android:textAlignment="center"
+                    tools:text="16" />
+
+                <TextView
+                    android:id="@+id/text_hole8"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@{scorecardViewModel.getHoleNumberStr(scorecardSectionIndex, 8)}"
+                    android:textAlignment="center"
+                    tools:text="17" />
+
+                <TextView
+                    android:id="@+id/text_hole9"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@{scorecardViewModel.getHoleNumberStr(scorecardSectionIndex, 9)}"
+                    android:textAlignment="center"
+                    tools:text="18" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/text_header_par"
+                android:layout_width="48dp"
+                android:layout_height="0dp"
+                android:background="@color/design_default_color_secondary"
+                android:gravity="right|center_vertical"
+                android:paddingRight="8dp"
+                android:text="PAR"
+                android:textSize="12sp"
+                app:layout_constraintBottom_toBottomOf="@+id/layout_par_numbers"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/layout_par_numbers" />
+
+            <LinearLayout
+                android:id="@+id/layout_par_numbers"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:background="@color/design_default_color_secondary"
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/text_header_par"
+                app:layout_constraintTop_toBottomOf="@+id/layout_hole_numbers">
+
+                <TextView
+                    android:id="@+id/text_par1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@{scorecardViewModel.getParStr(scorecardSectionIndex, 1)}"
+                    android:textAlignment="center"
+                    tools:text="3" />
+
+                <TextView
+                    android:id="@+id/text_par2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@{scorecardViewModel.getParStr(scorecardSectionIndex, 2)}"
+                    android:textAlignment="center"
+                    tools:text="3" />
+
+                <TextView
+                    android:id="@+id/text_par3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@{scorecardViewModel.getParStr(scorecardSectionIndex, 3)}"
+                    android:textAlignment="center"
+                    tools:text="3" />
+
+                <TextView
+                    android:id="@+id/text_par4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@{scorecardViewModel.getParStr(scorecardSectionIndex, 4)}"
+                    android:textAlignment="center"
+                    tools:text="3" />
+
+                <TextView
+                    android:id="@+id/text_par5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@{scorecardViewModel.getParStr(scorecardSectionIndex, 5)}"
+                    android:textAlignment="center"
+                    tools:text="3" />
+
+                <TextView
+                    android:id="@+id/text_par6"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@{scorecardViewModel.getParStr(scorecardSectionIndex, 6)}"
+                    android:textAlignment="center"
+                    tools:text="3" />
+
+                <TextView
+                    android:id="@+id/text_par7"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@{scorecardViewModel.getParStr(scorecardSectionIndex, 7)}"
+                    android:textAlignment="center"
+                    tools:text="3" />
+
+                <TextView
+                    android:id="@+id/text_par8"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@{scorecardViewModel.getParStr(scorecardSectionIndex, 8)}"
+                    android:textAlignment="center"
+                    tools:text="3" />
+
+                <TextView
+                    android:id="@+id/text_par9"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@{scorecardViewModel.getParStr(scorecardSectionIndex, 9)}"
+                    android:textAlignment="center"
+                    tools:text="3" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/layout_user_scorecard_section_results"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintTop_toBottomOf="@+id/layout_par_numbers" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </LinearLayout>
+</layout>

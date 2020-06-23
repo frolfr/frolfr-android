@@ -5,11 +5,11 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.frolfr.api.model.UserScorecard
+import com.frolfr.api.model.UserScorecardSummary
 import com.frolfr.databinding.UserScorecardViewBinding
 
 class UserScorecardAdapter(private val clickListener: UserScorecardClickListener) :
-    ListAdapter<UserScorecard, UserScorecardViewHolder>(UserScorecardDiffCallback()) {
+    ListAdapter<UserScorecardSummary, UserScorecardViewHolder>(UserScorecardDiffCallback()) {
 
     override fun onBindViewHolder(holder: UserScorecardViewHolder, position: Int) {
         holder.bind(getItem(position), clickListener)
@@ -25,10 +25,10 @@ class UserScorecardViewHolder private constructor(private val binding: UserScore
     RecyclerView.ViewHolder(binding.root) {
 
     fun bind(
-        userScorecard: UserScorecard,
+        userScorecardSummary: UserScorecardSummary,
         clickListener: UserScorecardClickListener
     ) {
-        binding.userScorecard = userScorecard
+        binding.userScorecard = userScorecardSummary
         binding.clickListener = clickListener
         binding.executePendingBindings()
     }
@@ -42,16 +42,16 @@ class UserScorecardViewHolder private constructor(private val binding: UserScore
     }
 }
 
-class UserScorecardDiffCallback : DiffUtil.ItemCallback<UserScorecard>() {
-    override fun areItemsTheSame(oldItem: UserScorecard, newItem: UserScorecard): Boolean {
+class UserScorecardDiffCallback : DiffUtil.ItemCallback<UserScorecardSummary>() {
+    override fun areItemsTheSame(oldItem: UserScorecardSummary, newItem: UserScorecardSummary): Boolean {
         return oldItem.id == newItem.id
     }
 
-    override fun areContentsTheSame(oldItem: UserScorecard, newItem: UserScorecard): Boolean {
+    override fun areContentsTheSame(oldItem: UserScorecardSummary, newItem: UserScorecardSummary): Boolean {
         return oldItem == newItem
     }
 }
 
 class UserScorecardClickListener(val clickListener: (roundId: Int) -> Unit) {
-    fun onClick(userScorecard: UserScorecard) = clickListener(userScorecard.roundId);
+    fun onClick(userScorecardSummary: UserScorecardSummary) = clickListener(userScorecardSummary.roundId);
 }

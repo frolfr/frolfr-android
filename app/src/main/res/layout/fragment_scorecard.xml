@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+        <variable
+            name="scorecardViewModel"
+            type="com.frolfr.ui.scorecard.ScorecardViewModel" />
+    </data>
+
+    <LinearLayout
+        android:id="@+id/layout_scorecard"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+<!--        <fragment-->
+<!--            android:name="com.frolfr.ui.scorecard.ScorecardSectionFragment"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--        />-->
+
+    </LinearLayout>
+</layout>

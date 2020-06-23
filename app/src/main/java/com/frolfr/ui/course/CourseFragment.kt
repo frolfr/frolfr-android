@@ -48,7 +48,9 @@ class CourseFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        courseTabPagerAdapter = CourseTabPagerAdapter(binding.courseViewModel!!.course.value!!.id,
+        courseTabPagerAdapter = CourseTabPagerAdapter(
+            binding.courseViewModel!!.course.value!!.id,
+            binding.courseViewModel!!.course.value!!.name,
             childFragmentManager, lifecycle)
         viewPager.adapter = courseTabPagerAdapter
 

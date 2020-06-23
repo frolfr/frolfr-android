@@ -65,6 +65,18 @@
                       </LayoutPositions>
                     </value>
                   </entry>
+                  <entry key="scorecardFragment">
+                    <value>
+                      <LayoutPositions>
+                        <option name="myPosition">
+                          <Point>
+                            <option name="x" value="631" />
+                            <option name="y" value="3" />
+                          </Point>
+                        </option>
+                      </LayoutPositions>
+                    </value>
+                  </entry>
                   <entry key="user_course_scorecards_fragment">
                     <value>
                       <LayoutPositions>

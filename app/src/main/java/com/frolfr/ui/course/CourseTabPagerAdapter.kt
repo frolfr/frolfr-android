@@ -6,13 +6,17 @@ import androidx.lifecycle.Lifecycle
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.frolfr.ui.course.tab.userCourseScorecards.UserCourseScorecardsFragment
 
-class CourseTabPagerAdapter(private val courseId: Int, fragmentManager: FragmentManager, lifecycle: Lifecycle)
+class CourseTabPagerAdapter(
+    private val courseId: Int,
+    private val courseName: String,
+    fragmentManager: FragmentManager,
+    lifecycle: Lifecycle)
     : FragmentStateAdapter(fragmentManager, lifecycle) {
 
     override fun getItemCount() = 3
 
     override fun createFragment(position: Int): Fragment {
-        return UserCourseScorecardsFragment(courseId)
+        return UserCourseScorecardsFragment(courseId, courseName)
         // TODO pass in fragments or a factory via constructor?
 //        return when (position) {
 //            1 -> UserCourseScorecardsFragment()
