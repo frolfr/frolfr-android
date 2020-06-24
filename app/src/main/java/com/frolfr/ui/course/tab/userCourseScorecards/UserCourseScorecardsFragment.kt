@@ -13,13 +13,7 @@ import com.frolfr.R
 import com.frolfr.databinding.FragmentUserCourseScorecardsBinding
 import com.frolfr.ui.course.CourseFragmentDirections
 
-// TODO implement a CourseTabFragment interface
-class UserCourseScorecardsFragment(
-    private val courseId: Int,
-    private val courseName: String
-) : Fragment() {
-    // TODO
-    constructor() : this(0, "TODO")
+class UserCourseScorecardsFragment : Fragment() {
 
     private lateinit var userCourseScorecardsViewModel: UserCourseScorecardsViewModel
     private lateinit var binding: FragmentUserCourseScorecardsBinding
@@ -34,12 +28,10 @@ class UserCourseScorecardsFragment(
         )
 
         userCourseScorecardsViewModel =
-            ViewModelProviders.of(this, UserCourseScorecardsViewModelFactory(courseId))
+            ViewModelProviders.of(this, UserCourseScorecardsViewModelFactory(arguments!!.getInt("courseId")))
                 .get(UserCourseScorecardsViewModel::class.java)
 
         binding.userCourseScorecardsViewModel = userCourseScorecardsViewModel
-
-        userCourseScorecardsViewModel.userScorecards.value = emptyList()
 
         val userScorecardAdapter = UserScorecardAdapter(UserScorecardClickListener {
             roundId -> userCourseScorecardsViewModel.onUserScorecardClicked(roundId)
@@ -53,7 +45,7 @@ class UserCourseScorecardsFragment(
             scorecardId?.let {
                 this.findNavController().navigate(
                     CourseFragmentDirections.actionCourseFragmentToScorecardFragment(
-                        scorecardId, courseName))
+                        scorecardId, arguments!!.getString("courseName")!!))
                 userCourseScorecardsViewModel.onRoundNavigated()
             }
         })

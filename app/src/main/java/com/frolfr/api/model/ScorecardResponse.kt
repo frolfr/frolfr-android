@@ -31,7 +31,7 @@ data class UserScorecard(
 
 data class HoleResult(
     val id: Int,
-    val strokes: Int,
+    val strokes: Int?,
     val par: Int,
     @Json(name = "hole_number") val hole: Int,
     @Json(name = "scorecard_id") val userScorecardId: Int,

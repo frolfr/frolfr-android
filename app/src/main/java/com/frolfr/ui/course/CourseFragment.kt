@@ -64,4 +64,5 @@ class CourseFragment : Fragment() {
             }
         }.attach()
     }
+
 }

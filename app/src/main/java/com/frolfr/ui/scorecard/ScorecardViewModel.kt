@@ -59,7 +59,10 @@ class ScorecardViewModel(private val scorecardId: Int) : ViewModel() {
     fun getUserHoleScore(sectionNum: Int, holeIndex: Int, userId: Int): String {
         val holeNumber = holeNumFromSectionAndHoleIndex(sectionNum, holeIndex)
         if (holeNumber <= scorecard.value!!.holeMeta.size) {
-            return (scorecard.value!!.userHoleResults[Pair(userId, holeNumber)] ?: error("")).strokes.toString()
+            val strokes = (scorecard.value!!.userHoleResults[Pair(userId, holeNumber)] ?: error("")).strokes
+            if (strokes != null) {
+                return strokes.toString()
+            }
         }
         return ""
     }
@@ -135,4 +138,4 @@ data class Scorecard(
     val userHoleResults: Map<Pair<Int, Int>, HoleResult>
 )
 data class HoleMeta(val par: Int)
-data class HoleResult(val strokes: Int)
+data class HoleResult(val strokes: Int?)
