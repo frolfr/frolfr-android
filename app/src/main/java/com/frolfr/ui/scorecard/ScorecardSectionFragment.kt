@@ -8,15 +8,19 @@ import android.view.View.VISIBLE
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProviders
 import com.frolfr.R
 import com.frolfr.databinding.FragmentScorecardSectionBinding
+import kotlin.properties.Delegates
 
-class ScorecardSectionFragment(private val scorecardViewModel: ScorecardViewModel,
-                               private val sectionIndex: Int) : Fragment() {
-    // TODO
-    constructor(): this(ScorecardViewModel(0), 0)
+class ScorecardSectionFragment() : Fragment() {
+
+    private lateinit var scorecardViewModel: ScorecardViewModel
 
     private lateinit var binding: FragmentScorecardSectionBinding
+
+    private var scorecardId by Delegates.notNull<Int>()
+    private var sectionIndex by Delegates.notNull<Int>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -26,6 +30,13 @@ class ScorecardSectionFragment(private val scorecardViewModel: ScorecardViewMode
         binding = DataBindingUtil.inflate(
             inflater, R.layout.fragment_scorecard_section, container, false
         )
+
+        scorecardId = arguments!!.getInt("scorecardId")
+        sectionIndex = arguments!!.getInt("sectionIndex")
+
+        scorecardViewModel =
+            ViewModelProviders.of(activity!!, ScorecardViewModelFactory(scorecardId))
+                .get(ScorecardViewModel::class.java)
 
         binding.scorecardViewModel = scorecardViewModel
         binding.scorecardSectionIndex = sectionIndex
@@ -39,17 +50,26 @@ class ScorecardSectionFragment(private val scorecardViewModel: ScorecardViewMode
             scorecardViewModel.toggleSectionVisibility(sectionIndex)
         }
 
-        loadSectionScores()
+        if (savedInstanceState == null) {
+            loadSectionScores()
+        }
 
         return binding.root
     }
 
     private fun loadSectionScores() {
+
         val txn = childFragmentManager.beginTransaction()
 
-        scorecardViewModel.scorecard.value!!.users.forEach { user ->
-            val userScorecardSectionResultsFragment = UserScorecardSectionResultsFragment(
-                scorecardViewModel, sectionIndex, user.value.id)
+        scorecardViewModel.scorecard.value?.users?.forEach { user ->
+            val userScorecardSectionResultsFragment = UserScorecardSectionResultsFragment()
+
+            val args = Bundle()
+            args.putInt("scorecardId", scorecardId)
+            args.putInt("sectionIndex", sectionIndex)
+            args.putInt("userId", user.value.id)
+            userScorecardSectionResultsFragment.arguments = args
+
             txn.add(binding.layoutUserScorecardSectionResults.id, userScorecardSectionResultsFragment)
         }
 

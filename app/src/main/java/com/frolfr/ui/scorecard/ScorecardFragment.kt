@@ -12,6 +12,7 @@ import androidx.navigation.fragment.navArgs
 import com.frolfr.R
 import com.frolfr.databinding.FragmentScorecardBinding
 import kotlin.math.ceil
+import kotlin.properties.Delegates
 
 class ScorecardFragment : Fragment() {
 
@@ -20,6 +21,8 @@ class ScorecardFragment : Fragment() {
     private lateinit var binding: FragmentScorecardBinding
 
     private var scorecardLoaded = false
+
+    private var scorecardId by Delegates.notNull<Int>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -32,16 +35,17 @@ class ScorecardFragment : Fragment() {
 
         val fragmentArgs by navArgs<ScorecardFragmentArgs>()
 
+        scorecardId = fragmentArgs.scorecardId
+
         scorecardViewModel =
-            ViewModelProviders.of(this, ScorecardViewModelFactory(fragmentArgs.scorecardId))
+            ViewModelProviders.of(activity!!, ScorecardViewModelFactory(scorecardId))
                 .get(ScorecardViewModel::class.java)
 
         binding.scorecardViewModel = scorecardViewModel
 
         scorecardViewModel.scorecard.observe(viewLifecycleOwner, Observer {scorecard ->
-            if (!scorecardLoaded) {
+            if (savedInstanceState == null && !scorecardLoaded) {
                 loadScorecardSections(scorecard)
-
                 scorecardLoaded = true
             }
         })
@@ -54,7 +58,13 @@ class ScorecardFragment : Fragment() {
         val txn = childFragmentManager
             .beginTransaction()
         for (i in 1..numSections) {
-            val scorecardSectionFragment = ScorecardSectionFragment(scorecardViewModel, i)
+            val scorecardSectionFragment = ScorecardSectionFragment()
+
+            val args = Bundle()
+            args.putInt("scorecardId", scorecardId)
+            args.putInt("sectionIndex", i)
+            scorecardSectionFragment.arguments = args
+
             txn.add(binding.layoutScorecard.id, scorecardSectionFragment)
         }
         txn.commit()

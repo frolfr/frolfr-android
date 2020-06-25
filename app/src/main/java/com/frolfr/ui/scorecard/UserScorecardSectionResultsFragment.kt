@@ -7,16 +7,19 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProviders
 import com.frolfr.R
 import com.frolfr.databinding.FragmentUserScorecardSectionResultsBinding
+import kotlin.properties.Delegates
 
-class UserScorecardSectionResultsFragment(private val scorecardViewModel: ScorecardViewModel,
-                                          private val sectionIndex: Int,
-                                          private val userId: Int): Fragment() {
-    // TODO
-    constructor() : this(ScorecardViewModel(0), 0, 0)
+class UserScorecardSectionResultsFragment(): Fragment() {
+
+    private lateinit var scorecardViewModel: ScorecardViewModel
 
     private lateinit var binding: FragmentUserScorecardSectionResultsBinding
+
+    private var sectionIndex by Delegates.notNull<Int>()
+    private var userId by Delegates.notNull<Int>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -26,6 +29,14 @@ class UserScorecardSectionResultsFragment(private val scorecardViewModel: Scorec
         binding = DataBindingUtil.inflate(
             inflater, R.layout.fragment_user_scorecard_section_results, container, false
         )
+
+        val scorecardId = arguments!!.getInt("scorecardId")
+        sectionIndex = arguments!!.getInt("sectionIndex")
+        userId = arguments!!.getInt("userId")
+
+        scorecardViewModel =
+            ViewModelProviders.of(activity!!, ScorecardViewModelFactory(scorecardId))
+                .get(ScorecardViewModel::class.java)
 
         binding.scorecardViewModel = scorecardViewModel
         binding.scorecardSectionIndex = sectionIndex
