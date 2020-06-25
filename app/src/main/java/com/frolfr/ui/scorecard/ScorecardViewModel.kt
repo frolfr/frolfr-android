@@ -96,13 +96,32 @@ class ScorecardViewModel(private val scorecardId: Int) : ViewModel() {
         return sectionVisibility.getOrDefault(sectionIndex, true)
     }
 
-    fun toggleSectionVisibility(sectionIndex: Int): Unit {
+    fun toggleSectionVisibility(sectionIndex: Int) {
         val visibility = isSectionVisible(sectionIndex)
         sectionVisibility[sectionIndex] = !visibility
     }
 
-    override fun onCleared() {
-        super.onCleared()
+    fun getUserScore(userId: Int): Int {
+        var score = 0
+        for (i in 1..scorecard.value!!.holeMeta.size) {
+            val par: Int = (scorecard.value!!.holeMeta[i] ?: error("")).par
+            val strokes: Int? = (scorecard.value!!.userHoleResults[Pair(userId, i)] ?: error("")).strokes
+            if (strokes != null) {
+                score += (strokes - par)
+            }
+        }
+        return score
+    }
+
+    fun getUserStrokes(userId: Int): Int {
+        var strokes = 0
+        for (i in 1..scorecard.value!!.holeMeta.size) {
+            val holeStrokes: Int? = (scorecard.value!!.userHoleResults[Pair(userId, i)] ?: error("")).strokes
+            if (holeStrokes != null) {
+                strokes += holeStrokes
+            }
+        }
+        return strokes
     }
 }
 

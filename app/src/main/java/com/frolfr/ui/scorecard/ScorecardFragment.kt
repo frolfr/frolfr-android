@@ -67,6 +67,15 @@ class ScorecardFragment : Fragment() {
 
             txn.add(binding.layoutScorecard.id, scorecardSectionFragment)
         }
+        scorecard.users.forEach { (userId, user) ->
+            val userScorecardSummaryFragment = UserScorecardSummaryFragment()
+
+            val args = Bundle()
+            args.putInt("userId", userId)
+            userScorecardSummaryFragment.arguments = args
+
+            txn.add(binding.layoutScorecard.id, userScorecardSummaryFragment)
+        }
         txn.commit()
     }
 }

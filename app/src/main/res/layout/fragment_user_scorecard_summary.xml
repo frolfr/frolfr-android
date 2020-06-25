@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="scorecardViewModel"
+            type="com.frolfr.ui.scorecard.ScorecardViewModel" />
+        <variable
+            name="userId"
+            type="int" />
+    </data>
+
+    <!-- TODO need to make a SummaryView to put these in so we can align columns -->
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:minWidth="100dp"
+        android:background="@color/design_default_color_secondary">
+
+        <TextView
+            android:id="@+id/text_scorecard_summary_user"
+            android:layout_width="32dp"
+            android:layout_height="wrap_content"
+            android:background="@color/design_default_color_background"
+            android:text="@{scorecardViewModel.getUserInitials(userId)}"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="WO" />
+
+        <LinearLayout
+            android:id="@+id/layout_scorecard_summary_score"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:layout_marginEnd="4dp"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toStartOf="@+id/layout_scorecard_summary_strokes"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toEndOf="@+id/text_scorecard_summary_user"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/text_scorecard_summary_score"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{Integer.toString(scorecardViewModel.getUserScore(userId))}"
+                tools:text="-7" />
+
+            <TextView
+                android:id="@+id/text_scorecard_summary_score_detail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="4dp"
+                android:text=""
+                tools:text="(-3, -4)" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/layout_scorecard_summary_strokes"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:layout_marginEnd="4dp"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/layout_scorecard_summary_score"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/text_scorecard_summary_strokes"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{Integer.toString(scorecardViewModel.getUserStrokes(userId))}"
+                tools:text="69" />
+
+            <TextView
+                android:id="@+id/text_scorecard_summary_strokes_detail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="4dp"
+                android:text=""
+                app:layout_constraintEnd_toEndOf="parent"
+                tools:text="(33, 36)" />
+
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
