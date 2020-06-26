@@ -35,7 +35,7 @@ class ScorecardSectionFragment() : Fragment() {
         sectionIndex = arguments!!.getInt("sectionIndex")
 
         scorecardViewModel =
-            ViewModelProviders.of(activity!!, ScorecardViewModelFactory(scorecardId))
+            ViewModelProviders.of(parentFragment!!, ScorecardViewModelFactory(scorecardId))
                 .get(ScorecardViewModel::class.java)
 
         binding.scorecardViewModel = scorecardViewModel

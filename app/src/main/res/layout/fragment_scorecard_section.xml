@@ -77,7 +77,7 @@
 
                 <TextView
                     android:id="@+id/text_hole1"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="@{scorecardViewModel.getHoleNumberStr(scorecardSectionIndex, 1)}"
@@ -86,7 +86,7 @@
 
                 <TextView
                     android:id="@+id/text_hole2"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="@{scorecardViewModel.getHoleNumberStr(scorecardSectionIndex, 2)}"
@@ -95,7 +95,7 @@
 
                 <TextView
                     android:id="@+id/text_hole3"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="@{scorecardViewModel.getHoleNumberStr(scorecardSectionIndex, 3)}"
@@ -104,7 +104,7 @@
 
                 <TextView
                     android:id="@+id/text_hole4"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="@{scorecardViewModel.getHoleNumberStr(scorecardSectionIndex, 4)}"
@@ -113,7 +113,7 @@
 
                 <TextView
                     android:id="@+id/text_hole5"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="@{scorecardViewModel.getHoleNumberStr(scorecardSectionIndex, 5)}"
@@ -122,7 +122,7 @@
 
                 <TextView
                     android:id="@+id/text_hole6"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="@{scorecardViewModel.getHoleNumberStr(scorecardSectionIndex, 6)}"
@@ -131,7 +131,7 @@
 
                 <TextView
                     android:id="@+id/text_hole7"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="@{scorecardViewModel.getHoleNumberStr(scorecardSectionIndex, 7)}"
@@ -140,7 +140,7 @@
 
                 <TextView
                     android:id="@+id/text_hole8"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="@{scorecardViewModel.getHoleNumberStr(scorecardSectionIndex, 8)}"
@@ -149,12 +149,21 @@
 
                 <TextView
                     android:id="@+id/text_hole9"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="@{scorecardViewModel.getHoleNumberStr(scorecardSectionIndex, 9)}"
                     android:textAlignment="center"
                     tools:text="18" />
+
+                <TextView
+                    android:id="@+id/text_section_score_header"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="±"
+                    android:textAlignment="center"
+                    tools:text="±" />
             </LinearLayout>
 
             <TextView
@@ -182,7 +191,7 @@
 
                 <TextView
                     android:id="@+id/text_par1"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="@{scorecardViewModel.getParStr(scorecardSectionIndex, 1)}"
@@ -191,7 +200,7 @@
 
                 <TextView
                     android:id="@+id/text_par2"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="@{scorecardViewModel.getParStr(scorecardSectionIndex, 2)}"
@@ -200,7 +209,7 @@
 
                 <TextView
                     android:id="@+id/text_par3"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="@{scorecardViewModel.getParStr(scorecardSectionIndex, 3)}"
@@ -209,7 +218,7 @@
 
                 <TextView
                     android:id="@+id/text_par4"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="@{scorecardViewModel.getParStr(scorecardSectionIndex, 4)}"
@@ -218,7 +227,7 @@
 
                 <TextView
                     android:id="@+id/text_par5"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="@{scorecardViewModel.getParStr(scorecardSectionIndex, 5)}"
@@ -227,7 +236,7 @@
 
                 <TextView
                     android:id="@+id/text_par6"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="@{scorecardViewModel.getParStr(scorecardSectionIndex, 6)}"
@@ -236,7 +245,7 @@
 
                 <TextView
                     android:id="@+id/text_par7"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="@{scorecardViewModel.getParStr(scorecardSectionIndex, 7)}"
@@ -245,7 +254,7 @@
 
                 <TextView
                     android:id="@+id/text_par8"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="@{scorecardViewModel.getParStr(scorecardSectionIndex, 8)}"
@@ -254,12 +263,21 @@
 
                 <TextView
                     android:id="@+id/text_par9"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="@{scorecardViewModel.getParStr(scorecardSectionIndex, 9)}"
                     android:textAlignment="center"
                     tools:text="3" />
+
+                <TextView
+                    android:id="@+id/text_section_score_par_header"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text=""
+                    android:textAlignment="center"
+                    tools:text="" />
             </LinearLayout>
 
             <LinearLayout

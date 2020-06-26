@@ -32,7 +32,7 @@ class UserScorecardSummaryFragment(): Fragment() {
         userId = arguments!!.getInt("userId")
 
         scorecardViewModel =
-            ViewModelProviders.of(activity!!, ScorecardViewModelFactory(scorecardId))
+            ViewModelProviders.of(parentFragment!!, ScorecardViewModelFactory(scorecardId))
                 .get(ScorecardViewModel::class.java)
 
         binding.scorecardViewModel = scorecardViewModel

@@ -43,7 +43,7 @@
 
             <TextView
                 android:id="@+id/text_score1"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="@{scorecardViewModel.getUserHoleScore(scorecardSectionIndex, 1, userId)}"
@@ -52,7 +52,7 @@
 
             <TextView
                 android:id="@+id/text_score2"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="@{scorecardViewModel.getUserHoleScore(scorecardSectionIndex, 2, userId)}"
@@ -61,7 +61,7 @@
 
             <TextView
                 android:id="@+id/text_score3"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="@{scorecardViewModel.getUserHoleScore(scorecardSectionIndex, 3, userId)}"
@@ -70,7 +70,7 @@
 
             <TextView
                 android:id="@+id/text_score4"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="@{scorecardViewModel.getUserHoleScore(scorecardSectionIndex, 4, userId)}"
@@ -79,7 +79,7 @@
 
             <TextView
                 android:id="@+id/text_score5"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="@{scorecardViewModel.getUserHoleScore(scorecardSectionIndex, 5, userId)}"
@@ -88,7 +88,7 @@
 
             <TextView
                 android:id="@+id/text_score6"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="@{scorecardViewModel.getUserHoleScore(scorecardSectionIndex, 6, userId)}"
@@ -97,7 +97,7 @@
 
             <TextView
                 android:id="@+id/text_score7"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="@{scorecardViewModel.getUserHoleScore(scorecardSectionIndex, 7, userId)}"
@@ -106,7 +106,7 @@
 
             <TextView
                 android:id="@+id/text_score8"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="@{scorecardViewModel.getUserHoleScore(scorecardSectionIndex, 8, userId)}"
@@ -115,10 +115,19 @@
 
             <TextView
                 android:id="@+id/text_score9"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="@{scorecardViewModel.getUserHoleScore(scorecardSectionIndex, 9, userId)}"
+                android:textAlignment="center"
+                tools:text="1" />
+
+            <TextView
+                android:id="@+id/text_score_total"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@{Integer.toString(scorecardViewModel.getUserSectionScore(scorecardSectionIndex, userId))}"
                 android:textAlignment="center"
                 tools:text="1" />
         </LinearLayout>

@@ -67,6 +67,20 @@ class ScorecardViewModel(private val scorecardId: Int) : ViewModel() {
         return ""
     }
 
+    fun getUserSectionScore(sectionNum: Int, userId: Int): Int {
+        val holeNumberMin = holeNumFromSectionAndHoleIndex(sectionNum, 1)
+        val holeNumberMax = min(holeNumFromSectionAndHoleIndex(sectionNum, 9), scorecard.value!!.holeMeta.size)
+        var score = 0
+        for (i in holeNumberMin..holeNumberMax) {
+            val par: Int = (scorecard.value!!.holeMeta[i] ?: error("")).par
+            val strokes: Int? = (scorecard.value!!.userHoleResults[Pair(userId, i)] ?: error("")).strokes
+            if (strokes != null) {
+                score += (strokes - par)
+            }
+        }
+        return score
+    }
+
     private fun holeNumFromSectionAndHoleIndex(sectionNum: Int, holeIndex: Int): Int {
         return ((sectionNum - 1) * 9) + holeIndex
     }

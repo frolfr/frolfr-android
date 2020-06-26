@@ -14,6 +14,7 @@ import com.frolfr.databinding.FragmentScorecardBinding
 import kotlin.math.ceil
 import kotlin.properties.Delegates
 
+
 class ScorecardFragment : Fragment() {
 
     private lateinit var scorecardViewModel: ScorecardViewModel
@@ -38,7 +39,7 @@ class ScorecardFragment : Fragment() {
         scorecardId = fragmentArgs.scorecardId
 
         scorecardViewModel =
-            ViewModelProviders.of(activity!!, ScorecardViewModelFactory(scorecardId))
+            ViewModelProviders.of(this, ScorecardViewModelFactory(scorecardId))
                 .get(ScorecardViewModel::class.java)
 
         binding.scorecardViewModel = scorecardViewModel
@@ -57,6 +58,17 @@ class ScorecardFragment : Fragment() {
         val numSections = ceil(scorecard.holeMeta.size / 9.0).toInt()
         val txn = childFragmentManager
             .beginTransaction()
+
+        scorecard.users.forEach { (userId, user) ->
+            val userScorecardSummaryFragment = UserScorecardSummaryFragment()
+
+            val args = Bundle()
+            args.putInt("userId", userId)
+            userScorecardSummaryFragment.arguments = args
+
+            txn.add(binding.layoutScorecard.id, userScorecardSummaryFragment)
+        }
+
         for (i in 1..numSections) {
             val scorecardSectionFragment = ScorecardSectionFragment()
 
@@ -67,15 +79,7 @@ class ScorecardFragment : Fragment() {
 
             txn.add(binding.layoutScorecard.id, scorecardSectionFragment)
         }
-        scorecard.users.forEach { (userId, user) ->
-            val userScorecardSummaryFragment = UserScorecardSummaryFragment()
 
-            val args = Bundle()
-            args.putInt("userId", userId)
-            userScorecardSummaryFragment.arguments = args
-
-            txn.add(binding.layoutScorecard.id, userScorecardSummaryFragment)
-        }
         txn.commit()
     }
 }
