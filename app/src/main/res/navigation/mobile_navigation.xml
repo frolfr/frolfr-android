@@ -58,4 +58,12 @@
             android:name="courseName"
             app:argType="string" />
     </fragment>
+    <fragment
+        android:id="@+id/createRoundFragment"
+        android:name="com.frolfr.ui.createRound.CreateRoundFragment"
+        android:label="Start a New Round" />
+    <action
+        android:id="@+id/action_global_createRoundFragment"
+        app:destination="@id/createRoundFragment"
+        app:popUpTo="@id/nav_courses" />
 </navigation>

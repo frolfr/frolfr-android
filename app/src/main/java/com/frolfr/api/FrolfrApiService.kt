@@ -76,6 +76,9 @@ interface FrolfrApiService {
     suspend fun user(
         @Path("userId") userId: Int
     ): UserResponse
+
+    @GET("friends")
+    suspend fun friends(): FriendsResponse
 }
 
 object FrolfrApi {

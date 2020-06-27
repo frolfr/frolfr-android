@@ -1,3 +1,5 @@
 package com.frolfr.api.model
 
-data class AvailableCoursesResponse(val courses: List<Course>)
+import com.squareup.moshi.Json
+
+data class AvailableCoursesResponse(@Json(name = "available_courses") val courses: List<Course>)

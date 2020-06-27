@@ -36,7 +36,6 @@ class CoursesFragment : Fragment() {
             course -> coursesViewModel.onCourseClicked(course)
         }, coursesViewModel.PageOnListEndListener())
 
-        // TODO needed, or can I use binding?
         coursesViewModel.courses.observe(viewLifecycleOwner, Observer {
             courseAdapter.submitList(coursesViewModel.courses.value)
         })
