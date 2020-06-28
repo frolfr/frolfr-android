@@ -44,7 +44,7 @@ class PlayersAdapter(context: Context)
 
         override fun performFiltering(constraint: CharSequence?): FilterResults {
             if (items.isEmpty() && count > 0) {
-                for (i in 1..count) {
+                for (i in 0 until count) {
                     items.add(getItem(i)!!)
                 }
             }

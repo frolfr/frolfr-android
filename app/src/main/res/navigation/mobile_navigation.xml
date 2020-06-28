@@ -61,9 +61,19 @@
     <fragment
         android:id="@+id/createRoundFragment"
         android:name="com.frolfr.ui.createRound.CreateRoundFragment"
-        android:label="Start a New Round" />
+        android:label="Start a New Round" >
+        <action
+            android:id="@+id/action_createRoundFragment_to_roundReportingFragment"
+            app:destination="@id/roundReportingFragment"
+            app:popUpTo="@id/nav_courses"
+            app:popUpToInclusive="false" />
+    </fragment>
     <action
         android:id="@+id/action_global_createRoundFragment"
         app:destination="@id/createRoundFragment"
         app:popUpTo="@id/nav_courses" />
+    <fragment
+        android:id="@+id/roundReportingFragment"
+        android:name="com.frolfr.ui.round.RoundReportingFragment"
+        android:label="Report Round" />
 </navigation>

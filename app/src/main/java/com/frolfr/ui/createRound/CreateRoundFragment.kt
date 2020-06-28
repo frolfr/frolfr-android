@@ -1,7 +1,6 @@
 package com.frolfr.ui.createRound
 
 import android.os.Bundle
-import android.text.Editable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,6 +9,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.fragment.findNavController
 import com.frolfr.R
 import com.frolfr.api.model.User
 import com.frolfr.databinding.FragmentCreateRoundBinding
@@ -55,13 +55,20 @@ class CreateRoundFragment : Fragment() {
         })
 
         viewModel.selectedUsers.observe(viewLifecycleOwner, Observer { selectedUsers ->
-            // TODO
             if (selectedUsers.isNotEmpty()) {
-                binding.textSelectedPlayers.text = selectedUsers.toString()
+                binding.textSelectedPlayers.text = selectedUsers.map { user ->
+                    "${user.nameFirst} ${user.nameLast}"
+                }.reduce {
+                    acc, string -> "${acc}\n${string}"
+                }
             } else {
                 binding.textSelectedPlayers.text = ""
             }
         })
+
+        binding.buttonStartRound.setOnClickListener {
+            findNavController().navigate(CreateRoundFragmentDirections.actionCreateRoundFragmentToRoundReportingFragment())
+        }
 
         return binding.root
     }
