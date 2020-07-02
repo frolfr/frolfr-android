@@ -16,12 +16,27 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        signingConfig signingConfigs.debug
     }
 
     buildTypes {
+        dev {
+            buildConfigField "String", 'BASE_URL', '"http://10.0.2.2:8080"'
+        }
+        debug {
+            initWith dev
+            debuggable true
+        }
         release {
-            minifyEnabled false
+            buildConfigField "String", 'BASE_URL', '"https://frolfr.herokuapp.com"'
+
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+        debugProd {
+            initWith release
+            debuggable true
+            minifyEnabled false
         }
     }
 
@@ -66,6 +81,10 @@ dependencies {
     implementation "com.squareup.retrofit2:retrofit:$version_retrofit"
     implementation "com.squareup.moshi:moshi:$version_moshi"
     implementation "com.squareup.moshi:moshi-kotlin:$version_moshi"
+    implementation "com.squareup.moshi:moshi-adapters:$version_moshi"
+    implementation "moe.banana:moshi-jsonapi:$version_moshi_jsonapi"
+    implementation "moe.banana:moshi-jsonapi-retrofit-converter:$version_moshi_jsonapi"
     implementation "com.squareup.retrofit2:converter-moshi:$version_retrofit"
+    implementation "com.squareup.okhttp3:logging-interceptor:3.10.0"
     implementation "com.github.bumptech.glide:glide:$version_glide"
 }

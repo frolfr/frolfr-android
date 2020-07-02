@@ -20,6 +20,7 @@ buildscript {
         version_expresso = '3.2.0'
         version_retrofit = '2.9.0'
         version_moshi = '1.9.2'
+        version_moshi_jsonapi = '3.5.0'
         version_glide = '4.11.0'
         version_navigation_safe_args = '2.3.0-rc01'
     }
@@ -27,6 +28,7 @@ buildscript {
     repositories {
         google()
         jcenter()
+        mavenCentral()
     }
 
     dependencies {

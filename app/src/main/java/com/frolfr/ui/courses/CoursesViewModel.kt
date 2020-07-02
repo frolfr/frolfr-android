@@ -5,6 +5,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.frolfr.api.FrolfrApi
 import com.frolfr.api.model.Course
+import com.frolfr.api.model.Course2
+import com.frolfr.api.model.Round
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -14,7 +16,7 @@ import java.lang.Integer.max
 class CoursesViewModel : ViewModel() {
 
     companion object {
-        private const val PAGE_SIZE = 5 // TODO The API doesn't respect this query param
+        private const val PAGE_SIZE = 10
     }
     private var fetchedPages = 1
     private var totalPages = -1
@@ -63,10 +65,30 @@ class CoursesViewModel : ViewModel() {
     fun loadCoursePage(pageNum: Int) {
         coroutineScope.launch {
             try {
-                val userCoursesResponse = FrolfrApi.retrofitService.userCourses(pageNum, PAGE_SIZE)
-                courses.value = courses.value?.plus(userCoursesResponse.courses)
-                totalPages = userCoursesResponse.meta.totalPages
-                fetchedPages = max(fetchedPages, pageNum)
+                // TODO constrain to just your rounds, sort
+                val roundsResponse = FrolfrApi.retrofitService.rounds(pageNum, PAGE_SIZE, "course,users")
+                Log.i("roundsResponse", roundsResponse.toString())
+                val roundsDocument = roundsResponse.asArrayDocument<Round>()
+                val course2 = roundsDocument[0].course.get(roundsResponse)
+                val fetchedCourses = listOf(
+                    Course(
+                        course2.id.toInt(),
+                        course2.city,
+                        course2.state,
+                        course2.country,
+                        course2.name,
+                        "",
+                        "Atlanta, GA",
+                        emptyList(),
+                        "2020-05-19T01:45:05.333Z",
+                        emptyList(),
+                        emptyList(),
+                        course2.holeCount
+                    )
+                )
+                courses.value = courses.value?.plus(fetchedCourses)
+                totalPages = 1 // userCoursesResponse.meta.totalPages
+                fetchedPages = 1 // max(fetchedPages, pageNum)
             } catch (t: Throwable) {
                 Log.i("frolfrUserCourses", "Got error result", t)
             }

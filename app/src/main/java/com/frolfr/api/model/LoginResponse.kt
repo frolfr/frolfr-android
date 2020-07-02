@@ -1,3 +1,5 @@
 package com.frolfr.api.model
 
-data class LoginResponse(val token: String)
+import com.squareup.moshi.Json
+
+data class LoginResponse(@Json(name = "access_token") val token: String)

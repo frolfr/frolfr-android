@@ -24,7 +24,14 @@ class UserViewModel : ViewModel() {
             try {
                 val userResponse = FrolfrApi.retrofitService.currentUser()
 
-                _currentUser.value = userResponse.user
+                _currentUser.value = User(
+                    userResponse.id.toInt(),
+                    userResponse.email,
+                    userResponse.firstName,
+                    null,
+                    userResponse.lastName,
+                    userResponse.avatarUrl
+                )
             } catch (t: Throwable) {
                 Log.i("frolfrCurrentUser", "Got error result", t)
             }
