@@ -10,10 +10,17 @@ import java.util.*
 // TODO can we make this a data class?
 @JsonApi(type = "rounds")
 class Round : Resource() {
+    /** @Json not working w/ the jsonapi library... */
     @field:Json(name = "created-at") lateinit var createdAt: Date
-    // NOTE: @Json not working, need to use @field:Json for now
-//    @Json(name = "created-at") var createdAt: String? = null
-//    var `created-at`: String? = null
-    lateinit var users: HasMany<User2>
-    lateinit var course: HasOne<Course2>
+
+    private lateinit var users: HasMany<User2>
+    private lateinit var course: HasOne<Course2>
+
+    fun getUsers(): List<User2> {
+        return users.get(document)
+    }
+
+    fun getCourse(): Course2 {
+        return course.get(document)
+    }
 }

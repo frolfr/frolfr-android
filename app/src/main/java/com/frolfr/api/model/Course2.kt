@@ -12,4 +12,8 @@ class Course2 : Resource() {
     lateinit var city: String
     lateinit var state: String
     lateinit var country: String
+
+    fun getLocation(): String {
+        return "$city, $state"
+    }
 }

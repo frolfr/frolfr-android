@@ -2,6 +2,9 @@ package com.frolfr.api
 
 import com.frolfr.BuildConfig
 import com.frolfr.api.model.*
+import com.squareup.moshi.JsonAdapter
+import com.squareup.moshi.JsonReader
+import com.squareup.moshi.JsonWriter
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.adapters.Rfc3339DateJsonAdapter
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
@@ -75,8 +78,9 @@ interface FrolfrApiService {
     suspend fun rounds(
         @Query("page[number]") page: Int,
         @Query("page[size]") perPage: Int,
+        @Query("filter[userId]") userId: Int?,
         @Query("include") includes: String
-    ): Document /*ArrayDocument<Round>*/ /*UserCoursesResponse*/
+    ) : ArrayDocument<Round>
 
     @GET("available_courses")
     suspend fun availableCourses(): AvailableCoursesResponse
@@ -109,4 +113,33 @@ object FrolfrApi {
     val retrofitService: FrolfrApiService by lazy {
         retrofit.create(FrolfrApiService::class.java)
     }
+}
+
+class PaginationLinksAdapter : JsonAdapter<PaginationLinks>() {
+    override fun fromJson(reader: JsonReader): PaginationLinks {
+
+        var first = ""
+        var prev: String? = null
+        var next: String? = null
+        var last = ""
+
+        reader.beginObject();
+        while (reader.hasNext()) {
+            when (reader.nextName()) {
+                "first" -> first = reader.nextString()
+                "prev" -> prev = reader.nextString()
+                "next" -> next = reader.nextString()
+                "last" -> last = reader.nextString()
+                else -> reader.skipValue()
+            }
+        }
+        reader.endObject();
+
+        return PaginationLinks(first, prev, next, last)
+    }
+
+    override fun toJson(writer: JsonWriter, value: PaginationLinks?) {
+        TODO("Not yet implemented")
+    }
+
 }
