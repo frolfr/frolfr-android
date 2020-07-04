@@ -5,15 +5,17 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.frolfr.api.FrolfrApi
+import com.frolfr.api.model.Round
 import com.frolfr.api.model.ScorecardResponse
 import com.frolfr.api.model.User
+import com.frolfr.api.model.User2
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import kotlin.math.min
 
-class ScorecardViewModel(private val scorecardId: Int) : ViewModel() {
+class ScorecardViewModel(private val roundId: Int) : ViewModel() {
 
     private val _scorecard = MutableLiveData<Scorecard>()
     val scorecard: LiveData<Scorecard>
@@ -31,8 +33,8 @@ class ScorecardViewModel(private val scorecardId: Int) : ViewModel() {
     private fun loadScorecard() {
         coroutineScope.launch {
             try {
-                val scorecardResponse = FrolfrApi.retrofitService.scorecard(scorecardId)
-                val scorecardResponseAdapter = ScorecardResponseAdapter(scorecardResponse)
+                val round = FrolfrApi.retrofitService.round(roundId)
+                val scorecardResponseAdapter = ScorecardResponseAdapter(round)
                 _scorecard.value = scorecardResponseAdapter.toScorecard()
             } catch (t: Throwable) {
                 Log.i("frolfrScorecard/Round", "Got error result", t)
@@ -87,9 +89,9 @@ class ScorecardViewModel(private val scorecardId: Int) : ViewModel() {
 
     fun getUserInitials(userId: Int): String {
         val user = scorecard.value!!.users[userId]
-        val firstInitial = user!!.nameFirst[0].toUpperCase().toString()
-        return if (user.nameLast != null) {
-            firstInitial + user.nameLast[0].toUpperCase()
+        val firstInitial = user!!.firstName[0].toUpperCase().toString()
+        return if (user.lastName != null) {
+            firstInitial + user.lastName!![0].toUpperCase()
         } else {
             firstInitial
         }
@@ -140,24 +142,24 @@ class ScorecardViewModel(private val scorecardId: Int) : ViewModel() {
 }
 
 // TODO move elsewhere
-class ScorecardResponseAdapter(private val scorecardResponse: ScorecardResponse) {
-    suspend fun toScorecard(): Scorecard {
-        val roundId = scorecardResponse.roundInfo.id
-        val userScorecards = scorecardResponse.userScorecards
+class ScorecardResponseAdapter(private val round: Round) {
+    fun toScorecard(): Scorecard {
+        val roundId = round.id.toInt()
+        val userScorecards = round.getScorecards()
         val userIdByScorecardId = userScorecards
-            .associateBy { userScorecard -> userScorecard.id }
-            .mapValues { userScorecard -> userScorecard.value.userId }
-        val userIds = userScorecards.map { userScorecard -> userScorecard.userId }
-        val users = userIds
-            .map { userId -> FrolfrApi.retrofitService.user(userId).user }
-            .associateBy { user -> user.id }
+            .associateBy { userScorecard -> userScorecard.id.toInt() }
+            .mapValues { userScorecard -> userScorecard.value.getUser().id.toInt() }
+        val users = round.getUsers()
+            .associateBy { user -> user.id.toInt() }
         val holeMeta = mutableMapOf<Int, HoleMeta>()
         val userHoleResults = mutableMapOf<Pair<Int, Int>, HoleResult>()
-        scorecardResponse.holeResults.map { holeResult ->
-            holeMeta.putIfAbsent(holeResult.hole, HoleMeta(holeResult.par))
-            userHoleResults.put(
-                Pair(userIdByScorecardId[holeResult.userScorecardId] ?: error(""), holeResult.hole),
-                HoleResult(holeResult.strokes))
+        round.getScorecards().forEach { scorecard ->
+            scorecard.getTurns().forEach { turn ->
+                holeMeta.putIfAbsent(turn.holeNumber, HoleMeta(turn.par))
+                userHoleResults[
+                    Pair(userIdByScorecardId[scorecard.id.toInt()] ?: error(""), turn.holeNumber)
+                ] = HoleResult(turn.strokes)
+            }
         }
         return Scorecard(roundId, holeMeta, users, userHoleResults)
     }
@@ -167,7 +169,7 @@ class ScorecardResponseAdapter(private val scorecardResponse: ScorecardResponse)
 data class Scorecard(
     val roundId: Int,
     val holeMeta: Map<Int, HoleMeta>,
-    val users: Map<Int, User>,
+    val users: Map<Int, User2>,
     val userHoleResults: Map<Pair<Int, Int>, HoleResult>
 )
 data class HoleMeta(val par: Int)

@@ -19,7 +19,7 @@ class ScorecardSectionFragment() : Fragment() {
 
     private lateinit var binding: FragmentScorecardSectionBinding
 
-    private var scorecardId by Delegates.notNull<Int>()
+    private var roundId by Delegates.notNull<Int>()
     private var sectionIndex by Delegates.notNull<Int>()
 
     override fun onCreateView(
@@ -31,11 +31,11 @@ class ScorecardSectionFragment() : Fragment() {
             inflater, R.layout.fragment_scorecard_section, container, false
         )
 
-        scorecardId = arguments!!.getInt("scorecardId")
+        roundId = arguments!!.getInt("roundId")
         sectionIndex = arguments!!.getInt("sectionIndex")
 
         scorecardViewModel =
-            ViewModelProviders.of(parentFragment!!, ScorecardViewModelFactory(scorecardId))
+            ViewModelProviders.of(parentFragment!!, ScorecardViewModelFactory(roundId))
                 .get(ScorecardViewModel::class.java)
 
         binding.scorecardViewModel = scorecardViewModel
@@ -65,9 +65,9 @@ class ScorecardSectionFragment() : Fragment() {
             val userScorecardSectionResultsFragment = UserScorecardSectionResultsFragment()
 
             val args = Bundle()
-            args.putInt("scorecardId", scorecardId)
+            args.putInt("roundId", roundId)
             args.putInt("sectionIndex", sectionIndex)
-            args.putInt("userId", user.value.id)
+            args.putInt("userId", user.key)
             userScorecardSectionResultsFragment.arguments = args
 
             txn.add(binding.layoutUserScorecardSectionResults.id, userScorecardSectionResultsFragment)

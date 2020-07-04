@@ -45,7 +45,7 @@ class UserCourseScorecardsFragment : Fragment() {
             scorecardId?.let {
                 this.findNavController().navigate(
                     CourseFragmentDirections.actionCourseFragmentToScorecardFragment(
-                        scorecardId, arguments!!.getString("courseName")!!))
+                        scorecardId/*, arguments!!.getString("courseName")!!*/))
                 userCourseScorecardsViewModel.onRoundNavigated()
             }
         })

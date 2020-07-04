@@ -69,8 +69,14 @@ interface FrolfrApiService {
         @Query("page[number]") page: Int,
         @Query("page[size]") perPage: Int,
         @Query("filter[userId]") userId: Int?,
-        @Query("include") includes: String
+        @Query("include") includes: String = "course,users,scorecards,scorecards.user,scorecards.turns"
     ) : ArrayDocument<Round>
+
+    @GET("rounds/{roundId}")
+    suspend fun round(
+        @Path("roundId") roundId: Int,
+        @Query("include") includes: String = "course,users,scorecards,scorecards.user,scorecards.turns"
+    ) : Round
 
     @GET("available_courses")
     suspend fun availableCourses(): AvailableCoursesResponse

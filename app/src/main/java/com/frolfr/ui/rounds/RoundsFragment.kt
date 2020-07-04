@@ -42,8 +42,9 @@ class RoundsFragment : Fragment() {
 
         roundsViewModel.navigateToRoundDetail.observe(viewLifecycleOwner, Observer { round ->
             round?.let {
-                // TODO
-//                this.findNavController().navigate(RoundsFragmentDirections.actionNavRoundsToRoundFragment(round))
+                this.findNavController().navigate(
+                    RoundsFragmentDirections.actionNavRoundsToScorecardFragment(round.id.toInt())
+                )
                 roundsViewModel.onRoundNavigated()
             }
         })

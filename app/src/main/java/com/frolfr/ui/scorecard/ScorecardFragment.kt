@@ -23,7 +23,7 @@ class ScorecardFragment : Fragment() {
 
     private var scorecardLoaded = false
 
-    private var scorecardId by Delegates.notNull<Int>()
+    private var roundId by Delegates.notNull<Int>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -36,10 +36,10 @@ class ScorecardFragment : Fragment() {
 
         val fragmentArgs by navArgs<ScorecardFragmentArgs>()
 
-        scorecardId = fragmentArgs.scorecardId
+        roundId = fragmentArgs.roundId
 
         scorecardViewModel =
-            ViewModelProviders.of(this, ScorecardViewModelFactory(scorecardId))
+            ViewModelProviders.of(this, ScorecardViewModelFactory(roundId))
                 .get(ScorecardViewModel::class.java)
 
         binding.scorecardViewModel = scorecardViewModel
@@ -73,7 +73,7 @@ class ScorecardFragment : Fragment() {
             val scorecardSectionFragment = ScorecardSectionFragment()
 
             val args = Bundle()
-            args.putInt("scorecardId", scorecardId)
+            args.putInt("roundId", roundId)
             args.putInt("sectionIndex", i)
             scorecardSectionFragment.arguments = args
 

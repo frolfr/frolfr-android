@@ -60,8 +60,7 @@ class RoundsViewModel : ViewModel() {
         coroutineScope.launch {
             try {
                 val userId = FrolfrAuthorization.userId
-                val includes = "course,users,scorecards,scorecards.user,scorecards.turns"
-                val roundsDocument = FrolfrApi.retrofitService.rounds(pageNum, PAGE_SIZE, userId, includes)
+                val roundsDocument = FrolfrApi.retrofitService.rounds(pageNum, PAGE_SIZE, userId)
 
                 rounds.value = rounds.value?.plus(roundsDocument)
 

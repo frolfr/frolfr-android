@@ -3,4 +3,11 @@
     <color name="colorPrimary">#6200EE</color>
     <color name="colorPrimaryDark">#3700B3</color>
     <color name="colorAccent">#03DAC5</color>
+
+    <color name="albatross">#03DAC5</color>
+    <color name="eagle">#5594FF</color>
+    <color name="birdie">#07FB96</color>
+    <color name="par">#D5D0D2</color>
+    <color name="bogie">#E60A02</color>
+    <color name="doubleBogie">#C320F3</color>
 </resources>
