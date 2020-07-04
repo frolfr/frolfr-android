@@ -3,6 +3,7 @@ package com.frolfr.ui.data
 import android.content.Context
 import android.util.Log
 import com.frolfr.api.FrolfrApi
+import com.frolfr.api.FrolfrAuth
 import com.frolfr.api.FrolfrAuthorization
 import com.frolfr.api.model.LoginRequest
 import com.frolfr.config.PreferenceKeys
@@ -21,7 +22,7 @@ class LoginDataSource(context: Context) {
         val loginRequest = LoginRequest(email, password)
 
         return try {
-            val loginResponse = FrolfrApi.retrofitService.login(loginRequest)
+            val loginResponse = FrolfrAuth.retrofitService.login(loginRequest)
 
             sharedPreferences
                 .edit()
@@ -40,7 +41,7 @@ class LoginDataSource(context: Context) {
             Result.Success(loggedInUser)
 
         } catch (t: Throwable) {
-            Log.i("frolfrLogin", "Got error result")
+            Log.i("frolfrLogin", "Got error result", t)
             Result.Error(t as Exception)
         }
     }

@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.frolfr.api.FrolfrApi
+import com.frolfr.api.FrolfrAuthorization
 import com.frolfr.api.PaginationLinksAdapter
 import com.frolfr.api.model.PaginationLinks
 import com.frolfr.api.model.Round
@@ -58,8 +59,8 @@ class RoundsViewModel : ViewModel() {
     fun loadRoundsPage(pageNum: Int) {
         coroutineScope.launch {
             try {
-                val userId = null // 73 // TODO
-                val includes = "course,users,scorecards,scorecards.turns"
+                val userId = FrolfrAuthorization.userId
+                val includes = "course,users,scorecards,scorecards.user,scorecards.turns"
                 val roundsDocument = FrolfrApi.retrofitService.rounds(pageNum, PAGE_SIZE, userId, includes)
 
                 rounds.value = rounds.value?.plus(roundsDocument)

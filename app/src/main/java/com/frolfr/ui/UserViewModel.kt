@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.frolfr.api.FrolfrApi
+import com.frolfr.api.FrolfrAuthorization
 import com.frolfr.api.model.User
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -23,6 +24,8 @@ class UserViewModel : ViewModel() {
         coroutineScope.launch {
             try {
                 val userResponse = FrolfrApi.retrofitService.currentUser()
+
+                FrolfrAuthorization.userId = userResponse.id.toInt()
 
                 _currentUser.value = User(
                     userResponse.id.toInt(),
