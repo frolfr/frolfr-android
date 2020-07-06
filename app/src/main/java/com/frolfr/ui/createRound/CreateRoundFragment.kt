@@ -12,6 +12,7 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import com.frolfr.R
 import com.frolfr.api.model.User
+import com.frolfr.api.model.User2
 import com.frolfr.databinding.FragmentCreateRoundBinding
 
 class CreateRoundFragment : Fragment() {
@@ -40,7 +41,7 @@ class CreateRoundFragment : Fragment() {
             coursesAdapter.addAll(courseList)
         })
 
-        val playersAdapter = PlayersAdapter(context!!)
+        val playersAdapter = UsersAdapter(context!!)
         binding.editTextPlayer.setAdapter(playersAdapter)
 
         val playerSelectedListener = PlayerSelectedListener { user ->
@@ -57,7 +58,7 @@ class CreateRoundFragment : Fragment() {
         viewModel.selectedUsers.observe(viewLifecycleOwner, Observer { selectedUsers ->
             if (selectedUsers.isNotEmpty()) {
                 binding.textSelectedPlayers.text = selectedUsers.map { user ->
-                    "${user.nameFirst} ${user.nameLast}"
+                    "${user.firstName} ${user.lastName}"
                 }.reduce {
                     acc, string -> "${acc}\n${string}"
                 }
@@ -74,13 +75,13 @@ class CreateRoundFragment : Fragment() {
     }
 }
 
-class PlayerSelectedListener(val selectedListener: (user: User) -> Unit) :
+class PlayerSelectedListener(val selectedListener: (user: User2) -> Unit) :
     AdapterView.OnItemSelectedListener, AdapterView.OnItemClickListener {
 
     override fun onNothingSelected(parent: AdapterView<*>?) {}
 
     override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-        val user = parent!!.getItemAtPosition(position) as User
+        val user = parent!!.getItemAtPosition(position) as User2
         selectedListener(user)
     }
 

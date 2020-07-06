@@ -59,6 +59,7 @@ private val retrofit = Retrofit.Builder()
     .build()
 
 interface FrolfrApiService {
+
     @GET("users")
     suspend fun currentUser(
         @Query("me") me: Boolean = true
@@ -77,6 +78,13 @@ interface FrolfrApiService {
         @Path("roundId") roundId: Int,
         @Query("include") includes: String = "course,users,scorecards,scorecards.user,scorecards.turns"
     ) : Round
+
+    @GET("courses")
+    suspend fun courses(): List<Course2>
+
+    @GET("users")
+    suspend fun users(): List<User2>
+
 
     @GET("available_courses")
     suspend fun availableCourses(): AvailableCoursesResponse

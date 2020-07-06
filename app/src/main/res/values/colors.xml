@@ -2,12 +2,35 @@
 <resources>
     <color name="colorPrimary">#6200EE</color>
     <color name="colorPrimaryDark">#3700B3</color>
-    <color name="colorAccent">#03DAC5</color>
+    <color name="colorAccent">#2DFFB9</color>
 
-    <color name="albatross">#03DAC5</color>
-    <color name="eagle">#5594FF</color>
-    <color name="birdie">#07FB96</color>
-    <color name="par">#D5D0D2</color>
-    <color name="bogie">#E60A02</color>
-    <color name="doubleBogie">#C320F3</color>
+    <color name="jomezBlue">#438DAA</color>
+    <color name="jomezDarkBlue">#022E6B</color>
+    <color name="jomezCyan">#2DFFB9</color>
+    <color name="jomezNavy">#01379D</color>
+    <color name="jomezDarkGray">#343434</color>
+
+    <color name="headerCyan">#00FFCC</color>
+    <color name="headerGray">#DDDDDD</color>
+    <color name="headerDarkGray">#676767</color>
+
+    <color name="eagle">#35E0FF</color>
+    <color name="birdie">#00FFCC</color>
+    <color name="par">#DDDDDD</color>
+    <color name="bogie">#FFB300</color>
+    <color name="doubleBogie">#FF3300</color>
+
+<!--    <color name="albatross">#2DFFB9</color>-->
+<!--    <color name="eagle">#3281FD</color>-->
+<!--    <color name="birdie">#17D278</color>-->
+<!--    <color name="par">#939091</color>-->
+<!--    <color name="bogie">#FD532F</color>-->
+<!--    <color name="doubleBogie">#FF0009</color>-->
+
+<!--    <color name="albatross">#2DFFB9</color>-->
+<!--    <color name="eagle">#00A488</color>-->
+<!--    <color name="birdie">#BEEB9F</color>-->
+<!--    <color name="par">#DDDDDD</color>-->
+<!--    <color name="bogie">#FFFF9E</color>-->
+<!--    <color name="doubleBogie">#FF6138</color>-->
 </resources>

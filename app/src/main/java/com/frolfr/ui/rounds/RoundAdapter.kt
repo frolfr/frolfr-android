@@ -57,6 +57,7 @@ class RoundItemViewHolder private constructor(private val binding: ViewRoundItem
             Glide.with(binding.root.context).load(user?.avatarUrl?.toUri())
                 .apply(
                     RequestOptions()
+                        .circleCrop()
                         .placeholder(R.drawable.loading_animation)
                         .error(R.drawable.ic_broken_image)
                 ).into(userScoreBinding.imageUserAvatar)

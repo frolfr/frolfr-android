@@ -62,11 +62,10 @@ class UserScorecardSectionResultsFragment : Fragment() {
     private fun getBackgroundColorForHole(holeIndex: Int): Int {
         val holeScore = getHoleScore(holeIndex)
         return when {
-            holeScore < -2 -> R.color.albatross
-            holeScore == -2 -> R.color.eagle
+            holeScore <= -2 -> R.color.eagle
             holeScore == -1 -> R.color.birdie
             holeScore == 1 -> R.color.bogie
-            holeScore > 1 -> R.color.doubleBogie
+            holeScore >= 2 -> R.color.doubleBogie
             else -> R.color.par
         }
     }

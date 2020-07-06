@@ -18,16 +18,17 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:background="@color/design_default_color_secondary"
+        android:background="@color/jomezCyan"
         android:minWidth="100dp">
 
         <TextView
             android:id="@+id/text_scorecard_summary_user"
             android:layout_width="32dp"
             android:layout_height="wrap_content"
-            android:background="#DDDDDD"
+            android:background="@color/jomezBlue"
             android:text="@{scorecardViewModel.getUserInitials(userId)}"
             android:textAlignment="center"
+            android:textColor="@color/jomezCyan"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="WO" />
