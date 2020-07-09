@@ -7,10 +7,14 @@
             type="com.frolfr.ui.scorecard.ScorecardViewModel" />
     </data>
 
-    <LinearLayout
-        android:id="@+id/layout_scorecard"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
-    </LinearLayout>
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:id="@+id/layout_scorecard"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+        </LinearLayout>
+    </ScrollView>
 </layout>

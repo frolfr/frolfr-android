@@ -5,13 +5,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import com.frolfr.R
-import com.frolfr.api.model.User
+import com.frolfr.api.model.Course2
 import com.frolfr.api.model.User2
 import com.frolfr.databinding.FragmentCreateRoundBinding
 
@@ -34,8 +35,13 @@ class CreateRoundFragment : Fragment() {
 
         binding.viewModel = viewModel
 
+        val courseSelectedListener = CourseSelectedListener { course ->
+            viewModel.selectCourse(course)
+        }
+
         val coursesAdapter = CoursesAdapter(context!!)
         binding.spinnerCourses.adapter = coursesAdapter
+        binding.spinnerCourses.onItemSelectedListener = courseSelectedListener
 
         viewModel.courses.observe(viewLifecycleOwner, Observer { courseList ->
             coursesAdapter.addAll(courseList)
@@ -52,6 +58,7 @@ class CreateRoundFragment : Fragment() {
         binding.editTextPlayer.onItemClickListener = playerSelectedListener
 
         viewModel.users.observe(viewLifecycleOwner, Observer { userList ->
+            playersAdapter.clear()
             playersAdapter.addAll(userList)
         })
 
@@ -68,8 +75,26 @@ class CreateRoundFragment : Fragment() {
         })
 
         binding.buttonStartRound.setOnClickListener {
-            findNavController().navigate(CreateRoundFragmentDirections.actionCreateRoundFragmentToRoundReportingFragment())
+            viewModel.createRound()
         }
+
+        viewModel.round.observe(viewLifecycleOwner, Observer { round ->
+            if (round != null) {
+                findNavController().navigate(
+                    CreateRoundFragmentDirections.actionCreateRoundFragmentToRoundReportingFragment(
+                        round.id.toInt()
+                    )
+                )
+                viewModel.onRoundNavigated()
+            }
+        })
+
+        viewModel.error.observe(viewLifecycleOwner, Observer { error ->
+            if (error != null) {
+                Toast.makeText(context, error, Toast.LENGTH_SHORT)
+                viewModel.clearErrors()
+            }
+        })
 
         return binding.root
     }
@@ -83,6 +108,24 @@ class PlayerSelectedListener(val selectedListener: (user: User2) -> Unit) :
     override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
         val user = parent!!.getItemAtPosition(position) as User2
         selectedListener(user)
+    }
+
+    override fun onItemClick(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+        return onItemSelected(parent, view, position, id)
+    }
+
+}
+
+class CourseSelectedListener(val selectedListener: (course: Course2?) -> Unit) :
+    AdapterView.OnItemSelectedListener, AdapterView.OnItemClickListener {
+
+    override fun onNothingSelected(parent: AdapterView<*>?) {
+        selectedListener(null)
+    }
+
+    override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+        val course = parent!!.getItemAtPosition(position) as Course2
+        selectedListener(course)
     }
 
     override fun onItemClick(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {

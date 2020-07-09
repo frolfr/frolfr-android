@@ -81,5 +81,9 @@
     <fragment
         android:id="@+id/roundReportingFragment"
         android:name="com.frolfr.ui.round.RoundReportingFragment"
-        android:label="Report Round" />
+        android:label="Report Round" >
+        <argument
+            android:name="roundId"
+            app:argType="integer" />
+    </fragment>
 </navigation>

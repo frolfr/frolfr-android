@@ -67,23 +67,38 @@ interface FrolfrApiService {
 
     @GET("rounds")
     suspend fun rounds(
-        @Query("page[number]") page: Int,
-        @Query("page[size]") perPage: Int,
-        @Query("filter[userId]") userId: Int?,
+        @Query("page[number]") page: Int? = null,
+        @Query("page[size]") perPage: Int? = null,
+        @Query("filter[userId]") userId: Int? = null,
         @Query("include") includes: String = "course,users,scorecards,scorecards.user,scorecards.turns"
-    ) : ArrayDocument<Round>
+    ): ArrayDocument<Round>
 
     @GET("rounds/{roundId}")
     suspend fun round(
         @Path("roundId") roundId: Int,
         @Query("include") includes: String = "course,users,scorecards,scorecards.user,scorecards.turns"
-    ) : Round
+    ): Round
+
+    @POST("rounds")
+    suspend fun createRound(
+        @Body round: Round
+    ): Round
 
     @GET("courses")
-    suspend fun courses(): List<Course2>
+    suspend fun courses(
+        @Query("page[number]") page: Int? = null,
+        @Query("page[size]") perPage: Int? = null,
+        @Query("sort") sort: String? = null,
+        @Query("include") includes: String? = null
+    ): List<Course2>
 
     @GET("users")
-    suspend fun users(): List<User2>
+    suspend fun users(
+        @Query("page[number]") page: Int? = null,
+        @Query("page[size]") perPage: Int? = null,
+        @Query("sort") sort: String? = null,
+        @Query("include") includes: String? = null
+    ): List<User2>
 
 
     @GET("available_courses")

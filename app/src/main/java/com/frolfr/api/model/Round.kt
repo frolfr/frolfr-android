@@ -1,10 +1,7 @@
 package com.frolfr.api.model
 
 import com.squareup.moshi.Json
-import moe.banana.jsonapi2.HasMany
-import moe.banana.jsonapi2.HasOne
-import moe.banana.jsonapi2.JsonApi
-import moe.banana.jsonapi2.Resource
+import moe.banana.jsonapi2.*
 import java.util.*
 
 // TODO can we make this a data class?
@@ -17,14 +14,26 @@ class Round : Resource() {
     private lateinit var course: HasOne<Course2>
     private lateinit var scorecards: HasMany<Scorecard2>
 
+    @Transient
     private val userScoreMap = mutableMapOf<String, Int>()
+
+    fun getCourse(): Course2 {
+        return course.get(document)
+    }
+
+    fun setCourse(course: Course2) {
+        this.course = HasOne("courses", course.id)
+    }
 
     fun getUsers(): List<User2> {
         return users.get(document)
     }
 
-    fun getCourse(): Course2 {
-        return course.get(document)
+    fun setUsers(users: List<User2>) {
+        val userResourceIdentifiers = users.map { user ->
+            ResourceIdentifier("users", user.id)
+        }
+        this.users = HasMany(*userResourceIdentifiers.toTypedArray())
     }
 
     fun getScorecards(): List<Scorecard2> {
