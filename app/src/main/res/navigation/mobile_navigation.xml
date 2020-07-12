@@ -85,5 +85,8 @@
         <argument
             android:name="roundId"
             app:argType="integer" />
+        <action
+            android:id="@+id/action_roundReportingFragment_to_scorecardFragment"
+            app:destination="@id/scorecardFragment" />
     </fragment>
 </navigation>

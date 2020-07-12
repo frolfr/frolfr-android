@@ -113,7 +113,6 @@ class PlayerSelectedListener(val selectedListener: (user: User2) -> Unit) :
     override fun onItemClick(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
         return onItemSelected(parent, view, position, id)
     }
-
 }
 
 class CourseSelectedListener(val selectedListener: (course: Course2?) -> Unit) :
@@ -131,5 +130,4 @@ class CourseSelectedListener(val selectedListener: (course: Course2?) -> Unit) :
     override fun onItemClick(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
         return onItemSelected(parent, view, position, id)
     }
-
 }

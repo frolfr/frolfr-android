@@ -76,7 +76,7 @@ interface FrolfrApiService {
     @GET("rounds/{roundId}")
     suspend fun round(
         @Path("roundId") roundId: Int,
-        @Query("include") includes: String = "course,users,scorecards,scorecards.user,scorecards.turns"
+        @Query("include") includes: String = "course,users,scorecards,scorecards.turns"
     ): Round
 
     @POST("rounds")
@@ -99,6 +99,17 @@ interface FrolfrApiService {
         @Query("sort") sort: String? = null,
         @Query("include") includes: String? = null
     ): List<User2>
+
+    @PATCH("turns/{turn}")
+    suspend fun reportTurn(
+        @Path("turn") turnId: Int,
+        @Body turn: Turn2
+    ): Turn2
+
+    @GET("scorecards/{scorecardId}/relationships/user")
+    suspend fun scorecardUser(
+        @Path("scorecardId") scorecardId: Int
+    ): User2
 
 
     @GET("available_courses")

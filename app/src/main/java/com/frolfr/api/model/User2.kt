@@ -10,4 +10,11 @@ class User2 : Resource() {
     @field:Json(name = "last-name") var lastName: String? = null
     lateinit var email: String
     @field:Json(name = "avatar-url") var avatarUrl: String? = null
+
+    fun getName(): String {
+        if (lastName != null) {
+            return "$firstName $lastName"
+        }
+        return firstName
+    }
 }

@@ -53,6 +53,7 @@
                 android:id="@+id/text_hole_par_prefix"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginRight="4dp"
                 android:layout_weight="1"
                 android:text="Par"
                 android:textSize="18sp" />
@@ -63,6 +64,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:textSize="18sp"
+                app:par="@{viewModel}"
                 tools:text="4" />
         </LinearLayout>
 

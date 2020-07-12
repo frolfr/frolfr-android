@@ -9,11 +9,6 @@ import java.text.SimpleDateFormat
 private val isoDateFormat: DateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
 private val df: DateFormat = SimpleDateFormat("MM/dd/yy")
 
-@BindingAdapter("userCourseName")
-fun TextView.setName(item: Course) {
-    text = item.name
-}
-
 @BindingAdapter("userCourseLocation")
 fun TextView.setLocation(item: Course) {
     text = item.location

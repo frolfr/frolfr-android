@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="userId"
+            type="int" />
+        <variable
+            name="viewModel"
+            type="com.frolfr.ui.round.RoundReportingViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layout_user_score"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:id="@+id/layout_user"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/image_user_avatar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:srcCompat="@tools:sample/avatars" />
+
+            <TextView
+                android:id="@+id/text_user_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:textSize="18sp"
+                app:layout_constraintEnd_toEndOf="@+id/image_user_avatar"
+                app:layout_constraintStart_toStartOf="@+id/image_user_avatar"
+                app:layout_constraintTop_toBottomOf="@+id/image_user_avatar"
+                tools:text="Willie Owens" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/text_user_hole_strokes"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp"
+            android:text="@{viewModel.getStrokesStrForUser(userId)}"
+            android:textSize="36sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/button_strokes_plus"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="3" />
+
+        <Button
+            android:id="@+id/button_strokes_minus"
+            android:layout_width="48dp"
+            android:layout_height="wrap_content"
+            android:text="-"
+            app:layout_constraintBottom_toBottomOf="@+id/text_user_hole_strokes"
+            app:layout_constraintEnd_toStartOf="@+id/text_user_hole_strokes"
+            app:layout_constraintTop_toTopOf="@+id/text_user_hole_strokes" />
+
+        <Button
+            android:id="@+id/button_strokes_plus"
+            android:layout_width="48dp"
+            android:layout_height="wrap_content"
+            android:text="+"
+            app:layout_constraintBottom_toBottomOf="@+id/text_user_hole_strokes"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/text_user_hole_strokes" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
