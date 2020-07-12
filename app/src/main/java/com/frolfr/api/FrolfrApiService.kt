@@ -76,7 +76,7 @@ interface FrolfrApiService {
     @GET("rounds/{roundId}")
     suspend fun round(
         @Path("roundId") roundId: Int,
-        @Query("include") includes: String = "course,users,scorecards,scorecards.turns"
+        @Query("include") includes: String = "course,users,scorecards,scorecards.user,scorecards.turns"
     ): Round
 
     @POST("rounds")
