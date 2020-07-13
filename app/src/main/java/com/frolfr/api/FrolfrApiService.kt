@@ -1,5 +1,6 @@
 package com.frolfr.api
 
+import android.util.Log
 import com.frolfr.BuildConfig
 import com.frolfr.api.model.*
 import com.squareup.moshi.JsonAdapter
@@ -141,6 +142,8 @@ interface FrolfrApiService {
 
 object FrolfrApi {
     val retrofitService: FrolfrApiService by lazy {
+        Log.i("frolfrInit", "Using BASE_URL: $BASE_URL")
+
         retrofit.create(FrolfrApiService::class.java)
     }
 }
@@ -171,5 +174,4 @@ class PaginationLinksAdapter : JsonAdapter<PaginationLinks>() {
     override fun toJson(writer: JsonWriter, value: PaginationLinks?) {
         TODO("Not yet implemented")
     }
-
 }
