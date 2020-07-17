@@ -1,9 +1,7 @@
 package com.frolfr.ui.round
 
 import android.util.Log
-import androidx.databinding.Bindable
-import androidx.databinding.Observable
-import androidx.databinding.PropertyChangeRegistry
+import androidx.databinding.*
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -15,8 +13,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
-
-class RoundReportingViewModel(private val roundId: Int) : ViewModel(), Observable {
+class RoundReportingViewModel(private val roundId: Int) : ViewModel() {
 
     private val _round = MutableLiveData<Round>()
     val round: LiveData<Round>
@@ -26,13 +23,19 @@ class RoundReportingViewModel(private val roundId: Int) : ViewModel(), Observabl
     val parMap: LiveData<Map<Int, Int>>
         get() = _parMap
 
+    private val _currentPar = MutableLiveData<Int>()
+    val currentPar: LiveData<Int>
+        get() = _currentPar
+
     private val _currentHole = MutableLiveData<Int>()
     val currentHole: LiveData<Int>
         get() = _currentHole
 
-    private val _userStrokes = MutableLiveData<MutableMap<Pair<Int, Int>, Int>>()
-    val userStrokes: LiveData<MutableMap<Pair<Int, Int>, Int>>
-        @Bindable get() = _userStrokes
+    private val _userStrokes = ObservableArrayMap<Pair<Int, Int>, Int>()
+    val userStrokes: ObservableMap<Pair<Int, Int>, Int>
+        get() = _userStrokes
+
+    val currentUserStrokes = ObservableArrayMap<Int, Int>()
 
     private val _error = MutableLiveData<String>()
     val error: LiveData<String>
@@ -49,7 +52,6 @@ class RoundReportingViewModel(private val roundId: Int) : ViewModel(), Observabl
 
     init {
         _currentHole.value = 1
-        _userStrokes.value = mutableMapOf()
         _error.value = null
         loadRound()
     }
@@ -60,7 +62,6 @@ class RoundReportingViewModel(private val roundId: Int) : ViewModel(), Observabl
                 Log.i("loadRound", "Started for round $roundId")
 
                 val round = FrolfrApi.retrofitService.round(roundId)
-                _round.value = round
 
                 _parMap.value = mutableMapOf()
                 round.getScorecards()[0].getTurns().forEachIndexed { index, turn ->
@@ -72,6 +73,10 @@ class RoundReportingViewModel(private val roundId: Int) : ViewModel(), Observabl
                     scorecardToUserMap[it.id.toInt()] = scorecardUser.id.toInt()
                 }
 
+                _round.value = round
+
+                onHoleChanged()
+
                 Log.i("loadRound", "Loaded Round: $round")
             } catch (t: Throwable) {
                 Log.i("loadRound", "Got error result", t)
@@ -79,8 +84,8 @@ class RoundReportingViewModel(private val roundId: Int) : ViewModel(), Observabl
         }
     }
 
-    fun getStrokesForUser(userId: Int): Int {
-        val strokes = userStrokes.value!![Pair(userId, currentHole.value!!)]
+    private fun getStrokesForUser(userId: Int): Int {
+        val strokes = userStrokes[Pair(userId, currentHole.value!!)]
         if (strokes == null || strokes == 0) {
             return 0
         }
@@ -99,28 +104,39 @@ class RoundReportingViewModel(private val roundId: Int) : ViewModel(), Observabl
         return if (parMap.value != null) parMap.value!!.getOrDefault(holeIndex, 3) else 3
     }
 
-    fun onStrokesMinusClicked(userId: Int) {
-        val strokes = userStrokes.value!![Pair(userId, currentHole.value!!)]
-        if (strokes == null || strokes == 0) {
-            _userStrokes.value!![Pair(userId, currentHole.value!!)] = getPar() - 1
-        } else {
-            _userStrokes.value!![Pair(userId, currentHole.value!!)] = strokes - 1
+    private fun onHoleChanged() {
+        _currentPar.value = getPar()
+
+        for (user in round.value!!.getUsers()) {
+            currentUserStrokes[user.id.toInt()] = userStrokes[Pair(user.id.toInt(), currentHole.value!!)] ?: 0
         }
     }
 
-    fun onStrokesPlusClicked(userId: Int) {
-        val strokes = userStrokes.value!![Pair(userId, _currentHole.value!!)]
+    fun onStrokesMinusClicked(userId: Int) {
+        val strokes = userStrokes[Pair(userId, currentHole.value!!)]
         if (strokes == null || strokes == 0) {
-            _userStrokes.value!![Pair(userId, currentHole.value!!)] = getPar()
+            _userStrokes[Pair(userId, currentHole.value!!)] = getPar() - 1
         } else {
-            _userStrokes.value!![Pair(userId, currentHole.value!!)] = strokes + 1
+            _userStrokes[Pair(userId, currentHole.value!!)] = strokes - 1
         }
+        currentUserStrokes[userId] = userStrokes[Pair(userId, currentHole.value!!)]
+    }
+
+    fun onStrokesPlusClicked(userId: Int) {
+        val strokes = userStrokes[Pair(userId, _currentHole.value!!)]
+        if (strokes == null || strokes == 0) {
+            _userStrokes[Pair(userId, currentHole.value!!)] = getPar()
+        } else {
+            _userStrokes[Pair(userId, currentHole.value!!)] = strokes + 1
+        }
+        currentUserStrokes[userId] = userStrokes[Pair(userId, currentHole.value!!)]
     }
 
     fun onPreviousHoleClicked() {
         if (currentHole.value != 1) {
             _currentHole.value = currentHole.value?.minus(1)
         }
+        onHoleChanged()
     }
 
     fun onSubmitHoleClicked() {
@@ -163,6 +179,7 @@ class RoundReportingViewModel(private val roundId: Int) : ViewModel(), Observabl
                     _navigateToRoundScorecard.value = round.value!!.id.toInt()
                 } else {
                     _currentHole.value = currentHole.value?.plus(1)
+                    onHoleChanged()
                 }
             } catch (t: Throwable) {
                 Log.i("reportTurn", "Got error result", t)
@@ -176,37 +193,6 @@ class RoundReportingViewModel(private val roundId: Int) : ViewModel(), Observabl
 
     fun onRoundScorecardNavigated() {
         _navigateToRoundScorecard.value = null
-    }
-
-
-    // Begin Observable Code
-
-    private val callbacks: PropertyChangeRegistry = PropertyChangeRegistry()
-
-    override fun addOnPropertyChangedCallback(callback: Observable.OnPropertyChangedCallback) {
-        callbacks.add(callback)
-    }
-
-    override fun removeOnPropertyChangedCallback( callback: Observable.OnPropertyChangedCallback) {
-        callbacks.remove(callback)
-    }
-
-    /**
-     * Notifies observers that all properties of this instance have changed.
-     */
-    fun notifyChange() {
-        callbacks.notifyCallbacks(this, 0, null)
-    }
-
-    /**
-     * Notifies observers that a specific property has changed. The getter for the
-     * property that changes should be marked with the @Bindable annotation to
-     * generate a field in the BR class to be used as the fieldId parameter.
-     *
-     * @param fieldId The generated BR id for the Bindable field.
-     */
-    fun notifyPropertyChanged(fieldId: Int) {
-        callbacks.notifyCallbacks(this, fieldId, null)
     }
 
 }

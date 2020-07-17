@@ -33,6 +33,7 @@ class RoundReportingFragment : Fragment() {
         binding = DataBindingUtil.inflate(
             inflater, R.layout.fragment_hole_input, container, false
         )
+        binding.setLifecycleOwner { lifecycle } // TODO why don't I need this elsewhere?
 
         val roundId = arguments!!.getInt("roundId")
 
@@ -52,10 +53,6 @@ class RoundReportingFragment : Fragment() {
 
         viewModel.currentHole.observe(viewLifecycleOwner, Observer { currentHole ->
             binding.buttonPreviousHole.isEnabled = currentHole != 1
-            binding.viewModel = viewModel   // TODO not this
-            userViewBindings.forEach {
-                it.viewModel = viewModel    // TODO plz not this either
-            }
         })
 
         viewModel.round.observe(viewLifecycleOwner, Observer { round ->
@@ -67,15 +64,13 @@ class RoundReportingFragment : Fragment() {
                     inflater, R.layout.view_user_hole_input, userHoleInputsLayout, true
                 )
                 userViewBindings.add(userViewBinding)
-                userViewBinding.viewModel = viewModel
+                userViewBinding.userStrokes = viewModel.currentUserStrokes
                 userViewBinding.userId = user.id.toInt()
                 userViewBinding.buttonStrokesMinus.setOnClickListener {
                     viewModel.onStrokesMinusClicked(user.id.toInt())
-                    userViewBinding.viewModel = viewModel   // TODO not this
                 }
                 userViewBinding.buttonStrokesPlus.setOnClickListener {
                     viewModel.onStrokesPlusClicked(user.id.toInt())
-                    userViewBinding.viewModel = viewModel   // TODO not this
                 }
                 userViewBinding.textUserName.text = user.getName()
                 Glide.with(binding.root.context).load(user.avatarUrl?.toUri())
