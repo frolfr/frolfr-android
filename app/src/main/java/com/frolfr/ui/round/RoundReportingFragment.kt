@@ -4,6 +4,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.core.net.toUri
 import androidx.databinding.DataBindingUtil
@@ -53,33 +55,57 @@ class RoundReportingFragment : Fragment() {
 
         viewModel.currentHole.observe(viewLifecycleOwner, Observer { currentHole ->
             binding.buttonPreviousHole.isEnabled = currentHole != 1
+            if (binding.spinnerHole.selectedItem != currentHole) {
+                binding.spinnerHole.setSelection(currentHole - 1)
+            }
+        })
+
+        viewModel.currentPar.observe(viewLifecycleOwner, Observer { currentPar ->
+            if (binding.spinnerPar.selectedItem != currentPar) {
+                binding.spinnerPar.setSelection(currentPar - 3)
+            }
         })
 
         viewModel.round.observe(viewLifecycleOwner, Observer { round ->
-            val users = round.getUsers()
+            if (round != null) {
+                val users = round.getUsers()
 
-            val userHoleInputsLayout = binding.layoutUserHoleInputs
-            users.forEach { user ->
-                val userViewBinding: ViewUserHoleInputBinding = DataBindingUtil.inflate(
-                    inflater, R.layout.view_user_hole_input, userHoleInputsLayout, true
-                )
-                userViewBindings.add(userViewBinding)
-                userViewBinding.userStrokes = viewModel.currentUserStrokes
-                userViewBinding.userId = user.id.toInt()
-                userViewBinding.buttonStrokesMinus.setOnClickListener {
-                    viewModel.onStrokesMinusClicked(user.id.toInt())
+                val userHoleInputsLayout = binding.layoutUserHoleInputs
+                users.forEach { user ->
+                    val userViewBinding: ViewUserHoleInputBinding = DataBindingUtil.inflate(
+                        inflater, R.layout.view_user_hole_input, userHoleInputsLayout, true
+                    )
+                    userViewBindings.add(userViewBinding)
+                    userViewBinding.userStrokes = viewModel.currentUserStrokes
+                    userViewBinding.userId = user.id.toInt()
+                    userViewBinding.buttonStrokesMinus.setOnClickListener {
+                        viewModel.onStrokesMinusClicked(user.id.toInt())
+                    }
+                    userViewBinding.buttonStrokesPlus.setOnClickListener {
+                        viewModel.onStrokesPlusClicked(user.id.toInt())
+                    }
+                    userViewBinding.textUserName.text = user.getName()
+                    Glide.with(binding.root.context).load(user.avatarUrl?.toUri())
+                        .apply(
+                            RequestOptions()
+                                .circleCrop()
+                                .placeholder(R.drawable.loading_animation)
+                                .error(R.drawable.ic_broken_image)
+                        ).into(userViewBinding.imageUserAvatar)
                 }
-                userViewBinding.buttonStrokesPlus.setOnClickListener {
-                    viewModel.onStrokesPlusClicked(user.id.toInt())
-                }
-                userViewBinding.textUserName.text = user.getName()
-                Glide.with(binding.root.context).load(user.avatarUrl?.toUri())
-                    .apply(
-                        RequestOptions()
-                            .circleCrop()
-                            .placeholder(R.drawable.loading_animation)
-                            .error(R.drawable.ic_broken_image)
-                    ).into(userViewBinding.imageUserAvatar)
+
+                val holeCount = round.getCourse().holeCount
+                val holeArray = Array(holeCount) { i -> i + 1 }
+                val holeAdapter = ArrayAdapter<Int>(context!!, R.layout.layout_hole_selected_item, holeArray)
+                holeAdapter.setDropDownViewResource(R.layout.layout_hole_list_item)
+                binding.spinnerHole.adapter = holeAdapter
+                binding.spinnerHole.onItemSelectedListener = HoleChangeListener(viewModel)
+
+                val parArray = Array(3) { i -> i + 3 }
+                val parAdapter = ArrayAdapter<Int>(context!!, R.layout.layout_par_selected_item, parArray)
+                parAdapter.setDropDownViewResource(R.layout.layout_par_list_item)
+                binding.spinnerPar.adapter = parAdapter
+                binding.spinnerPar.onItemSelectedListener = ParChangeListener(viewModel)
             }
         })
 
@@ -100,5 +126,23 @@ class RoundReportingFragment : Fragment() {
         })
 
         return binding.root
+    }
+
+    class HoleChangeListener(private val viewModel: RoundReportingViewModel) : AdapterView.OnItemSelectedListener {
+        override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+            val holeNumber = parent!!.getItemAtPosition(position) as Int
+            viewModel.setHole(holeNumber)
+        }
+
+        override fun onNothingSelected(parent: AdapterView<*>?) {}
+    }
+
+    class ParChangeListener(private val viewModel: RoundReportingViewModel) : AdapterView.OnItemSelectedListener {
+        override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+            val parNumber = parent!!.getItemAtPosition(position) as Int
+            viewModel.setPar(parNumber)
+        }
+
+        override fun onNothingSelected(parent: AdapterView<*>?) {}
     }
 }

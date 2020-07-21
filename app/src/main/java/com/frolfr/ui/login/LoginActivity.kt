@@ -111,6 +111,7 @@ class LoginActivity : AppCompatActivity() {
         ).show()
 
         val intent = Intent(applicationContext, MainActivity::class.java)
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent)
     }
 

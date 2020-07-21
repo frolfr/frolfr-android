@@ -31,13 +31,12 @@
                 android:text="Hole"
                 android:textSize="36sp" />
 
-            <TextView
-                android:id="@+id/text_hole_number"
+            <Spinner
+                android:id="@+id/spinner_hole"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="36sp"
-                android:text="@{String.valueOf(viewModel.currentHole)}"
-                tools:text="1" />
+                android:background="@null" />
+
         </LinearLayout>
 
         <LinearLayout
@@ -59,14 +58,11 @@
                 android:text="Par"
                 android:textSize="18sp" />
 
-            <TextView
-                android:id="@+id/text_hole_par_number"
+            <Spinner
+                android:id="@+id/spinner_par"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:textSize="18sp"
-                android:text="@{String.valueOf(viewModel.currentPar)}"
-                tools:text="4" />
+                android:background="@null" />
         </LinearLayout>
 
         <LinearLayout

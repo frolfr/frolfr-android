@@ -19,8 +19,8 @@ class RoundReportingViewModel(private val roundId: Int) : ViewModel() {
     val round: LiveData<Round>
         get() = _round
 
-    private val _parMap = MutableLiveData<Map<Int, Int>>()
-    val parMap: LiveData<Map<Int, Int>>
+    private val _parMap = MutableLiveData<MutableMap<Int, Int>>()
+    val parMap: LiveData<MutableMap<Int, Int>>
         get() = _parMap
 
     private val _currentPar = MutableLiveData<Int>()
@@ -35,6 +35,8 @@ class RoundReportingViewModel(private val roundId: Int) : ViewModel() {
     val userStrokes: ObservableMap<Pair<Int, Int>, Int>
         get() = _userStrokes
 
+    // TODO Do I need to unsubscribe the UI from observing this guy? Is that even possible?
+    //      Would it be better to go back to the RecyclerView and try out 2-way data binding?
     val currentUserStrokes = ObservableArrayMap<Int, Int>()
 
     private val _error = MutableLiveData<String>()
@@ -193,6 +195,15 @@ class RoundReportingViewModel(private val roundId: Int) : ViewModel() {
 
     fun onRoundScorecardNavigated() {
         _navigateToRoundScorecard.value = null
+    }
+
+    fun setHole(holeNumber: Int) {
+        _currentHole.value = holeNumber
+        onHoleChanged()
+    }
+
+    fun setPar(parNumber: Int) {
+        _parMap.value?.put(currentHole.value!!, parNumber)
     }
 
 }
