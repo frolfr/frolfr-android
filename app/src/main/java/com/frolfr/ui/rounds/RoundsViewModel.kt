@@ -14,6 +14,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
+import moe.banana.jsonapi2.ArrayDocument
 
 class RoundsViewModel : ViewModel() {
 
@@ -63,24 +64,36 @@ class RoundsViewModel : ViewModel() {
 
     fun loadRoundsPage(pageNum: Int) {
         coroutineScope.launch {
-            try {
-                val userId = FrolfrAuthorization.userId
-                val roundsDocument = FrolfrApi.retrofitService.rounds(pageNum, PAGE_SIZE, userId)
+            val roundsDocument = loadRoundsPageCoroutine(pageNum)
+            rounds.value = rounds.value?.plus(roundsDocument)
+            val paginationLinks = roundsDocument.links.get<PaginationLinks>(PaginationLinksAdapter()) as PaginationLinks
+            hasNextPage = paginationLinks.hasNextPage()
+        }
+    }
 
-                rounds.value = rounds.value?.plus(roundsDocument)
-
-                val paginationLinks = roundsDocument.links.get<PaginationLinks>(PaginationLinksAdapter()) as PaginationLinks
-                hasNextPage = paginationLinks.hasNextPage()
-
-                _refreshComplete.value = true
-            } catch (t: Throwable) {
-                Log.i("frolfrRounds", "Got error result", t)
-            }
+    private suspend fun loadRoundsPageCoroutine(pageNum: Int): ArrayDocument<Round> {
+        try {
+            val userId = FrolfrAuthorization.userId
+            return FrolfrApi.retrofitService.rounds(pageNum, PAGE_SIZE, userId)
+        } catch (t: Throwable) {
+            Log.i("frolfrRounds", "Got error result", t)
+            throw t
         }
     }
 
     fun refreshRounds() {
-        loadRoundsPage(1)   // TODO do not want to duplicate rounds, but want to update scores of existing rounds..
+        coroutineScope.launch {
+            val roundsDocument = loadRoundsPageCoroutine(1)
+            val otherExistingRounds = rounds.value?.filter { round ->
+                !roundsDocument.contains(round)
+            }
+            if (otherExistingRounds != null) {
+                rounds.value = roundsDocument.plus(otherExistingRounds)
+            } else {
+                rounds.value = roundsDocument
+            }
+            _refreshComplete.value = true
+        }
     }
 
     fun onRefreshCompleteAcknowledged() {

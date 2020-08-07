@@ -58,7 +58,7 @@ class RoundsFragment : Fragment() {
             if (refreshComplete) {
                 binding.swiperefreshRounds.isRefreshing = false
                 roundsViewModel.onRefreshCompleteAcknowledged()
-                binding.viewRounds.layoutManager?.scrollToPosition(0)   // TODO not working
+                binding.viewRounds.layoutManager?.scrollToPosition(0)
             }
         })
 
