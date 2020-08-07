@@ -1,16 +1,16 @@
 package com.frolfr.ui.rounds
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.frolfr.R
 import com.frolfr.databinding.FragmentRoundsBinding
+import com.frolfr.ui.scorecard.ScorecardFragmentDirections
 
 class RoundsFragment : Fragment() {
 
@@ -51,6 +51,32 @@ class RoundsFragment : Fragment() {
 
         binding.viewRounds.adapter = roundAdapter
 
+        binding.swiperefreshRounds.setOnRefreshListener {
+            roundsViewModel.refreshRounds()
+        }
+        roundsViewModel.refreshComplete.observe(viewLifecycleOwner, Observer { refreshComplete ->
+            if (refreshComplete) {
+                binding.swiperefreshRounds.isRefreshing = false
+                roundsViewModel.onRefreshCompleteAcknowledged()
+                binding.viewRounds.layoutManager?.scrollToPosition(0)   // TODO not working
+            }
+        })
+
         return binding.root
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, menuInflater: MenuInflater) {
+        menuInflater.inflate(R.menu.rounds, menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.action_refresh_rounds -> {
+                binding.swiperefreshRounds.isRefreshing = true
+                roundsViewModel.refreshRounds()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
     }
 }

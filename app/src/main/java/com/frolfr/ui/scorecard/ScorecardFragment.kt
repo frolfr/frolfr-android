@@ -1,19 +1,19 @@
 package com.frolfr.ui.scorecard
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.frolfr.R
 import com.frolfr.databinding.FragmentScorecardBinding
+import com.frolfr.ui.courses.CoursesFragmentDirections
+import com.frolfr.ui.data.LoginDataSource
 import kotlin.math.ceil
 import kotlin.properties.Delegates
-
 
 class ScorecardFragment : Fragment() {
 
@@ -51,7 +51,27 @@ class ScorecardFragment : Fragment() {
             }
         })
 
+        setHasOptionsMenu(true)
+
         return binding.root
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, menuInflater: MenuInflater) {
+        menuInflater.inflate(R.menu.scorecard, menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.action_edit_round -> {
+                 findNavController().navigate(
+                    ScorecardFragmentDirections.actionScorecardFragmentToRoundReportingFragment(
+                        roundId
+                    )
+                )
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
     }
 
     private fun loadScorecardSections(scorecard: Scorecard) {

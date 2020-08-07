@@ -63,6 +63,9 @@
         <argument
             android:name="roundId"
             app:argType="integer" />
+        <action
+            android:id="@+id/action_scorecardFragment_to_roundReportingFragment"
+            app:destination="@id/roundReportingFragment" />
     </fragment>
     <fragment
         android:id="@+id/createRoundFragment"
@@ -89,4 +92,12 @@
             android:id="@+id/action_roundReportingFragment_to_scorecardFragment"
             app:destination="@id/scorecardFragment" />
     </fragment>
+    <activity
+        android:id="@+id/loginActivity"
+        android:name="com.frolfr.ui.login.LoginActivity"
+        android:label="activity_login"
+        tools:layout="@layout/activity_login" />
+    <action
+        android:id="@+id/action_global_loginActivity"
+        app:destination="@id/loginActivity" />
 </navigation>

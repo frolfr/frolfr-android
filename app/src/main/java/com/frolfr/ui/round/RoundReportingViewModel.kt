@@ -70,9 +70,16 @@ class RoundReportingViewModel(private val roundId: Int) : ViewModel() {
                     (_parMap.value as MutableMap<Int, Int>)[index + 1] = turn.par
                 }
 
-                round.getScorecards().forEach {
-                    val scorecardUser = FrolfrApi.retrofitService.scorecardUser(it.id.toInt())
-                    scorecardToUserMap[it.id.toInt()] = scorecardUser.id.toInt()
+                round.getScorecards().forEach { scorecard ->
+                    val scorecardUser = FrolfrApi.retrofitService.scorecardUser(scorecard.id.toInt())
+                    scorecardToUserMap[scorecard.id.toInt()] = scorecardUser.id.toInt()
+
+                    scorecard.getTurns().forEach { turn ->
+                        if (turn.strokes != null) {
+                            userStrokes[Pair(scorecardUser.id.toInt(), turn.holeNumber)] =
+                                turn.strokes
+                        }
+                    }
                 }
 
                 _round.value = round
@@ -154,15 +161,19 @@ class RoundReportingViewModel(private val roundId: Int) : ViewModel() {
             val scorecard = round.value!!.getScorecards().find { scorecard ->
                 scorecardToUserMap[scorecard.id.toInt()] == user.id.toInt()
             }
-            val existingTurn = scorecard!!.getTurns()[currentHole.value!!.minus(1)]
+            val currentTurn = scorecard!!.getTurns().find { turn ->
+                turn.holeNumber == currentHole.value!!
+            }
 
             val turn = Turn2()
-            turn.id = existingTurn.id
-            turn.holeNumber = currentHole.value!!
-            turn.par = getPar()
+            turn.id = currentTurn!!.id
+            turn.holeNumber = currentTurn.holeNumber
+            turn.par = currentPar.value!!
             turn.strokes = userStrokes
 
-            turns.add(turn)
+            if (currentTurn.par != turn.par || currentTurn.strokes != turn.strokes) {
+                turns.add(turn)
+            }
         }
 
         coroutineScope.launch {

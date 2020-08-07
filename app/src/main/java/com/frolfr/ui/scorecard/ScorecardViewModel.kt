@@ -53,18 +53,16 @@ class ScorecardViewModel(private val roundId: Int) : ViewModel() {
     fun getParStr(sectionNum: Int, holeIndex: Int): String {
         val holeNumber = holeNumFromSectionAndHoleIndex(sectionNum, holeIndex)
         if (holeNumber <= scorecard.value!!.holeMeta.size) {
-            return (scorecard.value!!.holeMeta[holeNumber] ?: error("")).par.toString()
+            return scorecard.value!!.holeMeta[holeNumber]?.par.toString()
         }
         return ""
     }
 
     fun getUserHoleScore(sectionNum: Int, holeIndex: Int, userId: Int): String {
         val holeNumber = holeNumFromSectionAndHoleIndex(sectionNum, holeIndex)
-        if (holeNumber <= scorecard.value!!.holeMeta.size) {
-            val strokes = (scorecard.value!!.userHoleResults[Pair(userId, holeNumber)] ?: error("")).strokes
-            if (strokes != null) {
-                return strokes.toString()
-            }
+        val strokes = scorecard.value!!.userHoleResults[Pair(userId, holeNumber)]?.strokes
+        if (strokes != null) {
+            return strokes.toString()
         }
         return ""
     }
@@ -74,8 +72,8 @@ class ScorecardViewModel(private val roundId: Int) : ViewModel() {
         val holeNumberMax = min(holeNumFromSectionAndHoleIndex(sectionNum, 9), scorecard.value!!.holeMeta.size)
         var score = 0
         for (i in holeNumberMin..holeNumberMax) {
-            val par: Int = (scorecard.value!!.holeMeta[i] ?: error("")).par
-            val strokes: Int? = (scorecard.value!!.userHoleResults[Pair(userId, i)] ?: error("")).strokes
+            val par: Int = scorecard.value!!.holeMeta[i]!!.par
+            val strokes: Int? = scorecard.value!!.userHoleResults[Pair(userId, i)]?.strokes
             if (strokes != null) {
                 score += (strokes - par)
             }
@@ -120,8 +118,8 @@ class ScorecardViewModel(private val roundId: Int) : ViewModel() {
     fun getUserScore(userId: Int): Int {
         var score = 0
         for (i in 1..scorecard.value!!.holeMeta.size) {
-            val par: Int = (scorecard.value!!.holeMeta[i] ?: error("")).par
-            val strokes: Int? = (scorecard.value!!.userHoleResults[Pair(userId, i)] ?: error("")).strokes
+            val par: Int = scorecard.value!!.holeMeta[i]!!.par
+            val strokes: Int? = scorecard.value!!.userHoleResults[Pair(userId, i)]?.strokes
             if (strokes != null) {
                 score += (strokes - par)
             }
@@ -132,7 +130,7 @@ class ScorecardViewModel(private val roundId: Int) : ViewModel() {
     fun getUserStrokes(userId: Int): Int {
         var strokes = 0
         for (i in 1..scorecard.value!!.holeMeta.size) {
-            val holeStrokes: Int? = (scorecard.value!!.userHoleResults[Pair(userId, i)] ?: error("")).strokes
+            val holeStrokes: Int? = scorecard.value!!.userHoleResults[Pair(userId, i)]?.strokes
             if (holeStrokes != null) {
                 strokes += holeStrokes
             }
@@ -157,7 +155,7 @@ class ScorecardResponseAdapter(private val round: Round) {
             scorecard.getTurns().forEach { turn ->
                 holeMeta.putIfAbsent(turn.holeNumber, HoleMeta(turn.par))
                 userHoleResults[
-                    Pair(userIdByScorecardId[scorecard.id.toInt()] ?: error(""), turn.holeNumber)
+                    Pair(userIdByScorecardId[scorecard.id.toInt()]!!, turn.holeNumber)
                 ] = HoleResult(turn.strokes)
             }
         }

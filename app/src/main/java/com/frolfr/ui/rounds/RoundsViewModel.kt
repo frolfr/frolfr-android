@@ -1,6 +1,7 @@
 package com.frolfr.ui.rounds
 
 import android.util.Log
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.frolfr.api.FrolfrApi
@@ -27,8 +28,12 @@ class RoundsViewModel : ViewModel() {
     }
 
     private val _navigateToRoundDetail = MutableLiveData<Round>()
-    val navigateToRoundDetail
+    val navigateToRoundDetail: LiveData<Round>
         get() = _navigateToRoundDetail
+
+    private val _refreshComplete = MutableLiveData<Boolean>()
+    val refreshComplete: LiveData<Boolean>
+        get() = _refreshComplete
 
     private var viewModelJob = Job()
     private val coroutineScope = CoroutineScope(viewModelJob + Dispatchers.Main)
@@ -66,10 +71,20 @@ class RoundsViewModel : ViewModel() {
 
                 val paginationLinks = roundsDocument.links.get<PaginationLinks>(PaginationLinksAdapter()) as PaginationLinks
                 hasNextPage = paginationLinks.hasNextPage()
+
+                _refreshComplete.value = true
             } catch (t: Throwable) {
                 Log.i("frolfrRounds", "Got error result", t)
             }
         }
+    }
+
+    fun refreshRounds() {
+        loadRoundsPage(1)   // TODO do not want to duplicate rounds, but want to update scores of existing rounds..
+    }
+
+    fun onRefreshCompleteAcknowledged() {
+        _refreshComplete.value = false
     }
 
 }
