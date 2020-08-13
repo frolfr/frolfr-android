@@ -91,7 +91,16 @@ class MainActivity : AppCompatActivity() {
             userNameTextView.text = "${user?.nameFirst} ${user?.nameLast}".trim()
         })
 
-        userViewModel.setupCurrentUser()
+        try {
+            userViewModel.setupCurrentUser()
+        } catch (t: Throwable) {
+            logout()
+        }
+    }
+
+    private fun logout() {
+        LoginDataSource(applicationContext).logout()
+        navigateToLoginActivity()
     }
 
     private fun navigateToLoginActivity() {
@@ -109,8 +118,7 @@ class MainActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.action_logout -> {
-                LoginDataSource(applicationContext).logout()
-                navigateToLoginActivity()
+                logout()
                 true
             }
             else -> super.onOptionsItemSelected(item)

@@ -66,8 +66,8 @@ class RoundReportingViewModel(private val roundId: Int) : ViewModel() {
                 val round = FrolfrApi.retrofitService.round(roundId)
 
                 _parMap.value = mutableMapOf()
-                round.getScorecards()[0].getTurns().forEachIndexed { index, turn ->
-                    (_parMap.value as MutableMap<Int, Int>)[index + 1] = turn.par
+                round.getScorecards()[0].getTurns().forEach { turn ->
+                    (_parMap.value as MutableMap<Int, Int>)[turn.holeNumber] = turn.par
                 }
 
                 round.getScorecards().forEach { scorecard ->
@@ -215,6 +215,7 @@ class RoundReportingViewModel(private val roundId: Int) : ViewModel() {
 
     fun setPar(parNumber: Int) {
         _parMap.value?.put(currentHole.value!!, parNumber)
+        _currentPar.value = parNumber
     }
 
 }

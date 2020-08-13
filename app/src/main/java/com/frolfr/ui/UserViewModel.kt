@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import com.frolfr.api.FrolfrApi
 import com.frolfr.api.FrolfrAuthorization
 import com.frolfr.api.model.User
+import com.frolfr.ui.data.LoginDataSource
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -37,6 +38,7 @@ class UserViewModel : ViewModel() {
                 )
             } catch (t: Throwable) {
                 Log.i("frolfrCurrentUser", "Got error result", t)
+                throw t
             }
         }
     }
