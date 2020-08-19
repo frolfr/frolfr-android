@@ -27,7 +27,6 @@ import com.frolfr.ui.data.LoginDataSource
 import com.frolfr.ui.login.LoginActivity
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.navigation.NavigationView
-import com.google.android.material.snackbar.Snackbar
 
 class MainActivity : AppCompatActivity() {
 
@@ -44,7 +43,8 @@ class MainActivity : AppCompatActivity() {
         )
         val existingAuthToken =
             preferences.getString(PreferenceKeys.AuthKeys.TOKEN.toString(), null)
-        if (existingAuthToken == null) {
+        val authTokenEnv = preferences.getString(PreferenceKeys.AuthKeys.ENV.toString(), null)
+        if (existingAuthToken == null || authTokenEnv == null || authTokenEnv != BuildConfig.BUILD_TYPE) {
             navigateToLoginActivity()
             return
         } else {

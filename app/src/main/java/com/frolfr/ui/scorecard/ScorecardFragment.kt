@@ -10,8 +10,6 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.frolfr.R
 import com.frolfr.databinding.FragmentScorecardBinding
-import com.frolfr.ui.courses.CoursesFragmentDirections
-import com.frolfr.ui.data.LoginDataSource
 import kotlin.math.ceil
 import kotlin.properties.Delegates
 

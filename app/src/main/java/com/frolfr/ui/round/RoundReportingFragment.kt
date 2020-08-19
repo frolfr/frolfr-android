@@ -18,6 +18,7 @@ import com.bumptech.glide.request.RequestOptions
 import com.frolfr.R
 import com.frolfr.databinding.FragmentHoleInputBinding
 import com.frolfr.databinding.ViewUserHoleInputBinding
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class RoundReportingFragment : Fragment() {
 
@@ -36,6 +37,9 @@ class RoundReportingFragment : Fragment() {
             inflater, R.layout.fragment_hole_input, container, false
         )
         binding.setLifecycleOwner { lifecycle } // TODO why don't I need this elsewhere?
+
+        val fab: FloatingActionButton = activity!!.findViewById(R.id.fab)
+        fab.hide()
 
         val roundId = arguments!!.getInt("roundId")
 
@@ -144,5 +148,12 @@ class RoundReportingFragment : Fragment() {
         }
 
         override fun onNothingSelected(parent: AdapterView<*>?) {}
+    }
+
+    override fun onPause() {
+        super.onPause()
+
+        val fab: FloatingActionButton = activity!!.findViewById(R.id.fab)
+        fab.show()
     }
 }

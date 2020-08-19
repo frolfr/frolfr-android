@@ -13,11 +13,13 @@ import com.frolfr.R
 import com.frolfr.databinding.FragmentScorecardSectionBinding
 import kotlin.properties.Delegates
 
-class ScorecardSectionFragment() : Fragment() {
+class ScorecardSectionFragment : Fragment() {
 
     private lateinit var scorecardViewModel: ScorecardViewModel
 
     private lateinit var binding: FragmentScorecardSectionBinding
+
+    private var sectionLoaded = false
 
     private var roundId by Delegates.notNull<Int>()
     private var sectionIndex by Delegates.notNull<Int>()
@@ -50,15 +52,16 @@ class ScorecardSectionFragment() : Fragment() {
             scorecardViewModel.toggleSectionVisibility(sectionIndex)
         }
 
-        if (savedInstanceState == null) {
+        if (savedInstanceState == null && !sectionLoaded) {
             loadSectionScores()
         }
 
         return binding.root
     }
 
+    // TODO Would be nice if these scores updated (ie. clicking back from RoundReportingFragment)
+    //      Probably easier adding Room as a write-through cache
     private fun loadSectionScores() {
-
         val txn = childFragmentManager.beginTransaction()
 
         scorecardViewModel.scorecard.value?.users?.forEach { user ->
@@ -74,5 +77,7 @@ class ScorecardSectionFragment() : Fragment() {
         }
 
         txn.commit()
+
+        sectionLoaded = true
     }
 }

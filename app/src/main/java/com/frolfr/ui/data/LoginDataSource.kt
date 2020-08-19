@@ -2,6 +2,7 @@ package com.frolfr.ui.data
 
 import android.content.Context
 import android.util.Log
+import com.frolfr.BuildConfig
 import com.frolfr.api.FrolfrApi
 import com.frolfr.api.FrolfrAuth
 import com.frolfr.api.FrolfrAuthorization
@@ -28,6 +29,7 @@ class LoginDataSource(context: Context) {
                 .edit()
                 .putString(PreferenceKeys.AuthKeys.TOKEN.toString(), loginResponse.token)
                 .putString(PreferenceKeys.AuthKeys.EMAIL.toString(), email)
+                .putString(PreferenceKeys.AuthKeys.ENV.toString(), BuildConfig.BUILD_TYPE)
                 .commit()
 
             FrolfrAuthorization.authToken = loginResponse.token
@@ -50,6 +52,8 @@ class LoginDataSource(context: Context) {
         sharedPreferences
             .edit()
             .remove(PreferenceKeys.AuthKeys.TOKEN.toString())
+            .remove(PreferenceKeys.AuthKeys.EMAIL.toString())
+            .remove(PreferenceKeys.AuthKeys.ENV.toString())
             .commit()
     }
 }

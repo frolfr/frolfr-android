@@ -12,6 +12,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
+import java.lang.Math.min
 
 class RoundReportingViewModel(private val roundId: Int) : ViewModel() {
 
@@ -53,7 +54,6 @@ class RoundReportingViewModel(private val roundId: Int) : ViewModel() {
     private val coroutineScope = CoroutineScope(viewModelJob + Dispatchers.Main)
 
     init {
-        _currentHole.value = 1
         _error.value = null
         loadRound()
     }
@@ -70,6 +70,7 @@ class RoundReportingViewModel(private val roundId: Int) : ViewModel() {
                     (_parMap.value as MutableMap<Int, Int>)[turn.holeNumber] = turn.par
                 }
 
+                var minUnreportedHole = round.getCourse().holeCount + 1
                 round.getScorecards().forEach { scorecard ->
                     val scorecardUser = FrolfrApi.retrofitService.scorecardUser(scorecard.id.toInt())
                     scorecardToUserMap[scorecard.id.toInt()] = scorecardUser.id.toInt()
@@ -78,12 +79,15 @@ class RoundReportingViewModel(private val roundId: Int) : ViewModel() {
                         if (turn.strokes != null) {
                             userStrokes[Pair(scorecardUser.id.toInt(), turn.holeNumber)] =
                                 turn.strokes
+                        } else {
+                            minUnreportedHole = minUnreportedHole.coerceAtMost(turn.holeNumber)
                         }
                     }
                 }
 
                 _round.value = round
 
+                _currentHole.value = if (minUnreportedHole > round.getCourse().holeCount) 1 else minUnreportedHole
                 onHoleChanged()
 
                 Log.i("loadRound", "Loaded Round: $round")
@@ -184,7 +188,7 @@ class RoundReportingViewModel(private val roundId: Int) : ViewModel() {
 
                 val turnIds = turns.map { turn ->
                     turn.id
-                }.reduce { acc, string -> "${acc}\n${string}"}
+                }.fold("") { acc, string -> "${acc}\n${string}"}
 
                 Log.i("reportTurn", "All turns reported: $turnIds")
 
