@@ -80,6 +80,7 @@ class MainActivity : AppCompatActivity() {
         val userImageView = headerLayout.findViewById<ImageView>(R.id.navHeaderUserImage)
         val userNameTextView = headerLayout.findViewById<TextView>(R.id.navHeaderUserName)
 
+        // TODO we already have this info now - just pull it from memory
         userViewModel.currentUser.observe(this, Observer { user ->
             Glide.with(this).load(user?.avatarUrl?.toUri())
                 .apply(

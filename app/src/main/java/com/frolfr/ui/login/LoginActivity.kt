@@ -102,11 +102,11 @@ class LoginActivity : AppCompatActivity() {
 
     private fun updateUiWithUser(model: LoggedInUserView) {
         val welcome = getString(R.string.welcome)
-        val email = model.email
-        // TODO: welcome by first name instead -- needs another ajax call (could cache locally)
+        val name = model.name
+
         Toast.makeText(
             applicationContext,
-            "$welcome $email!",
+            "$welcome $name!",
             Toast.LENGTH_LONG
         ).show()
 

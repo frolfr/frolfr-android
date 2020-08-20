@@ -7,6 +7,7 @@ import com.frolfr.api.FrolfrApi
 import com.frolfr.api.FrolfrAuth
 import com.frolfr.api.FrolfrAuthorization
 import com.frolfr.api.model.LoginRequest
+import com.frolfr.api.model.User
 import com.frolfr.config.PreferenceKeys
 import com.frolfr.ui.data.model.LoggedInUser
 
@@ -35,10 +36,17 @@ class LoginDataSource(context: Context) {
             FrolfrAuthorization.authToken = loginResponse.token
             FrolfrAuthorization.email = email
 
+            val userResponse = FrolfrApi.retrofitService.currentUser()
+
+            FrolfrAuthorization.userId = userResponse.id.toInt()
+
             val loggedInUser =
                 LoggedInUser(
+                    userResponse.id.toInt(),
                     email,
-                    loginResponse.token
+                    loginResponse.token,
+                    userResponse.getName(),
+                    userResponse.avatarUrl
                 )
             Result.Success(loggedInUser)
 
