@@ -12,7 +12,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
-import java.lang.Math.min
 
 class RoundReportingViewModel(private val roundId: Int) : ViewModel() {
 
@@ -174,22 +173,22 @@ class RoundReportingViewModel(private val roundId: Int) : ViewModel() {
             val scorecard = round.value!!.getScorecards().find { scorecard ->
                 scorecardToUserMap[scorecard.id.toInt()] == user.id.toInt()
             }
-            val currentTurn = scorecard!!.getTurns().find { turn ->
+            val existingTurn = scorecard!!.getTurns().find { turn ->
                 turn.holeNumber == currentHole.value!!
             }
 
             val turn = Turn2()
-            turn.id = currentTurn!!.id
-            turn.holeNumber = currentTurn.holeNumber
+            turn.id = existingTurn!!.id
+            turn.holeNumber = existingTurn.holeNumber
             turn.par = currentPar.value!!
             turn.strokes = userStrokes
 
-            if (currentTurn.par != turn.par || currentTurn.strokes != turn.strokes) {
+            if (existingTurn.par != turn.par || existingTurn.strokes != turn.strokes) {
                 turns.add(turn)
 
-                userScoreChanges[user.id.toInt()] = userScoreChanges.getOrDefault(user.id.toInt(), 0)
-                    .minus(currentTurn.getScore())
-                    .plus(turn.getScore())
+                userScoreChanges[user.id.toInt()] = turn.getScore().minus(existingTurn.getScore())
+            } else {
+                userScoreChanges[user.id.toInt()] = 0
             }
         }
 
