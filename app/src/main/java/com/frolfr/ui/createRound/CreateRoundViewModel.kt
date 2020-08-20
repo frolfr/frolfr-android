@@ -44,6 +44,7 @@ class CreateRoundViewModel : ViewModel() {
     private val coroutineScope = CoroutineScope(viewModelJob + Dispatchers.Main)
 
     init {
+        _courses.value = mutableListOf()
         // TODO findNearbyCourses()
         loadCourses(1)
         loadUsers(1)
@@ -57,7 +58,7 @@ class CreateRoundViewModel : ViewModel() {
                     return@launch
                 }
 
-                _courses.value = _courses.value?.plus(courses) ?: courses
+                _courses.value = _courses.value?.plus(courses)
 
                 val paginationLinks = courses.first().document.links.get<PaginationLinks>(
                     PaginationLinksAdapter()

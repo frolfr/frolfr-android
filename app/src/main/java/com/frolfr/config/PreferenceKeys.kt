@@ -7,6 +7,7 @@ class PreferenceKeys {
     enum class AuthKeys {
         EMAIL,
         TOKEN,
-        ENV
+        ENV,
+        USER_ID
     }
 }

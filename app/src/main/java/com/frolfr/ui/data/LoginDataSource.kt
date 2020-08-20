@@ -26,19 +26,19 @@ class LoginDataSource(context: Context) {
         return try {
             val loginResponse = FrolfrAuth.retrofitService.login(loginRequest)
 
+            FrolfrAuthorization.authToken = loginResponse.token
+            FrolfrAuthorization.email = email
+
+            val userResponse = FrolfrApi.retrofitService.currentUser()
+            FrolfrAuthorization.userId = userResponse.id.toInt()
+
             sharedPreferences
                 .edit()
                 .putString(PreferenceKeys.AuthKeys.TOKEN.toString(), loginResponse.token)
                 .putString(PreferenceKeys.AuthKeys.EMAIL.toString(), email)
                 .putString(PreferenceKeys.AuthKeys.ENV.toString(), BuildConfig.BUILD_TYPE)
+                .putInt(PreferenceKeys.AuthKeys.USER_ID.toString(), userResponse.id.toInt())
                 .commit()
-
-            FrolfrAuthorization.authToken = loginResponse.token
-            FrolfrAuthorization.email = email
-
-            val userResponse = FrolfrApi.retrofitService.currentUser()
-
-            FrolfrAuthorization.userId = userResponse.id.toInt()
 
             val loggedInUser =
                 LoggedInUser(
@@ -62,6 +62,7 @@ class LoginDataSource(context: Context) {
             .remove(PreferenceKeys.AuthKeys.TOKEN.toString())
             .remove(PreferenceKeys.AuthKeys.EMAIL.toString())
             .remove(PreferenceKeys.AuthKeys.ENV.toString())
+            .remove(PreferenceKeys.AuthKeys.USER_ID.toString())
             .commit()
     }
 }

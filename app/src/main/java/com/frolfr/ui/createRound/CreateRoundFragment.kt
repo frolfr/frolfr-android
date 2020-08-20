@@ -44,6 +44,7 @@ class CreateRoundFragment : Fragment() {
         binding.spinnerCourses.onItemSelectedListener = courseSelectedListener
 
         viewModel.courses.observe(viewLifecycleOwner, Observer { courseList ->
+            coursesAdapter.clear()
             coursesAdapter.addAll(courseList)
         })
 

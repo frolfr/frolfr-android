@@ -50,8 +50,11 @@ class MainActivity : AppCompatActivity() {
         } else {
             val existingEmail =
                 preferences.getString(PreferenceKeys.AuthKeys.EMAIL.toString(), null)
+            val existingUserId =
+                preferences.getInt(PreferenceKeys.AuthKeys.USER_ID.toString(), -1)
             FrolfrAuthorization.authToken = existingAuthToken
             FrolfrAuthorization.email = existingEmail
+            FrolfrAuthorization.userId = existingUserId
         }
 
         setContentView(R.layout.activity_main)
