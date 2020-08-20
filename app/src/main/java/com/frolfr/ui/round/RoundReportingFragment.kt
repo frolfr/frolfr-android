@@ -81,6 +81,7 @@ class RoundReportingFragment : Fragment() {
                     )
                     userViewBindings.add(userViewBinding)
                     userViewBinding.userStrokes = viewModel.currentUserStrokes
+                    userViewBinding.userScores = viewModel.currentUserScores
                     userViewBinding.userId = user.id.toInt()
                     userViewBinding.buttonStrokesMinus.setOnClickListener {
                         viewModel.onStrokesMinusClicked(user.id.toInt())

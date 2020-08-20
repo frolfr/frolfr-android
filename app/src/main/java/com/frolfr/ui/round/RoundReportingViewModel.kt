@@ -39,6 +39,7 @@ class RoundReportingViewModel(private val roundId: Int) : ViewModel() {
     // TODO Do I need to unsubscribe the UI from observing this guy? Is that even possible?
     //      Would it be better to go back to the RecyclerView and try out 2-way data binding?
     val currentUserStrokes = ObservableArrayMap<Int, Int>()
+    val currentUserScores = ObservableArrayMap<Int, Int>()
 
     private val _error = MutableLiveData<String>()
     val error: LiveData<String>
@@ -70,6 +71,10 @@ class RoundReportingViewModel(private val roundId: Int) : ViewModel() {
                     (_parMap.value as MutableMap<Int, Int>)[turn.holeNumber] = turn.par
                 }
 
+                round.getUsers().forEach { user ->
+                    currentUserScores[user.id.toInt()] = 0;
+                }
+
                 var minUnreportedHole = round.getCourse().holeCount + 1
                 round.getScorecards().forEach { scorecard ->
                     val scorecardUser = FrolfrApi.retrofitService.scorecardUser(scorecard.id.toInt())
@@ -79,6 +84,8 @@ class RoundReportingViewModel(private val roundId: Int) : ViewModel() {
                         if (turn.strokes != null) {
                             userStrokes[Pair(scorecardUser.id.toInt(), turn.holeNumber)] =
                                 turn.strokes
+                            currentUserScores[scorecardUser.id.toInt()] =
+                                currentUserScores[scorecardUser.id.toInt()]?.plus(turn.getScore())
                         } else {
                             minUnreportedHole = minUnreportedHole.coerceAtMost(turn.holeNumber)
                         }
@@ -155,6 +162,8 @@ class RoundReportingViewModel(private val roundId: Int) : ViewModel() {
     fun onSubmitHoleClicked() {
         val turns: MutableList<Turn2> = mutableListOf()
 
+        val userScoreChanges = mutableMapOf<Int, Int>()
+
         for (user in round.value!!.getUsers()) {
             val userStrokes = getStrokesForUser(user.id.toInt())
             if (userStrokes == null || userStrokes < 1) {
@@ -177,6 +186,10 @@ class RoundReportingViewModel(private val roundId: Int) : ViewModel() {
 
             if (currentTurn.par != turn.par || currentTurn.strokes != turn.strokes) {
                 turns.add(turn)
+
+                userScoreChanges[user.id.toInt()] = userScoreChanges.getOrDefault(user.id.toInt(), 0)
+                    .minus(currentTurn.getScore())
+                    .plus(turn.getScore())
             }
         }
 
@@ -184,6 +197,11 @@ class RoundReportingViewModel(private val roundId: Int) : ViewModel() {
             try {
                 turns.forEach { turn ->
                     FrolfrApi.retrofitService.reportTurn(turn.id.toInt(), turn)
+                }
+
+                for (user in round.value!!.getUsers()) {
+                    currentUserScores[user.id.toInt()] = currentUserScores[user.id.toInt()]
+                        ?.plus(userScoreChanges[user.id.toInt()]!!)
                 }
 
                 val turnIds = turns.map { turn ->
