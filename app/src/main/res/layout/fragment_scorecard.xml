@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
         <variable
@@ -10,11 +11,28 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
         <LinearLayout
             android:id="@+id/layout_scorecard"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/text_course_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:textSize="18sp"
+                tools:text="Perkerson Park" />
+
+            <TextView
+                android:id="@+id/text_round_date"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:text="04/20/2020"
+                android:paddingBottom="8dp"
+                android:gravity="center_horizontal"/>
         </LinearLayout>
     </ScrollView>
 </layout>

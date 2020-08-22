@@ -11,12 +11,15 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.frolfr.R
 import com.frolfr.databinding.FragmentRoundsBinding
 import com.frolfr.ui.scorecard.ScorecardFragmentDirections
+import java.text.DateFormat
 
 class RoundsFragment : Fragment() {
 
     private lateinit var roundsViewModel: RoundsViewModel
 
     private lateinit var binding: FragmentRoundsBinding
+
+    private var roundDF = DateFormat.getDateInstance(2)
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -43,7 +46,11 @@ class RoundsFragment : Fragment() {
         roundsViewModel.navigateToRoundDetail.observe(viewLifecycleOwner, Observer { round ->
             round?.let {
                 this.findNavController().navigate(
-                    RoundsFragmentDirections.actionNavRoundsToScorecardFragment(round.id.toInt())
+                    RoundsFragmentDirections.actionNavRoundsToScorecardFragment(
+                        round.id.toInt(),
+                        round.getCourse().name,
+                        roundDF.format(round.createdAt)
+                    )
                 )
                 roundsViewModel.onRoundNavigated()
             }

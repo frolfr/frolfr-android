@@ -42,12 +42,12 @@ class UserCourseScorecardsFragment : Fragment() {
         })
 
         userCourseScorecardsViewModel.navigateToRoundDetail.observe(viewLifecycleOwner, Observer { scorecardId ->
-            scorecardId?.let {
-                this.findNavController().navigate(
-                    CourseFragmentDirections.actionCourseFragmentToScorecardFragment(
-                        scorecardId/*, arguments!!.getString("courseName")!!*/))
-                userCourseScorecardsViewModel.onRoundNavigated()
-            }
+//            scorecardId?.let {
+//                this.findNavController().navigate(
+//                    CourseFragmentDirections.actionCourseFragmentToScorecardFragment(
+//                        scorecardId/*, arguments!!.getString("courseName")!!*/))
+//                userCourseScorecardsViewModel.onRoundNavigated()
+//            }
         })
 
         binding.scorecardList.adapter = userScorecardAdapter

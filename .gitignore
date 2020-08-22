@@ -60,3 +60,4 @@ node_modules/
 .rpt2_cache/
 libraries/tools/kotlin-test-js-runner/lib/
 local.properties
+*.keystore

@@ -13,6 +13,11 @@
                       <LayoutPositions />
                     </value>
                   </entry>
+                  <entry key="action_global_loginActivity">
+                    <value>
+                      <LayoutPositions />
+                    </value>
+                  </entry>
                   <entry key="courseFragment">
                     <value>
                       <LayoutPositions>
@@ -163,6 +168,15 @@
                             <option name="y" value="-229" />
                           </Point>
                         </option>
+                        <option name="myPositions">
+                          <map>
+                            <entry key="action_scorecardFragment_to_roundReportingFragment">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
+                          </map>
+                        </option>
                       </LayoutPositions>
                     </value>
                   </entry>
@@ -172,7 +186,7 @@
                         <option name="myPosition">
                           <Point>
                             <option name="x" value="420" />
-                            <option name="y" value="5" />
+                            <option name="y" value="9" />
                           </Point>
                         </option>
                       </LayoutPositions>

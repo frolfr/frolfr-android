@@ -10,6 +10,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.frolfr.R
 import com.frolfr.databinding.FragmentScorecardBinding
+import java.text.DateFormat.getDateInstance
 import kotlin.math.ceil
 import kotlin.properties.Delegates
 
@@ -22,6 +23,8 @@ class ScorecardFragment : Fragment() {
     private var scorecardLoaded = false
 
     private var roundId by Delegates.notNull<Int>()
+    private var courseName by Delegates.notNull<String>()
+    private var roundDate by Delegates.notNull<String>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -35,6 +38,8 @@ class ScorecardFragment : Fragment() {
         val fragmentArgs by navArgs<ScorecardFragmentArgs>()
 
         roundId = fragmentArgs.roundId
+        courseName = fragmentArgs.courseName
+        roundDate = fragmentArgs.roundDate
 
         scorecardViewModel =
             ViewModelProviders.of(this, ScorecardViewModelFactory(roundId))
@@ -42,9 +47,12 @@ class ScorecardFragment : Fragment() {
 
         binding.scorecardViewModel = scorecardViewModel
 
+        binding.textCourseName.text = courseName
+        binding.textRoundDate.text = roundDate
+
         scorecardViewModel.scorecard.observe(viewLifecycleOwner, Observer {scorecard ->
             if (savedInstanceState == null && !scorecardLoaded) {
-                loadScorecardSections(scorecard)
+                loadContent(scorecard)
                 scorecardLoaded = true
             }
         })
@@ -72,7 +80,7 @@ class ScorecardFragment : Fragment() {
         }
     }
 
-    private fun loadScorecardSections(scorecard: Scorecard) {
+    private fun loadContent(scorecard: Scorecard) {
         val numSections = ceil(scorecard.holeMeta.size / 9.0).toInt()
         val txn = childFragmentManager
             .beginTransaction()

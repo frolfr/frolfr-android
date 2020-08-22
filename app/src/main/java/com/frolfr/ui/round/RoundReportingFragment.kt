@@ -122,12 +122,13 @@ class RoundReportingFragment : Fragment() {
         })
 
         viewModel.navigateToRoundScorecard.observe(viewLifecycleOwner, Observer { roundId ->
-            roundId?.let {
-                this.findNavController().navigate(
-                    RoundReportingFragmentDirections.actionRoundReportingFragmentToScorecardFragment(roundId)
-                )
-                viewModel.onRoundScorecardNavigated()
-            }
+            // TODO
+//            roundId?.let {
+//                this.findNavController().navigate(
+//                    RoundReportingFragmentDirections.actionRoundReportingFragmentToScorecardFragment(roundId)
+//                )
+//                viewModel.onRoundScorecardNavigated()
+//            }
         })
 
         return binding.root

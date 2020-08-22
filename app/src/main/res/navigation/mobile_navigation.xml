@@ -66,6 +66,10 @@
         <action
             android:id="@+id/action_scorecardFragment_to_roundReportingFragment"
             app:destination="@id/roundReportingFragment" />
+        <argument android:name="courseName"
+            app:argType="string" />
+        <argument android:name="roundDate"
+            app:argType="string" />
     </fragment>
     <fragment
         android:id="@+id/createRoundFragment"
