@@ -7,10 +7,10 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.TextView
 import com.frolfr.R
-import com.frolfr.api.model.Course2
+import com.frolfr.api.model.Course
 
 class CoursesAdapter(context: Context)
-    : ArrayAdapter<Course2>(context, R.layout.layout_course_item_dropdown_view, R.id.text_course_item_name) {
+    : ArrayAdapter<Course>(context, R.layout.layout_course_item_dropdown_view, R.id.text_course_item_name) {
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         val course = getItem(position) ?: return convertView!!

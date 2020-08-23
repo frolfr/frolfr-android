@@ -92,7 +92,7 @@ class MainActivity : AppCompatActivity() {
                         .placeholder(R.drawable.loading_animation)
                         .error(R.drawable.ic_broken_image)
                 ).into(userImageView)
-            userNameTextView.text = "${user?.nameFirst} ${user?.nameLast}".trim()
+            userNameTextView.text = "${user?.firstName} ${user?.lastName}".trim()
         })
 
         try {

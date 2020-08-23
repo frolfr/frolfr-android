@@ -12,8 +12,8 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import com.frolfr.R
-import com.frolfr.api.model.Course2
-import com.frolfr.api.model.User2
+import com.frolfr.api.model.Course
+import com.frolfr.api.model.User
 import com.frolfr.databinding.FragmentCreateRoundBinding
 
 class CreateRoundFragment : Fragment() {
@@ -101,13 +101,13 @@ class CreateRoundFragment : Fragment() {
     }
 }
 
-class PlayerSelectedListener(val selectedListener: (user: User2) -> Unit) :
+class PlayerSelectedListener(val selectedListener: (user: User) -> Unit) :
     AdapterView.OnItemSelectedListener, AdapterView.OnItemClickListener {
 
     override fun onNothingSelected(parent: AdapterView<*>?) {}
 
     override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-        val user = parent!!.getItemAtPosition(position) as User2
+        val user = parent!!.getItemAtPosition(position) as User
         selectedListener(user)
     }
 
@@ -116,7 +116,7 @@ class PlayerSelectedListener(val selectedListener: (user: User2) -> Unit) :
     }
 }
 
-class CourseSelectedListener(val selectedListener: (course: Course2?) -> Unit) :
+class CourseSelectedListener(val selectedListener: (course: Course?) -> Unit) :
     AdapterView.OnItemSelectedListener, AdapterView.OnItemClickListener {
 
     override fun onNothingSelected(parent: AdapterView<*>?) {
@@ -124,7 +124,7 @@ class CourseSelectedListener(val selectedListener: (course: Course2?) -> Unit) :
     }
 
     override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-        val course = parent!!.getItemAtPosition(position) as Course2
+        val course = parent!!.getItemAtPosition(position) as Course
         selectedListener(course)
     }
 

@@ -7,7 +7,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.frolfr.api.FrolfrApi
 import com.frolfr.api.model.Round
-import com.frolfr.api.model.Turn2
+import com.frolfr.api.model.Turn
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -159,7 +159,7 @@ class RoundReportingViewModel(private val roundId: Int) : ViewModel() {
     }
 
     fun onSubmitHoleClicked() {
-        val turns: MutableList<Turn2> = mutableListOf()
+        val turns: MutableList<Turn> = mutableListOf()
 
         val userScoreChanges = mutableMapOf<Int, Int>()
 
@@ -177,7 +177,7 @@ class RoundReportingViewModel(private val roundId: Int) : ViewModel() {
                 turn.holeNumber == currentHole.value!!
             }
 
-            val turn = Turn2()
+            val turn = Turn()
             turn.id = existingTurn!!.id
             turn.holeNumber = existingTurn.holeNumber
             turn.par = currentPar.value!!

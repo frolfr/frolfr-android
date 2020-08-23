@@ -10,33 +10,33 @@ class Round : Resource() {
     /** @Json not working w/ the jsonapi library... */
     @field:Json(name = "created-at") lateinit var createdAt: Date
 
-    private lateinit var users: HasMany<User2>
-    private lateinit var course: HasOne<Course2>
-    private lateinit var scorecards: HasMany<Scorecard2>
+    private lateinit var users: HasMany<User>
+    private lateinit var course: HasOne<Course>
+    private lateinit var scorecards: HasMany<Scorecard>
 
     @Transient
     private val userScoreMap = mutableMapOf<String, Int>()
 
-    fun getCourse(): Course2 {
+    fun getCourse(): Course {
         return course.get(document)
     }
 
-    fun setCourse(course: Course2) {
+    fun setCourse(course: Course) {
         this.course = HasOne("courses", course.id)
     }
 
-    fun getUsers(): List<User2> {
+    fun getUsers(): List<User> {
         return users.get(document)
     }
 
-    fun setUsers(users: List<User2>) {
+    fun setUsers(users: List<User>) {
         val userResourceIdentifiers = users.map { user ->
             ResourceIdentifier("users", user.id)
         }
         this.users = HasMany(*userResourceIdentifiers.toTypedArray())
     }
 
-    fun getScorecards(): List<Scorecard2> {
+    fun getScorecards(): List<Scorecard> {
         return scorecards.get(document)
     }
 

@@ -1,12 +1,30 @@
 package com.frolfr.api.model
 
 import com.squareup.moshi.Json
+import moe.banana.jsonapi2.JsonApi
+import moe.banana.jsonapi2.Resource
 
-data class User(
-    val id: Int,
-    val email: String,
-    @Json(name = "first_name") val nameFirst: String,
-    @Json(name = "middle_name") val nameMiddle: String?,
-    @Json(name = "last_name") val nameLast: String?,
-    @Json(name = "avatar_url") val avatarUrl: String?
-)
+@JsonApi(type = "users")
+class User : Resource {
+    lateinit var email: String
+    @field:Json(name = "first-name") lateinit var firstName: String
+    @field:Json(name = "last-name") var lastName: String? = null
+    @field:Json(name = "avatar-url") var avatarUrl: String? = null
+
+    constructor()
+
+    constructor(id: String, email: String, firstName: String, lastName: String?, avatarUrl: String?) {
+        this.id = id
+        this.email = email
+        this.firstName = firstName
+        this.lastName = lastName
+        this.avatarUrl = avatarUrl
+    }
+
+    fun getName(): String {
+        if (lastName != null) {
+            return "$firstName $lastName"
+        }
+        return firstName
+    }
+}

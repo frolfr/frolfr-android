@@ -41,10 +41,10 @@ val okHttpClient: OkHttpClient = OkHttpClient.Builder().apply {
 
 private val jsonApiAdapterFactory = ResourceAdapterFactory.builder()
     .add(Round::class.java)
-    .add(User2::class.java)
-    .add(Course2::class.java)
-    .add(Scorecard2::class.java)
-    .add(Turn2::class.java)
+    .add(User::class.java)
+    .add(Course::class.java)
+    .add(Scorecard::class.java)
+    .add(Turn::class.java)
     .add(Default::class.java)
     .build()
 
@@ -64,7 +64,7 @@ interface FrolfrApiService {
     @GET("users")
     suspend fun currentUser(
         @Query("me") me: Boolean = true
-    ): User2
+    ): User
 
     @GET("rounds")
     suspend fun rounds(
@@ -91,7 +91,7 @@ interface FrolfrApiService {
         @Query("page[size]") perPage: Int? = null,
         @Query("sort") sort: String? = null,
         @Query("include") includes: String? = null
-    ): List<Course2>
+    ): List<Course>
 
     @GET("users")
     suspend fun users(
@@ -99,45 +99,18 @@ interface FrolfrApiService {
         @Query("page[size]") perPage: Int? = null,
         @Query("sort") sort: String? = null,
         @Query("include") includes: String? = null
-    ): List<User2>
+    ): List<User>
 
     @PATCH("turns/{turn}")
     suspend fun reportTurn(
         @Path("turn") turnId: Int,
-        @Body turn: Turn2
-    ): Turn2
+        @Body turn: Turn
+    ): Turn
 
     @GET("scorecards/{scorecardId}/relationships/user")
     suspend fun scorecardUser(
         @Path("scorecardId") scorecardId: Int
-    ): User2
-
-
-    @GET("available_courses")
-    suspend fun availableCourses(): AvailableCoursesResponse
-
-    @GET("course_scorecards")
-    suspend fun userCourseScorecards(
-        @Query("course_id") courseId: Int
-    ): UserCourseScorecardsResponse
-
-    @GET("courses/{courseId}")
-    suspend fun course(
-        @Path("courseId") courseId: Int
-    ): CourseResponse
-
-    @GET("rounds/{roundId}")
-    suspend fun scorecard(
-        @Path("roundId") scorecardId: Int
-    ): ScorecardResponse
-
-    @GET("users/{userId}")
-    suspend fun user(
-        @Path("userId") userId: Int
-    ): UserResponse
-
-    @GET("friends")
-    suspend fun friends(): FriendsResponse
+    ): User
 }
 
 object FrolfrApi {

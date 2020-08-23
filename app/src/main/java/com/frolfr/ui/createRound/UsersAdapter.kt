@@ -9,13 +9,13 @@ import android.widget.Filter
 import android.widget.Filterable
 import android.widget.TextView
 import com.frolfr.R
-import com.frolfr.api.model.User2
+import com.frolfr.api.model.User
 
 class UsersAdapter(context: Context)
-    : ArrayAdapter<User2>(context, R.layout.layout_player_item, R.id.text_player_item_name), Filterable {
+    : ArrayAdapter<User>(context, R.layout.layout_player_item, R.id.text_player_item_name), Filterable {
 
-    var items: MutableList<User2> = mutableListOf()
-    val suggestions: MutableList<User2> = mutableListOf()
+    var items: MutableList<User> = mutableListOf()
+    val suggestions: MutableList<User> = mutableListOf()
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         val user = getItem(position) ?: return convertView!!
@@ -38,7 +38,7 @@ class UsersAdapter(context: Context)
 
     private var userFilter: Filter = object : Filter() {
         override fun convertResultToString(resultValue: Any): CharSequence {
-            val user = resultValue as User2
+            val user = resultValue as User
             return "${user.firstName} ${user.lastName}"
         }
 
@@ -70,7 +70,7 @@ class UsersAdapter(context: Context)
             results: FilterResults
         ) {
             if (results != null && results.count > 0) {
-                val filterList: List<User2> = results.values as ArrayList<User2>
+                val filterList: List<User> = results.values as ArrayList<User>
                 clear()
                 for (user in filterList) {
                     add(user)

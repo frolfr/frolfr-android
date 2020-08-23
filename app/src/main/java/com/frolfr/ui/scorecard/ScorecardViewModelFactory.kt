@@ -2,7 +2,6 @@ package com.frolfr.ui.scorecard
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.frolfr.api.model.Course
 
 class ScorecardViewModelFactory(private val roundId: Int) : ViewModelProvider.Factory {
 

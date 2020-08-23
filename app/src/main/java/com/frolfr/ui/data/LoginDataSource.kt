@@ -7,7 +7,6 @@ import com.frolfr.api.FrolfrApi
 import com.frolfr.api.FrolfrAuth
 import com.frolfr.api.FrolfrAuthorization
 import com.frolfr.api.model.LoginRequest
-import com.frolfr.api.model.User
 import com.frolfr.config.PreferenceKeys
 import com.frolfr.ui.data.model.LoggedInUser
 
