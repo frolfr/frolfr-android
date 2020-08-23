@@ -20,18 +20,23 @@ import java.io.IOException
 class FrolfrDatabaseTest {
 
     private lateinit var roundDAO: RoundDAO
+    private lateinit var courseDAO: CourseDAO
+
     private lateinit var db: FrolfrDatabase
 
     @Before
     fun createDb() {
         val context = InstrumentationRegistry.getInstrumentation().targetContext
+
         // Using an in-memory database because the information stored here disappears when the
         // process is killed.
         db = Room.inMemoryDatabaseBuilder(context, FrolfrDatabase::class.java)
             // Allowing main thread queries, just for testing.
             .allowMainThreadQueries()
             .build()
+
         roundDAO = db.roundDAO
+        courseDAO = db.courseDAO
     }
 
     @After
@@ -43,9 +48,21 @@ class FrolfrDatabaseTest {
     @Test
     @Throws(Exception::class)
     fun insertAndGetRound() {
+        val course = CourseEntity()
+        courseDAO.insert(course)
+        val round = RoundEntity()
+        round.courseId = 0
+        roundDAO.insert(round)
+        val round2 = roundDAO.get(0)
+        assertEquals(false, round2?.round?.isComplete)
+    }
+
+    @Test
+    @Throws(Exception::class)
+    fun insertAndGetCurrentRound() {
         val round = RoundEntity()
         roundDAO.insert(round)
         val round2 = roundDAO.getCurrentRound()
-        assertEquals(round2?.isComplete, 0)
+        assertEquals(false, round2?.isComplete)
     }
 }

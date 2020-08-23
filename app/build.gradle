@@ -70,7 +70,7 @@ dependencies {
     implementation "androidx.navigation:navigation-ui-ktx:$version_navigation"
     implementation "androidx.annotation:annotation:$version_annotation"
     testImplementation "junit:junit:$version_junit"
-    testImplementation "androidx.test.ext:junit:$version_test_junit"
+    androidTestImplementation "androidx.test.ext:junit:$version_test_junit"
     androidTestImplementation "androidx.test.espresso:espresso-core:$version_expresso"
 
     // Coroutines

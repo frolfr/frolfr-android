@@ -5,10 +5,12 @@ import androidx.room.Relation
 
 data class UserScorecardEntityWithUser(
     @Embedded
-    val userScorecard: UserScorecardEntity,
+    var userScorecard: UserScorecardEntity,
     @Relation(
         parentColumn = "userId",
         entityColumn = "id"
     )
-    val user: UserEntity
-)
+    var user: UserEntity
+) {
+    constructor() : this(UserScorecardEntity(), UserEntity())
+}

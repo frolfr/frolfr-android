@@ -9,6 +9,7 @@ import androidx.room.RoomDatabase
     version = 1,
     exportSchema = false,
     entities = [
+        CourseEntity::class,
         RoundEntity::class,
         RoundHoleEntity::class,
         TurnEntity::class,
@@ -18,6 +19,7 @@ import androidx.room.RoomDatabase
 )
 abstract class FrolfrDatabase : RoomDatabase() {
     abstract val roundDAO: RoundDAO
+    abstract val courseDAO: CourseDAO
 
     companion object {
         @Volatile

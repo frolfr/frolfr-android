@@ -5,15 +5,18 @@ import androidx.room.Relation
 
 data class RoundWithRelations(
     @Embedded
-    val round: RoundEntity,
+    var round: RoundEntity,
     @Relation(
         parentColumn = "courseId",
         entityColumn = "id"
     )
-    val course: CourseEntity,
+    var course: CourseEntity,
     @Relation(
         parentColumn = "id",
+        entity = UserScorecardEntity::class,
         entityColumn = "roundId"
     )
-    val userScorecards: List<UserScorecardEntityWithUser>
-)
+    var userScorecards: List<UserScorecardEntityWithUser>
+) {
+    constructor() : this(RoundEntity(), CourseEntity(), emptyList<UserScorecardEntityWithUser>())
+}
