@@ -19,8 +19,6 @@ class ScorecardSectionFragment : Fragment() {
 
     private lateinit var binding: FragmentScorecardSectionBinding
 
-    private var sectionLoaded = false
-
     private var roundId by Delegates.notNull<Int>()
     private var sectionIndex by Delegates.notNull<Int>()
 
@@ -52,7 +50,7 @@ class ScorecardSectionFragment : Fragment() {
             scorecardViewModel.toggleSectionVisibility(sectionIndex)
         }
 
-        if (savedInstanceState == null && !sectionLoaded) {
+        if (savedInstanceState == null) {
             loadSectionScores()
         }
 
@@ -62,6 +60,11 @@ class ScorecardSectionFragment : Fragment() {
     // TODO Would be nice if these scores updated (ie. clicking back from RoundReportingFragment)
     //      Probably easier adding Room as a write-through cache
     private fun loadSectionScores() {
+        if (childFragmentManager.fragments.isNotEmpty()) {
+            // Already loaded
+            return
+        }
+
         val txn = childFragmentManager.beginTransaction()
 
         scorecardViewModel.scorecard.value?.users?.forEach { user ->
@@ -77,7 +80,5 @@ class ScorecardSectionFragment : Fragment() {
         }
 
         txn.commit()
-
-        sectionLoaded = true
     }
 }

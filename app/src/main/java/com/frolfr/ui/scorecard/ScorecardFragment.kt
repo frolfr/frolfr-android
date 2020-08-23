@@ -20,8 +20,6 @@ class ScorecardFragment : Fragment() {
 
     private lateinit var binding: FragmentScorecardBinding
 
-    private var scorecardLoaded = false
-
     private var roundId by Delegates.notNull<Int>()
     private var courseName by Delegates.notNull<String>()
     private var roundDate by Delegates.notNull<String>()
@@ -51,9 +49,8 @@ class ScorecardFragment : Fragment() {
         binding.textRoundDate.text = roundDate
 
         scorecardViewModel.scorecard.observe(viewLifecycleOwner, Observer {scorecard ->
-            if (savedInstanceState == null && !scorecardLoaded) {
+            if (savedInstanceState == null) {
                 loadContent(scorecard)
-                scorecardLoaded = true
             }
         })
 
@@ -81,6 +78,11 @@ class ScorecardFragment : Fragment() {
     }
 
     private fun loadContent(scorecard: Scorecard) {
+        if (childFragmentManager.fragments.isNotEmpty()) {
+            // Already loaded
+            return
+        }
+
         val numSections = ceil(scorecard.holeMeta.size / 9.0).toInt()
         val txn = childFragmentManager
             .beginTransaction()
