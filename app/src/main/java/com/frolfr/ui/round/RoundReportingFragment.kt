@@ -19,6 +19,7 @@ import com.frolfr.R
 import com.frolfr.databinding.FragmentHoleInputBinding
 import com.frolfr.databinding.ViewUserHoleInputBinding
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import java.text.DateFormat
 
 class RoundReportingFragment : Fragment() {
 
@@ -26,6 +27,8 @@ class RoundReportingFragment : Fragment() {
     private var userViewBindings: MutableList<ViewUserHoleInputBinding> = mutableListOf()
 
     private lateinit var viewModel: RoundReportingViewModel
+
+    private var roundDF = DateFormat.getDateInstance(2)
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -122,13 +125,16 @@ class RoundReportingFragment : Fragment() {
         })
 
         viewModel.navigateToRoundScorecard.observe(viewLifecycleOwner, Observer { roundId ->
-            // TODO
-//            roundId?.let {
-//                this.findNavController().navigate(
-//                    RoundReportingFragmentDirections.actionRoundReportingFragmentToScorecardFragment(roundId)
-//                )
-//                viewModel.onRoundScorecardNavigated()
-//            }
+            roundId?.let {
+                this.findNavController().navigate(
+                    RoundReportingFragmentDirections.actionRoundReportingFragmentToScorecardFragment(
+                        roundId,
+                        viewModel.round.value!!.getCourse().name,
+                        roundDF.format(viewModel.round.value!!.createdAt)
+                    )
+                )
+                viewModel.onRoundScorecardNavigated()
+            }
         })
 
         return binding.root
