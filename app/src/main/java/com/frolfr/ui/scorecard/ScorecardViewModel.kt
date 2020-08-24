@@ -6,9 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.frolfr.api.FrolfrApi
 import com.frolfr.api.model.Round
-import com.frolfr.api.model.ScorecardResponse
 import com.frolfr.api.model.User
-import com.frolfr.api.model.User2
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -167,7 +165,7 @@ class ScorecardResponseAdapter(private val round: Round) {
 data class Scorecard(
     val roundId: Int,
     val holeMeta: Map<Int, HoleMeta>,
-    val users: Map<Int, User2>,
+    val users: Map<Int, User>,
     val userHoleResults: Map<Pair<Int, Int>, HoleResult>
 )
 data class HoleMeta(val par: Int)

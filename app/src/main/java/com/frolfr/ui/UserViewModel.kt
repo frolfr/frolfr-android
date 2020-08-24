@@ -7,7 +7,6 @@ import androidx.lifecycle.ViewModel
 import com.frolfr.api.FrolfrApi
 import com.frolfr.api.FrolfrAuthorization
 import com.frolfr.api.model.User
-import com.frolfr.ui.data.LoginDataSource
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -29,10 +28,9 @@ class UserViewModel : ViewModel() {
                 FrolfrAuthorization.userId = userResponse.id.toInt()
 
                 _currentUser.value = User(
-                    userResponse.id.toInt(),
+                    userResponse.id,
                     userResponse.email,
                     userResponse.firstName,
-                    null,
                     userResponse.lastName,
                     userResponse.avatarUrl
                 )

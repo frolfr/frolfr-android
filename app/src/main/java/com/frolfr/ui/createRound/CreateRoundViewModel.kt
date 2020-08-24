@@ -16,20 +16,20 @@ import kotlinx.coroutines.launch
 
 class CreateRoundViewModel : ViewModel() {
 
-    private val _courses = MutableLiveData<List<Course2>>()
-    val courses: LiveData<List<Course2>>
+    private val _courses = MutableLiveData<List<Course>>()
+    val courses: LiveData<List<Course>>
         get() = _courses
 
-    private val _users = MutableLiveData<List<User2>>()
-    val users: LiveData<List<User2>>
+    private val _users = MutableLiveData<List<User>>()
+    val users: LiveData<List<User>>
         get() = _users
 
-    private val _selectedCourse = MutableLiveData<Course2>()
-    val selectedCourse: LiveData<Course2>
+    private val _selectedCourse = MutableLiveData<Course>()
+    val selectedCourse: LiveData<Course>
         get() = _selectedCourse
 
-    private val _selectedUsers = MutableLiveData<List<User2>>()
-    val selectedUsers: LiveData<List<User2>>
+    private val _selectedUsers = MutableLiveData<List<User>>()
+    val selectedUsers: LiveData<List<User>>
         get() = _selectedUsers
 
     private val _round = MutableLiveData<Round>()
@@ -105,11 +105,11 @@ class CreateRoundViewModel : ViewModel() {
         }
     }
 
-    fun selectCourse(course: Course2?) {
+    fun selectCourse(course: Course?) {
         _selectedCourse.value = course
     }
 
-    fun addUser(user: User2) {
+    fun addUser(user: User) {
         if (selectedUsers.value == null) {
             _selectedUsers.value = mutableListOf(user)
         } else if (!selectedUsers.value?.contains(user)!!) {

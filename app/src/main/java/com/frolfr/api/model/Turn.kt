@@ -9,7 +9,7 @@ import java.util.*
 import kotlin.properties.Delegates
 
 @JsonApi(type = "turns")
-class Turn2 : Resource() {
+class Turn : Resource() {
     @field:Json(name = "hole-number") var holeNumber = 0
     @field:Json(name = "par") var par = 0
     @field:Json(name = "strokes") var strokes: Int? = null
