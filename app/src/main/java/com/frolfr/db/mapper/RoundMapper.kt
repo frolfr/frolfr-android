@@ -2,7 +2,7 @@ package com.frolfr.db.mapper
 
 import com.frolfr.db.model.RoundEntity
 import com.frolfr.db.model.RoundWithRelations
-import com.frolfr.domain.Round
+import com.frolfr.domain.model.Round
 import java.util.*
 
 class RoundMapper : Mapper<RoundWithRelations, Round> {

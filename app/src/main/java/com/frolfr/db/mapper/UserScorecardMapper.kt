@@ -2,7 +2,7 @@ package com.frolfr.db.mapper
 
 import com.frolfr.db.model.UserScorecardEntity
 import com.frolfr.db.model.UserScorecardEntityWithRelations
-import com.frolfr.domain.UserScorecard
+import com.frolfr.domain.model.UserScorecard
 
 class UserScorecardMapper : Mapper<UserScorecardEntityWithRelations, UserScorecard> {
 

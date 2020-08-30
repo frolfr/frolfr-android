@@ -9,7 +9,7 @@ import com.frolfr.db.dao.RoundDAO
 import com.frolfr.db.model.*
 
 @Database(
-    version = 1,
+    version = 2,
     exportSchema = false,
     entities = [
         CourseEntity::class,
@@ -28,12 +28,10 @@ abstract class FrolfrDatabase : RoomDatabase() {
         @Volatile
         private var INSTANCE: FrolfrDatabase? = null
 
-        fun getInstance(context: Context): FrolfrDatabase {
+        fun init(context: Context) {
             synchronized(this) {
-                var instance = INSTANCE
-
-                if (instance == null) {
-                    instance = Room.databaseBuilder(
+                if (INSTANCE == null) {
+                    INSTANCE = Room.databaseBuilder(
                         context.applicationContext,
                         FrolfrDatabase::class.java,
                         "frolfr"
@@ -41,9 +39,28 @@ abstract class FrolfrDatabase : RoomDatabase() {
                         .fallbackToDestructiveMigration()
                         .build()
                 }
-
-                return instance
             }
+        }
+
+        fun getInstance(context: Context): FrolfrDatabase {
+            if (INSTANCE == null) {
+                if (context == null) {
+                    throw Exception(
+                        "Cannot call getInstance without first calling init() or passing a context"
+                    )
+                }
+                init(context)
+            }
+            return INSTANCE!!
+        }
+
+        fun getInstance(): FrolfrDatabase {
+            if (INSTANCE == null) {
+                throw Exception(
+                    "Cannot call getInstance without first calling init() or passing a context"
+                )
+            }
+            return INSTANCE!!
         }
     }
 }

@@ -1,17 +1,17 @@
 package com.frolfr.db.dao
 
 import androidx.lifecycle.LiveData
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.Query
-import androidx.room.Transaction
+import androidx.room.*
 import com.frolfr.db.model.RoundEntity
 import com.frolfr.db.model.RoundWithRelations
 
 @Dao
 interface RoundDAO {
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     fun insert(round: RoundEntity)
+
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    fun insert(rounds: List<RoundEntity>)
 
     @Transaction
     @Query("SELECT * FROM Round WHERE id = :id")
@@ -25,6 +25,6 @@ interface RoundDAO {
     fun getCurrentRound(): RoundEntity?
 
     @Transaction
-    @Query("SELECT * FROM Round")
+    @Query("SELECT * FROM Round ORDER BY createdAt DESC")
     fun getAllRoundsFull(): LiveData<List<RoundWithRelations>>
 }

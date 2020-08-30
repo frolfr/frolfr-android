@@ -1,7 +1,7 @@
 package com.frolfr.db.mapper
 
 import com.frolfr.db.model.UserEntity
-import com.frolfr.domain.User
+import com.frolfr.domain.model.User
 
 class UserMapper : Mapper<UserEntity, User> {
     override fun fromModel(user: UserEntity): User {

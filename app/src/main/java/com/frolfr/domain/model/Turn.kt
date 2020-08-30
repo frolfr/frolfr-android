@@ -1,4 +1,4 @@
-package com.frolfr.domain
+package com.frolfr.domain.model
 
 data class Turn (
     val id: Int,

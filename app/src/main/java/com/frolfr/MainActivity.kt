@@ -22,6 +22,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.frolfr.api.FrolfrAuthorization
 import com.frolfr.config.PreferenceKeys
+import com.frolfr.db.FrolfrDatabase
 import com.frolfr.ui.UserViewModel
 import com.frolfr.ui.data.LoginDataSource
 import com.frolfr.ui.login.LoginActivity
@@ -36,6 +37,8 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        FrolfrDatabase.init(applicationContext)
 
         val preferences = getSharedPreferences(
             PreferenceKeys.AuthKeys::class.java.name,

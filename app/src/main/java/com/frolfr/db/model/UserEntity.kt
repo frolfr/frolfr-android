@@ -10,5 +10,5 @@ data class UserEntity(
     var nameFirst: String = "",
     var nameLast: String = "",
     var email: String = "",
-    var avatarUrl: String = ""
+    var avatarUrl: String? = null
 )

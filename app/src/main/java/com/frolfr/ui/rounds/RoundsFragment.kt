@@ -47,8 +47,8 @@ class RoundsFragment : Fragment() {
             round?.let {
                 this.findNavController().navigate(
                     RoundsFragmentDirections.actionNavRoundsToScorecardFragment(
-                        round.id.toInt(),
-                        round.getCourse().name,
+                        round.id,
+                        round.course.name,
                         roundDF.format(round.createdAt)
                     )
                 )

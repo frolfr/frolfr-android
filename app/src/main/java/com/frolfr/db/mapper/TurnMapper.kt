@@ -1,9 +1,7 @@
 package com.frolfr.db.mapper
 
 import com.frolfr.db.model.TurnEntity
-import com.frolfr.db.model.UserEntity
-import com.frolfr.domain.Turn
-import com.frolfr.domain.User
+import com.frolfr.domain.model.Turn
 
 class TurnMapper : Mapper<TurnEntity, Turn> {
     override fun fromModel(turn: TurnEntity): Turn {

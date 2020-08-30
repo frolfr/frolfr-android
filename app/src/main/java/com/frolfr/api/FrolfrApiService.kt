@@ -3,6 +3,7 @@ package com.frolfr.api
 import android.util.Log
 import com.frolfr.BuildConfig
 import com.frolfr.api.model.*
+import com.frolfr.config.PaginationConfig
 import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.JsonReader
 import com.squareup.moshi.JsonWriter
@@ -69,7 +70,7 @@ interface FrolfrApiService {
     @GET("rounds")
     suspend fun rounds(
         @Query("page[number]") page: Int? = null,
-        @Query("page[size]") perPage: Int? = null,
+        @Query("page[size]") perPage: Int? = PaginationConfig.DEFAULT_PAGE_SIZE,
         @Query("filter[userId]") userId: Int? = null,
         @Query("include") includes: String = "course,users,scorecards,scorecards.user,scorecards.turns"
     ): ArrayDocument<Round>

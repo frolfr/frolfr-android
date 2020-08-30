@@ -7,9 +7,9 @@ import com.frolfr.db.dao.CourseDAO
 import com.frolfr.db.dao.RoundDAO
 import com.frolfr.db.model.CourseEntity
 import com.frolfr.db.model.RoundEntity
-import com.frolfr.domain.Course
-import com.frolfr.domain.Round
-import com.frolfr.domain.RoundBL
+import com.frolfr.domain.model.Course
+import com.frolfr.domain.model.Round
+import com.frolfr.domain.bl.RoundBL
 import org.junit.Assert.assertEquals
 import org.junit.After
 import org.junit.Before

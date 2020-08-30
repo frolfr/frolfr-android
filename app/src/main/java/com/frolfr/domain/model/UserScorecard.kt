@@ -1,4 +1,4 @@
-package com.frolfr.domain
+package com.frolfr.domain.model
 
 class UserScorecard (
     val id: Int,

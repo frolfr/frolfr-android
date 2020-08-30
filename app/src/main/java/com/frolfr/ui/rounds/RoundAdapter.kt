@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.frolfr.R
-import com.frolfr.api.model.Round
+import com.frolfr.domain.model.Round
 import com.frolfr.databinding.ViewRoundItemBinding
 import com.frolfr.databinding.ViewUserScoreBinding
 
@@ -48,13 +48,14 @@ class RoundItemViewHolder private constructor(private val binding: ViewRoundItem
 
         val childLayoutInflater = LayoutInflater.from(binding.root.context)
         val round = binding.round!!
-        val users = round.getUsers()
-        for (user in users) {
-            val userScoreBinding = ViewUserScoreBinding.inflate(childLayoutInflater, binding.layoutRoundUsers, true)
-            val userId = user.id
-            userScoreBinding.userId = userId.toInt()
-            userScoreBinding.score = round.getUserScore(userId)
-            Glide.with(binding.root.context).load(user?.avatarUrl?.toUri())
+        val userScorecards = round.userScorecards
+        for (userScorecard in userScorecards) {
+            val userScoreBinding =
+                ViewUserScoreBinding.inflate(childLayoutInflater, binding.layoutRoundUsers, true)
+            val user = userScorecard.user
+            userScoreBinding.userId = user.id
+            userScoreBinding.score = userScorecard.score
+            Glide.with(binding.root.context).load(user.avatarUri?.toUri())
                 .apply(
                     RequestOptions()
                         .circleCrop()
