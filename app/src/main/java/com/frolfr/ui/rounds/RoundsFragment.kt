@@ -39,8 +39,12 @@ class RoundsFragment : Fragment() {
             round -> roundsViewModel.onRoundClicked(round)
         }, roundsViewModel.PageOnListEndListener())
 
-        roundsViewModel.rounds.observe(viewLifecycleOwner, Observer {
-            roundAdapter.submitList(roundsViewModel.rounds.value)
+        roundsViewModel.rounds.observe(viewLifecycleOwner, Observer { rounds ->
+            if (rounds == null) {
+                roundsViewModel.fetchRounds()
+            } else {
+                roundAdapter.submitList(rounds)
+            }
         })
 
         roundsViewModel.navigateToRoundDetail.observe(viewLifecycleOwner, Observer { round ->

@@ -17,7 +17,7 @@ interface RoundDAO {
     @Query("SELECT * FROM Round WHERE id = :id")
     fun get(id: Int): RoundWithRelations?
 
-    @Query("SELECT * FROM Round ORDER BY createdAt DESC")
+    @Query("SELECT * FROM Round") // " ORDER BY createdAt DESC")
     fun getAllRounds(): LiveData<List<RoundEntity>>
 
     // TODO only grab rounds from the current day

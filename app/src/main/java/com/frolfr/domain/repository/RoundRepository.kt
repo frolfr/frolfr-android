@@ -31,16 +31,16 @@ class RoundRepository {
     fun getRounds(): LiveData<List<Round>> {
         // TODO get rounds from db. If no rounds, fetch from API and store to db, then get
         val dbRounds = dbService.roundDAO.getAllRoundsFull()
-        val latestRound = dbRounds.value?.getOrNull(0)
-        if (latestRound == null) {
-            Log.i("getRounds", "No rounds in db, fetching from API")
-            coroutineScope.launch {
-                fetchAllRounds()
-            }
-        } else {
-            fetchRoundsSince(Date(latestRound?.round.createdAt))
-            // TODO may need to fetch older rounds if fetchAllRounds wasn't allowed to complete...
-        }
+//        val latestRound = dbRounds.value?.getOrNull(0)
+//        if (latestRound == null) {
+//            Log.i("getRounds", "No rounds in db, fetching from API")
+//            coroutineScope.launch {
+//                fetchAllRounds()
+//            }
+//        } else {
+//            fetchRoundsSince(Date(latestRound?.round.createdAt))
+//            // TODO may need to fetch older rounds if fetchAllRounds wasn't allowed to complete...
+//        }
         Log.i("getRounds", "Converting ${dbRounds.value?.size ?: 0} db rounds to domain")
         return Transformations.map(dbRounds) { dbRounds ->
             dbRounds.map { dbRound ->
@@ -50,7 +50,7 @@ class RoundRepository {
         }
     }
 
-    private suspend fun fetchAllRounds() {
+    suspend fun fetchAllRounds() {
         var page = 1
         do {
             Log.i("getRounds", "Fetching page $page of rounds from API")

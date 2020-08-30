@@ -36,7 +36,7 @@ abstract class FrolfrDatabase : RoomDatabase() {
                         FrolfrDatabase::class.java,
                         "frolfr"
                     )
-                        .fallbackToDestructiveMigration()
+//                        .fallbackToDestructiveMigration()
                         .build()
                 }
             }

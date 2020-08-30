@@ -5,13 +5,15 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import com.frolfr.db.dao.CourseDAO
 import com.frolfr.db.dao.RoundDAO
+import com.frolfr.db.mapper.CourseMapper
+import com.frolfr.db.mapper.RoundMapper
 import com.frolfr.db.model.CourseEntity
 import com.frolfr.db.model.RoundEntity
 import com.frolfr.domain.model.Course
 import com.frolfr.domain.model.Round
-import com.frolfr.domain.bl.RoundBL
 import org.junit.Assert.assertEquals
 import org.junit.After
+import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -31,6 +33,9 @@ class FrolfrDatabaseTest {
     private lateinit var courseDAO: CourseDAO
 
     private lateinit var db: FrolfrDatabase
+
+    private val courseMapper = CourseMapper()
+    private val roundMapper = RoundMapper()
 
     @Before
     fun createDb() {
@@ -92,10 +97,15 @@ class FrolfrDatabaseTest {
             emptyList(),
             false
         )
-        val roundBL = RoundBL(db)
-        roundBL.insertRound(round)
+        courseDAO.insert(courseMapper.toModel(course))
+        roundDAO.insert(roundMapper.toModel(round).round)
+
         val round2 = roundDAO.get(1)
         assertEquals(false, round2?.round?.isComplete)
         assertEquals("Perkerson Park", round2?.course?.name)
+
+//        val roundsFull = roundDAO.getAllRoundsFull()
+//        val rounds = roundDAO.getAllRounds()
+//        assertTrue(roundsFull.value?.isNotEmpty() ?: false)
     }
 }

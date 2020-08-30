@@ -73,6 +73,12 @@ class RoundsViewModel : ViewModel() {
         return roundsResponse
     }
 
+    fun fetchRounds() {
+        coroutineScope.launch {
+            RoundRepository().fetchAllRounds()
+        }
+    }
+
     fun loadRoundsPage(pageNum: Int) {
         // TODO
 //        coroutineScope.launch {
