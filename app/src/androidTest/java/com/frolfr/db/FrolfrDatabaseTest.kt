@@ -3,12 +3,20 @@ package com.frolfr.db
 import androidx.room.Room
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
+import com.frolfr.db.dao.CourseDAO
+import com.frolfr.db.dao.RoundDAO
+import com.frolfr.db.model.CourseEntity
+import com.frolfr.db.model.RoundEntity
+import com.frolfr.domain.Course
+import com.frolfr.domain.Round
+import com.frolfr.domain.RoundBL
 import org.junit.Assert.assertEquals
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import java.io.IOException
+import java.util.*
 
 /**
  * This is not meant to be a full set of tests. For simplicity, most of your samples do not
@@ -64,5 +72,30 @@ class FrolfrDatabaseTest {
         roundDAO.insert(round)
         val round2 = roundDAO.getCurrentRound()
         assertEquals(false, round2?.isComplete)
+    }
+
+    @Test
+    @Throws(Exception::class)
+    fun insertAndGetCurrentRoundWithRelations() {
+        val course = Course(
+            1,
+            "Perkerson Park",
+            18,
+            "Atlanta",
+            "GA",
+            "US"
+        )
+        val round = Round(
+            1,
+            Date(),
+            course,
+            emptyList(),
+            false
+        )
+        val roundBL = RoundBL(db)
+        roundBL.insertRound(round)
+        val round2 = roundDAO.get(1)
+        assertEquals(false, round2?.round?.isComplete)
+        assertEquals("Perkerson Park", round2?.course?.name)
     }
 }

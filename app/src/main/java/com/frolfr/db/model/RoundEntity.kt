@@ -1,4 +1,4 @@
-package com.frolfr.db;
+package com.frolfr.db.model;
 
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;

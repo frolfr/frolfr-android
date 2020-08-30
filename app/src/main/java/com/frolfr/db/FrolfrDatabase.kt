@@ -4,6 +4,9 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import com.frolfr.db.dao.CourseDAO
+import com.frolfr.db.dao.RoundDAO
+import com.frolfr.db.model.*
 
 @Database(
     version = 1,

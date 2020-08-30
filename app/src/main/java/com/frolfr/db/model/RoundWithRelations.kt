@@ -1,4 +1,4 @@
-package com.frolfr.db;
+package com.frolfr.db.model;
 
 import androidx.room.Embedded
 import androidx.room.Relation
@@ -16,7 +16,7 @@ data class RoundWithRelations(
         entity = UserScorecardEntity::class,
         entityColumn = "roundId"
     )
-    var userScorecards: List<UserScorecardEntityWithUser>
+    var userScorecards: List<UserScorecardEntityWithRelations>
 ) {
-    constructor() : this(RoundEntity(), CourseEntity(), emptyList<UserScorecardEntityWithUser>())
+    constructor() : this(RoundEntity(), CourseEntity(), emptyList<UserScorecardEntityWithRelations>())
 }

@@ -1,4 +1,4 @@
-package com.frolfr.db;
+package com.frolfr.db.model;
 
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
@@ -7,7 +7,7 @@ import androidx.room.PrimaryKey;
 data class TurnEntity(
     @PrimaryKey
     var id: Int = 0,
-    var roundHoleId: Int = 0,
-    var userId: Int = 0,
+    var userScorecardId: Int = 0,
+    var par: Int = 0,
     var strokes: Int = 0
 )
