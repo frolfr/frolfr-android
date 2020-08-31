@@ -1,14 +1,14 @@
 package com.frolfr.domain.repository
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations
 import com.frolfr.api.FrolfrApi
-import com.frolfr.api.FrolfrAuthorization
 import com.frolfr.api.PaginationLinksAdapter
 import com.frolfr.api.model.PaginationLinks
+import com.frolfr.api.model.User
 import com.frolfr.db.FrolfrDatabase
 import com.frolfr.db.mapper.RoundMapper
+import com.frolfr.domain.model.Course
 import com.frolfr.domain.model.Round
 import java.util.*
 
@@ -34,8 +34,7 @@ class RoundRepository {
     suspend fun fetchAllRounds() {
         var page = 1
         do {
-            Log.i("getRounds", "Fetching page $page of rounds from API")
-            val roundsDocument = apiService.rounds(page++, 15, FrolfrAuthorization.userId)
+            val roundsDocument = apiService.rounds(page++)
             val paginationLinks = roundsDocument.links
                 .get<PaginationLinks>(PaginationLinksAdapter()) as PaginationLinks
 
@@ -47,14 +46,14 @@ class RoundRepository {
     suspend fun fetchRoundsSince(date: Date) {
         var page = 1
         do {
-            Log.i("getRoundsSince", "Fetching page $page of rounds from API")
-            val roundsDocument = apiService.rounds(page++, 15, FrolfrAuthorization.userId)
+            val roundsDocument = apiService.rounds(page++, sort = "-id")
             val paginationLinks = roundsDocument.links
                 .get<PaginationLinks>(PaginationLinksAdapter()) as PaginationLinks
 
             val rounds = roundsDocument.map { apiRoundMapper.toDomain(it) }
             val roundsSince = rounds.filter { it.createdAt > date }
             val endReached = roundsSince.isEmpty() || roundsSince.size < rounds.size
+
             persistRounds(roundsSince)
         } while (paginationLinks.hasNextPage() && !endReached)
     }
@@ -79,12 +78,26 @@ class RoundRepository {
         }
     }
 
+    private fun persistRound(round: Round) {
+        persistRounds(listOf(round))
+    }
+
     suspend fun fetchRoundsPage(page: Int) {
-        Log.i("getRounds", "Fetching page $page of rounds from API")
-        val roundsDocument = apiService.rounds(page, 15, FrolfrAuthorization.userId)
+        val roundsDocument = apiService.rounds(page)
 
         val rounds = roundsDocument.map { apiRoundMapper.toDomain(it) }
         persistRounds(rounds)
+    }
+
+    // TODO all inputs/outputs should be using domain models
+    suspend fun createRound(course: Course, users: List<User>): com.frolfr.api.model.Round {
+        val roundBody = com.frolfr.api.model.Round()
+        roundBody.setCourse(course.id)
+        roundBody.setUsers(users)
+        val apiRound = FrolfrApi.retrofitService.createRound(roundBody)
+        val round = apiRoundMapper.toDomain(apiRound)
+        persistRound(round)
+        return apiRound
     }
 
 }

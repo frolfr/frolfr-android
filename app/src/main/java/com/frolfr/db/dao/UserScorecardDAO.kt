@@ -13,7 +13,4 @@ interface UserScorecardDAO {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(userScorecards: List<UserScorecardEntity>)
-
-    @Query("SELECT * FROM UserScorecard WHERE userId IN (:userIds) AND roundId IN (:roundIds)")
-    fun getByUserAndRound(userIds: List<Int>, roundIds: List<Int>): List<UserScorecardEntity>
 }

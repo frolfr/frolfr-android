@@ -13,25 +13,17 @@ import com.frolfr.domain.model.Round
 import com.frolfr.databinding.ViewRoundItemBinding
 import com.frolfr.databinding.ViewUserScoreBinding
 
-class RoundAdapter(private val clickListener: RoundClickListener, private val listEndListener: ListEndListener) :
+class RoundAdapter(private val clickListener: RoundClickListener) :
     ListAdapter<Round, RoundItemViewHolder>(RoundDiffCallback()) {
 
     override fun onBindViewHolder(holder: RoundItemViewHolder, position: Int) {
         val round = getItem(position)
         holder.bind(round, clickListener)
-        if (position == (itemCount - 1)) {
-            listEndListener.onListEnd()
-        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RoundItemViewHolder {
         return RoundItemViewHolder.from(parent)
     }
-
-}
-
-abstract class ListEndListener {
-    abstract fun onListEnd();
 }
 
 class RoundItemViewHolder private constructor(private val binding: ViewRoundItemBinding) :

@@ -12,9 +12,10 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import com.frolfr.R
-import com.frolfr.api.model.Course
+import com.frolfr.domain.model.Course
 import com.frolfr.api.model.User
 import com.frolfr.databinding.FragmentCreateRoundBinding
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class CreateRoundFragment : Fragment() {
 
@@ -35,6 +36,9 @@ class CreateRoundFragment : Fragment() {
 
         binding.viewModel = viewModel
 
+        val fab: FloatingActionButton = activity!!.findViewById(R.id.fab)
+        fab.hide()
+
         val courseSelectedListener = CourseSelectedListener { course ->
             viewModel.selectCourse(course)
         }
@@ -44,8 +48,16 @@ class CreateRoundFragment : Fragment() {
         binding.spinnerCourses.onItemSelectedListener = courseSelectedListener
 
         viewModel.courses.observe(viewLifecycleOwner, Observer { courseList ->
-            coursesAdapter.clear()
-            coursesAdapter.addAll(courseList)
+
+            if (courseList.isEmpty() && !viewModel.fetchedCourses()) {
+                viewModel.fetchCourses()
+            } else {
+                coursesAdapter.clear()
+                coursesAdapter.addAll(courseList)
+                if (!viewModel.fetchedAdditionalCourses()) {
+                    viewModel.fetchAdditionalCourses()
+                }
+            }
         })
 
         val playersAdapter = UsersAdapter(context!!)
@@ -98,6 +110,13 @@ class CreateRoundFragment : Fragment() {
         })
 
         return binding.root
+    }
+
+    override fun onPause() {
+        super.onPause()
+
+        val fab: FloatingActionButton = activity!!.findViewById(R.id.fab)
+        fab.show()
     }
 }
 

@@ -21,8 +21,8 @@ class Round : Resource() {
         return course.get(document)
     }
 
-    fun setCourse(course: Course) {
-        this.course = HasOne("courses", course.id)
+    fun setCourse(id: Int) {
+        this.course = HasOne("courses", id.toString())
     }
 
     fun getUsers(): List<User> {

@@ -71,7 +71,8 @@ interface FrolfrApiService {
     suspend fun rounds(
         @Query("page[number]") page: Int? = null,
         @Query("page[size]") perPage: Int? = PaginationConfig.DEFAULT_PAGE_SIZE,
-        @Query("filter[userId]") userId: Int? = null,
+        @Query("filter[userId]") userId: Int? = FrolfrAuthorization.userId,
+        @Query("sort") sort: String? = "id",
         @Query("include") includes: String = "course,users,scorecards,scorecards.user,scorecards.turns"
     ): ArrayDocument<Round>
 
@@ -83,16 +84,17 @@ interface FrolfrApiService {
 
     @POST("rounds")
     suspend fun createRound(
-        @Body round: Round
+        @Body round: Round,
+        @Query("include") includes: String = "course,users,scorecards,scorecards.user,scorecards.turns"
     ): Round
 
     @GET("courses")
     suspend fun courses(
         @Query("page[number]") page: Int? = null,
-        @Query("page[size]") perPage: Int? = null,
-        @Query("sort") sort: String? = null,
+        @Query("page[size]") perPage: Int? = PaginationConfig.DEFAULT_PAGE_SIZE,
+        @Query("sort") sort: String? = "id",
         @Query("include") includes: String? = null
-    ): List<Course>
+    ): ArrayDocument<Course>
 
     @GET("users")
     suspend fun users(

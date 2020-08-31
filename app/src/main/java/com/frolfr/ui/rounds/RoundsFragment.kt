@@ -37,7 +37,7 @@ class RoundsFragment : Fragment() {
 
         val roundAdapter = RoundAdapter(RoundClickListener {
             round -> roundsViewModel.onRoundClicked(round)
-        }, roundsViewModel.PageOnListEndListener())
+        })
 
         roundsViewModel.rounds.observe(viewLifecycleOwner, Observer { rounds ->
             if (rounds.isEmpty() && !roundsViewModel.fetchedRounds()) {

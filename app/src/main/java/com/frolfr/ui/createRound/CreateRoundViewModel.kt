@@ -7,16 +7,18 @@ import androidx.lifecycle.ViewModel
 import com.frolfr.api.FrolfrApi
 import com.frolfr.api.FrolfrAuthorization
 import com.frolfr.api.PaginationLinksAdapter
-import com.frolfr.api.model.*
+import com.frolfr.api.model.PaginationLinks
+import com.frolfr.api.model.User
+import com.frolfr.api.model.Round
 import com.frolfr.config.PaginationConfig
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.launch
+import com.frolfr.domain.model.Course
+import com.frolfr.domain.repository.CourseRepository
+import com.frolfr.domain.repository.RoundRepository
+import kotlinx.coroutines.*
 
 class CreateRoundViewModel : ViewModel() {
 
-    private val _courses = MutableLiveData<List<Course>>()
+    private val _courses: LiveData<List<Course>> = loadCourses()
     val courses: LiveData<List<Course>>
         get() = _courses
 
@@ -40,67 +42,75 @@ class CreateRoundViewModel : ViewModel() {
     val error: LiveData<String>
         get() = _error
 
+    private val _coursesFetched = MutableLiveData<Boolean>()
+    private val _additionalCoursesFetched = MutableLiveData<Boolean>()
+
     private var viewModelJob = Job()
-    private val coroutineScope = CoroutineScope(viewModelJob + Dispatchers.Main)
+    private val ioScope = CoroutineScope(viewModelJob + Dispatchers.IO)
+    private val mainScope = CoroutineScope(viewModelJob + Dispatchers.Main)
 
     init {
-        _courses.value = mutableListOf()
         // TODO findNearbyCourses()
-        loadCourses(1)
         loadUsers(1)
     }
 
-    private fun loadCourses(pageNum: Int) {
-        coroutineScope.launch {
-            try {
-                val courses = FrolfrApi.retrofitService.courses(pageNum, PaginationConfig.MAX_PAGE_SIZE, "name")
-                if (courses.isEmpty()) {
-                    return@launch
-                }
+    private fun loadCourses(): LiveData<List<com.frolfr.domain.model.Course>> {
+        return CourseRepository().getCourses()
+    }
 
-                _courses.value = _courses.value?.plus(courses)
-
-                val paginationLinks = courses.first().document.links.get<PaginationLinks>(
-                    PaginationLinksAdapter()
-                ) as PaginationLinks
-
-                val hasNextPage = paginationLinks.hasNextPage()
-                if (hasNextPage) {
-                    loadCourses(pageNum + 1)
-                }
-            } catch (t: Throwable) {
-                Log.i("frolfrCourses", "Got error result", t)
-            }
+    fun fetchCourses() {
+        _coursesFetched.value = true
+        ioScope.launch {
+            CourseRepository().fetchAllCourses()
         }
     }
 
+    fun fetchAdditionalCourses() {
+        _additionalCoursesFetched.value = true
+        ioScope.launch {
+            CourseRepository().fetchMissingCourses()
+        }
+    }
+
+    fun fetchedCourses(): Boolean {
+        return _coursesFetched.value ?: false
+    }
+
+    fun fetchedAdditionalCourses(): Boolean {
+        return _additionalCoursesFetched.value ?: false
+    }
+
     private fun loadUsers(pageNum: Int) {
-        coroutineScope.launch {
-            try {
-                val users = FrolfrApi.retrofitService.users(pageNum, PaginationConfig.MAX_PAGE_SIZE)
-                if (users.isEmpty()) {
-                    return@launch
+        mainScope.launch {
+            var users = emptyList<User>()
+            ioScope.launch {
+                try {
+                    users = FrolfrApi.retrofitService.users(pageNum, PaginationConfig.MAX_PAGE_SIZE)
+                } catch (t: Throwable) {
+                    Log.i("frolfrFriends", "Got error result", t)
                 }
+            }.join()
 
-                _users.value = _users.value?.plus(users) ?: users
+            if (users.isEmpty()) {
+                return@launch
+            }
 
-                val thisUser = users.find { user ->
-                    user.id.toInt() == FrolfrAuthorization.userId
-                }
-                if (thisUser != null) {
-                    addUser(thisUser)
-                }
+            _users.value = _users.value?.plus(users) ?: users
 
-                val paginationLinks = users.first().document.links.get<PaginationLinks>(
-                    PaginationLinksAdapter()
-                ) as PaginationLinks
+            val thisUser = users.find { user ->
+                user.id.toInt() == FrolfrAuthorization.userId
+            }
+            if (thisUser != null) {
+                addUser(thisUser)
+            }
 
-                val hasNextPage = paginationLinks.hasNextPage()
-                if (hasNextPage) {
-                    loadUsers(pageNum + 1)
-                }
-            } catch (t: Throwable) {
-                Log.i("frolfrFriends", "Got error result", t)
+            val paginationLinks = users.first().document.links.get<PaginationLinks>(
+                PaginationLinksAdapter()
+            ) as PaginationLinks
+
+            val hasNextPage = paginationLinks.hasNextPage()
+            if (hasNextPage) {
+                loadUsers(pageNum + 1)
             }
         }
     }
@@ -126,17 +136,21 @@ class CreateRoundViewModel : ViewModel() {
             _error.value = "Must select some players"
             return
         }
-        coroutineScope.launch {
-            try {
-                val roundBody = Round()
-                roundBody.setCourse(_selectedCourse.value!!)
-                roundBody.setUsers(_selectedUsers.value!!)
-                val round = FrolfrApi.retrofitService.createRound(roundBody)
-                _round.value = round
-                Log.i("createRound", "Created Round with id: ${round.id}")
-            } catch (t: Throwable) {
-                Log.i("createRound", "Got error result", t)
-            }
+        mainScope.launch {
+            var round: Round? = null
+            ioScope.launch {
+                try {
+                    round = RoundRepository().createRound(
+                        _selectedCourse.value!!,
+                        _selectedUsers.value!!
+                    )
+                } catch (t: Throwable) {
+                    Log.i("createRound", "Got error result", t)
+                }
+            }.join()
+
+            _round.value = round
+            Log.i("createRound", "Created Round with id: ${round?.id}")
         }
     }
 

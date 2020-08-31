@@ -8,7 +8,7 @@ import com.frolfr.db.dao.*
 import com.frolfr.db.model.*
 
 @Database(
-    version = 7,
+    version = 9,
     exportSchema = false,
     entities = [
         CourseEntity::class,
@@ -16,7 +16,8 @@ import com.frolfr.db.model.*
         RoundHoleEntity::class,
         TurnEntity::class,
         UserEntity::class,
-        UserScorecardEntity::class
+        UserScorecardEntity::class,
+        ApiSyncEntity::class
     ]
 )
 abstract class FrolfrDatabase : RoomDatabase() {
@@ -25,6 +26,7 @@ abstract class FrolfrDatabase : RoomDatabase() {
     abstract val userDAO: UserDAO
     abstract val userScorecardDAO: UserScorecardDAO
     abstract val turnDAO: TurnDAO
+    abstract val apiSyncDAO: ApiSyncDAO
 
     companion object {
         @Volatile
