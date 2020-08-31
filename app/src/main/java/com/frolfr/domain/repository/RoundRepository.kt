@@ -40,24 +40,60 @@ class RoundRepository {
                 .get<PaginationLinks>(PaginationLinksAdapter()) as PaginationLinks
 
             val rounds = roundsDocument.map { apiRoundMapper.toDomain(it) }
-            val dbRoundsFull = rounds.map { dbRoundMapper.toModel(it) }
-            val dbCourses = dbRoundsFull.map { it.course }
-            val dbUserScorecardsFull = dbRoundsFull.map { it.userScorecards }.flatten()
-            val dbUsers = dbUserScorecardsFull.map { it.user }
-            val dbUserScorecards = dbUserScorecardsFull.map { it.userScorecard }
-            val dbTurns = dbUserScorecardsFull.map { it.turns }.flatten()
-            val dbRounds = dbRoundsFull.map { it.round }
+            persistRounds(rounds)
+        } while (paginationLinks.hasNextPage())
+    }
 
+    suspend fun fetchRoundsSince(date: Date) {
+        var page = 1
+        do {
+            Log.i("getRoundsSince", "Fetching page $page of rounds from API")
+            val roundsDocument = apiService.rounds(page++, 15, FrolfrAuthorization.userId)
+            val paginationLinks = roundsDocument.links
+                .get<PaginationLinks>(PaginationLinksAdapter()) as PaginationLinks
+
+            val rounds = roundsDocument.map { apiRoundMapper.toDomain(it) }
+            val roundsSince = rounds.filter { it.createdAt > date }
+            val endReached = roundsSince.isEmpty() || roundsSince.size < rounds.size
+            persistRounds(roundsSince)
+        } while (paginationLinks.hasNextPage() && !endReached)
+    }
+
+    private fun persistRounds(rounds: List<Round>) {
+        if (rounds.isEmpty()) return
+
+        val dbRoundsFull = rounds.map { dbRoundMapper.toModel(it) }
+        val dbRounds = dbRoundsFull.map { it.round }
+        val dbCourses = dbRoundsFull.map { it.course }
+        val dbUserScorecardsFull = dbRoundsFull.map { it.userScorecards }.flatten()
+        val dbUsers = dbUserScorecardsFull.map { it.user }
+
+        val userIds = dbUsers.map { it.id }
+        val roundIds = dbRounds.map { it.id }
+        val existingUserScorecards = dbService.userScorecardDAO.getByUserAndRound(userIds, roundIds)
+        val existingScorecardMap = existingUserScorecards.associateBy { Pair(it.userId, it.roundId) }
+        // TODO need to filter out existing ones and not insert (maybe update?)
+        val dbUserScorecards = dbUserScorecardsFull.map { it.userScorecard }.filter {
+            !existingScorecardMap.containsKey(Pair(it.userId, it.roundId))
+        }
+
+        val dbTurns = dbUserScorecardsFull.map { it.turns }.flatten()
+
+        dbService.runInTransaction {
             dbService.courseDAO.insert(dbCourses)
             dbService.userDAO.insert(dbUsers)
             dbService.userScorecardDAO.insert(dbUserScorecards)
             dbService.turnDAO.insert(dbTurns)
             dbService.roundDAO.insert(dbRounds)
-        } while (paginationLinks.hasNextPage())
+        }
     }
 
-    private fun fetchRoundsSince(date: Date) {
+    suspend fun fetchRoundsPage(page: Int) {
+        Log.i("getRounds", "Fetching page $page of rounds from API")
+        val roundsDocument = apiService.rounds(page, 15, FrolfrAuthorization.userId)
 
+        val rounds = roundsDocument.map { apiRoundMapper.toDomain(it) }
+        persistRounds(rounds)
     }
 
 }

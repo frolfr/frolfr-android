@@ -44,6 +44,9 @@ class RoundsFragment : Fragment() {
                 roundsViewModel.fetchRounds()
             } else {
                 roundAdapter.submitList(rounds)
+                if (!roundsViewModel.fetchedAdditionalRounds()) {
+                    roundsViewModel.fetchAdditionalRounds()
+                }
             }
         })
 

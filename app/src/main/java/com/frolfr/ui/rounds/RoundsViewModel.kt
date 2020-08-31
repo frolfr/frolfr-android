@@ -11,10 +11,7 @@ import com.frolfr.api.model.PaginationLinks
 import com.frolfr.domain.model.Round
 import com.frolfr.config.PaginationConfig
 import com.frolfr.domain.repository.RoundRepository
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 import moe.banana.jsonapi2.ArrayDocument
 
 class RoundsViewModel : ViewModel() {
@@ -36,6 +33,7 @@ class RoundsViewModel : ViewModel() {
         get() = _refreshComplete
 
     private val _roundsFetched = MutableLiveData<Boolean>()
+    private val _additionalRoundsFetched = MutableLiveData<Boolean>()
 
     private var viewModelJob = Job()
     private val coroutineScope = CoroutineScope(viewModelJob + Dispatchers.IO)
@@ -82,6 +80,23 @@ class RoundsViewModel : ViewModel() {
         }
     }
 
+    fun fetchAdditionalRounds() {
+        _additionalRoundsFetched.value = true
+        coroutineScope.launch {
+            RoundRepository().fetchRoundsSince(rounds.value!![0]!!.createdAt!!)
+            // TODO Should store in the db whether or not we've fetched all historical
+            //      rounds. If not, we need to call a "fetchRoundsBefore"
+        }
+    }
+
+    fun fetchedRounds(): Boolean {
+        return _roundsFetched?.value ?: false
+    }
+
+    fun fetchedAdditionalRounds(): Boolean {
+        return _additionalRoundsFetched?.value ?: false
+    }
+
     fun loadRoundsPage(pageNum: Int) {
         // TODO
 //        coroutineScope.launch {
@@ -115,14 +130,24 @@ class RoundsViewModel : ViewModel() {
 //            }
 //            _refreshComplete.value = true
 //        }
+
+        // TODO could store an updatedAt field on Round (maybe other entities)
+        //      and use that to know when the db (cache) should be invalidated
+
+        // TODO for now, this should probably just load the first page of rounds
+        //      and ensure scores are updated when saving
+        GlobalScope.launch(Dispatchers.Main) {
+            coroutineScope.launch {
+                RoundRepository().fetchRoundsPage(1)
+                // TODO Should store in the db whether or not we've fetched all historical
+                //      rounds. If not, we need to call a "fetchRoundsBefore"
+            }.join()
+            _refreshComplete.value = true
+        }
     }
 
     fun onRefreshCompleteAcknowledged() {
         _refreshComplete.value = false
-    }
-
-    fun fetchedRounds(): Boolean {
-        return _roundsFetched?.value ?: false
     }
 
 }

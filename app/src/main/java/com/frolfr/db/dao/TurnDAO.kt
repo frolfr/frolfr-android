@@ -7,9 +7,9 @@ import com.frolfr.db.model.TurnEntity
 
 @Dao
 interface TurnDAO {
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(turn: TurnEntity)
 
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(turns: List<TurnEntity>)
 }
