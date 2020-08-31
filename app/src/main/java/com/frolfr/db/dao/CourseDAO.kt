@@ -15,6 +15,6 @@ interface CourseDAO {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     fun insert(courses: List<CourseEntity>)
 
-    @Query("SELECT * FROM Course")
+    @Query("SELECT * FROM Course ORDER BY name ASC")
     fun getAll(): LiveData<List<CourseEntity>>
 }
