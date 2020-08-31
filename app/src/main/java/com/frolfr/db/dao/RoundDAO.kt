@@ -26,5 +26,5 @@ interface RoundDAO {
 
     @Transaction
     @Query("SELECT * FROM Round ORDER BY createdAt DESC")
-    fun getAllRoundsFull(): LiveData<List<RoundWithRelations>>
+    fun getAllRoundsWithRelations(): LiveData<List<RoundWithRelations>>
 }

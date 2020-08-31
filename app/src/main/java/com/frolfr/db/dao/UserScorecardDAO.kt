@@ -8,10 +8,10 @@ import com.frolfr.db.model.UserScorecardEntity
 
 @Dao
 interface UserScorecardDAO {
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(userScorecard: UserScorecardEntity)
 
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(userScorecards: List<UserScorecardEntity>)
 
     @Query("SELECT * FROM UserScorecard WHERE userId IN (:userIds) AND roundId IN (:roundIds)")

@@ -6,9 +6,9 @@ import androidx.room.PrimaryKey;
 @Entity(tableName = "UserScorecard")
 data class UserScorecardEntity(
     @PrimaryKey
-    var id: Int? = null,
+    var id: String = "",
     var roundId: Int = 0,
     var userId: Int = 0,
-    val strokes: Int = 0,
+    var strokes: Int = 0,
     var score: Int = 0
 )

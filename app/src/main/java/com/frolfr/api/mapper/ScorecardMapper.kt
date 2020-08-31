@@ -12,7 +12,7 @@ class ScorecardMapper : Mapper<com.frolfr.api.model.Scorecard, UserScorecard> {
         val strokes = turns.map { turn -> turn.strokes ?: 0 }.reduce { acc, s -> acc.plus(s) }
         val score = turns.map { turn -> turn.getScore() }.reduce { acc, s -> acc.plus(s) }
         return UserScorecard(
-            null,
+            "${scorecard.roundId}_${scorecard.getUser().id}",
             scorecard.roundId,
             userMapper.toDomain(scorecard.getUser()),
             strokes,

@@ -23,7 +23,7 @@ class RoundRepository {
     private val apiRoundMapper = com.frolfr.api.mapper.RoundMapper()
 
     fun getRounds(): LiveData<List<Round>> {
-        val dbRounds = dbService.roundDAO.getAllRoundsFull()
+        val dbRounds = dbService.roundDAO.getAllRoundsWithRelations()
         return Transformations.map(dbRounds) { dbRounds ->
             dbRounds.map { dbRound ->
                 dbRoundMapper.fromModel(dbRound)
@@ -64,19 +64,10 @@ class RoundRepository {
 
         val dbRoundsFull = rounds.map { dbRoundMapper.toModel(it) }
         val dbRounds = dbRoundsFull.map { it.round }
-        val dbCourses = dbRoundsFull.map { it.course }
+        val dbCourses = dbRoundsFull.map { it.course }.distinctBy { it.id }
         val dbUserScorecardsFull = dbRoundsFull.map { it.userScorecards }.flatten()
-        val dbUsers = dbUserScorecardsFull.map { it.user }
-
-        val userIds = dbUsers.map { it.id }
-        val roundIds = dbRounds.map { it.id }
-        val existingUserScorecards = dbService.userScorecardDAO.getByUserAndRound(userIds, roundIds)
-        val existingScorecardMap = existingUserScorecards.associateBy { Pair(it.userId, it.roundId) }
-        // TODO need to filter out existing ones and not insert (maybe update?)
-        val dbUserScorecards = dbUserScorecardsFull.map { it.userScorecard }.filter {
-            !existingScorecardMap.containsKey(Pair(it.userId, it.roundId))
-        }
-
+        val dbUsers = dbUserScorecardsFull.map { it.user }.distinctBy { it.id }
+        var dbUserScorecards = dbUserScorecardsFull.map { it.userScorecard }
         val dbTurns = dbUserScorecardsFull.map { it.turns }.flatten()
 
         dbService.runInTransaction {
