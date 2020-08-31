@@ -35,8 +35,10 @@ class RoundsViewModel : ViewModel() {
     val refreshComplete: LiveData<Boolean>
         get() = _refreshComplete
 
+    private val _roundsFetched = MutableLiveData<Boolean>()
+
     private var viewModelJob = Job()
-    private val coroutineScope = CoroutineScope(viewModelJob + Dispatchers.Main)
+    private val coroutineScope = CoroutineScope(viewModelJob + Dispatchers.IO)
 
     init {
         // TODO
@@ -74,6 +76,7 @@ class RoundsViewModel : ViewModel() {
     }
 
     fun fetchRounds() {
+        _roundsFetched.value = true
         coroutineScope.launch {
             RoundRepository().fetchAllRounds()
         }
@@ -116,6 +119,10 @@ class RoundsViewModel : ViewModel() {
 
     fun onRefreshCompleteAcknowledged() {
         _refreshComplete.value = false
+    }
+
+    fun fetchedRounds(): Boolean {
+        return _roundsFetched?.value ?: false
     }
 
 }

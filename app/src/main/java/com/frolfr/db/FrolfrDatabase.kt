@@ -4,12 +4,11 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.frolfr.db.dao.CourseDAO
-import com.frolfr.db.dao.RoundDAO
+import com.frolfr.db.dao.*
 import com.frolfr.db.model.*
 
 @Database(
-    version = 2,
+    version = 6,
     exportSchema = false,
     entities = [
         CourseEntity::class,
@@ -23,6 +22,9 @@ import com.frolfr.db.model.*
 abstract class FrolfrDatabase : RoomDatabase() {
     abstract val roundDAO: RoundDAO
     abstract val courseDAO: CourseDAO
+    abstract val userDAO: UserDAO
+    abstract val userScorecardDAO: UserScorecardDAO
+    abstract val turnDAO: TurnDAO
 
     companion object {
         @Volatile
@@ -36,7 +38,7 @@ abstract class FrolfrDatabase : RoomDatabase() {
                         FrolfrDatabase::class.java,
                         "frolfr"
                     )
-//                        .fallbackToDestructiveMigration()
+                        .fallbackToDestructiveMigration()
                         .build()
                 }
             }

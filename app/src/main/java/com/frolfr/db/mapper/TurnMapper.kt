@@ -8,12 +8,19 @@ class TurnMapper : Mapper<TurnEntity, Turn> {
         return Turn(
             turn.id,
             turn.userScorecardId,
+            turn.holeNumber,
             turn.par,
             turn.strokes
         )
     }
 
     override fun toModel(turn: Turn): TurnEntity {
-        TODO("Not yet implemented")
+        return TurnEntity(
+            turn.id,
+            turn.userScorecardId,
+            turn.holeNumber,
+            turn.par,
+            turn.strokes
+        )
     }
 }

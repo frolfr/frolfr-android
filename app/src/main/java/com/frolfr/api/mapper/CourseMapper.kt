@@ -4,7 +4,7 @@ import com.frolfr.domain.model.Course
 
 class CourseMapper : Mapper<com.frolfr.api.model.Course, Course> {
 
-    override fun toDomain(course: com.frolfr.api.model.Course): Course {
+    override fun toDomain(course: com.frolfr.api.model.Course, vararg extras: Any): Course {
         return Course(
             course.id.toInt(),
             course.name,

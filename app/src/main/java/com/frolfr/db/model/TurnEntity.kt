@@ -8,6 +8,7 @@ data class TurnEntity(
     @PrimaryKey
     var id: Int = 0,
     var userScorecardId: Int = 0,
+    var holeNumber: Int = 0,
     var par: Int = 0,
-    var strokes: Int = 0
+    var strokes: Int? = null
 )

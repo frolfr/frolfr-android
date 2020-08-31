@@ -40,7 +40,7 @@ class RoundsFragment : Fragment() {
         }, roundsViewModel.PageOnListEndListener())
 
         roundsViewModel.rounds.observe(viewLifecycleOwner, Observer { rounds ->
-            if (rounds == null) {
+            if (rounds.isEmpty() && !roundsViewModel.fetchedRounds()) {
                 roundsViewModel.fetchRounds()
             } else {
                 roundAdapter.submitList(rounds)

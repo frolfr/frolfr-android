@@ -8,7 +8,7 @@ data class UserEntity(
     @PrimaryKey
     var id: Int = 0,
     var nameFirst: String = "",
-    var nameLast: String = "",
+    var nameLast: String? = null,
     var email: String = "",
     var avatarUrl: String? = null
 )
