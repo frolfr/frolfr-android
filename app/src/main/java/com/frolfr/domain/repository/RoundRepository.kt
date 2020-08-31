@@ -8,6 +8,8 @@ import com.frolfr.api.model.PaginationLinks
 import com.frolfr.api.model.User
 import com.frolfr.db.FrolfrDatabase
 import com.frolfr.db.mapper.RoundMapper
+import com.frolfr.db.model.ApiSyncEntity
+import com.frolfr.db.model.EntityType
 import com.frolfr.domain.model.Course
 import com.frolfr.domain.model.Round
 import java.util.*
@@ -32,6 +34,7 @@ class RoundRepository {
     }
 
     suspend fun fetchAllRounds() {
+        var roundsSync = dbService.apiSyncDAO.get(EntityType.ROUND) ?: ApiSyncEntity(EntityType.ROUND)
         var page = 1
         do {
             val roundsDocument = apiService.rounds(page++)
@@ -39,11 +42,30 @@ class RoundRepository {
                 .get<PaginationLinks>(PaginationLinksAdapter()) as PaginationLinks
 
             val rounds = roundsDocument.map { apiRoundMapper.toDomain(it) }
+
+            roundsSync.minId = roundsSync.minId.coerceAtMost(rounds.first().id)
+            roundsSync.maxId = roundsSync.maxId.coerceAtLeast(rounds.last().id)
+            roundsSync.lastSyncedAt = Date().time
+
             persistRounds(rounds)
+            dbService.apiSyncDAO.insert(roundsSync)
         } while (paginationLinks.hasNextPage())
+
+        roundsSync.hasFullHistory = true
+        dbService.apiSyncDAO.insert(roundsSync)
     }
 
-    suspend fun fetchRoundsSince(date: Date) {
+    suspend fun fetchMissingRounds() {
+        var roundsSync = dbService.apiSyncDAO.get(EntityType.ROUND)
+        // TODO can make the `!roundsSync.hasFullHistory` more efficient
+        if (roundsSync == null || !roundsSync.hasFullHistory) {
+            fetchAllRounds()
+        } else {
+            fetchRoundsSince(roundsSync.maxId)
+        }
+    }
+
+    private suspend fun fetchRoundsSince(latestId: Int) {
         var page = 1
         do {
             val roundsDocument = apiService.rounds(page++, sort = "-id")
@@ -51,7 +73,7 @@ class RoundRepository {
                 .get<PaginationLinks>(PaginationLinksAdapter()) as PaginationLinks
 
             val rounds = roundsDocument.map { apiRoundMapper.toDomain(it) }
-            val roundsSince = rounds.filter { it.createdAt > date }
+            val roundsSince = rounds.filter { it.id > latestId }
             val endReached = roundsSince.isEmpty() || roundsSince.size < rounds.size
 
             persistRounds(roundsSince)

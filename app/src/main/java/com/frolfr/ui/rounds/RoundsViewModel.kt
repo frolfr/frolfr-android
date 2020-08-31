@@ -48,9 +48,7 @@ class RoundsViewModel : ViewModel() {
     fun fetchAdditionalRounds() {
         _additionalRoundsFetched.value = true
         coroutineScope.launch {
-            RoundRepository().fetchRoundsSince(rounds.value!![0].createdAt)
-            // TODO Should store in the db whether or not we've fetched all historical
-            //      rounds. If not, we need to call a "fetchRoundsBefore"
+            RoundRepository().fetchMissingRounds()
         }
     }
 
