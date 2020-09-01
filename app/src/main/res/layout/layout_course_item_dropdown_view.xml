@@ -32,7 +32,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="4dp"
-        android:layout_marginEnd="4dp"
         android:text="·"
         app:layout_constraintEnd_toStartOf="@+id/text_course_item_par"
         app:layout_constraintStart_toEndOf="@+id/text_course_item_location"
@@ -42,6 +41,7 @@
         android:id="@+id/text_course_item_par"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
         app:layout_constraintStart_toEndOf="@+id/text_course_item_dotify"
         app:layout_constraintTop_toTopOf="@+id/text_course_item_location"
         tools:text="18" />

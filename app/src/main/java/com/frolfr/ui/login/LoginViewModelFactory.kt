@@ -3,8 +3,8 @@ package com.frolfr.ui.login
 import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.frolfr.ui.data.LoginDataSource
-import com.frolfr.ui.data.LoginRepository
+import com.frolfr.ui.login.data.LoginDataSource
+import com.frolfr.ui.login.data.LoginRepository
 
 /**
  * ViewModel provider factory to instantiate LoginViewModel.

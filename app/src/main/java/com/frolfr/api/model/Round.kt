@@ -29,9 +29,9 @@ class Round : Resource() {
         return users.get(document)
     }
 
-    fun setUsers(users: List<User>) {
-        val userResourceIdentifiers = users.map { user ->
-            ResourceIdentifier("users", user.id)
+    fun setUsers(userIds: List<Int>) {
+        val userResourceIdentifiers = userIds.map { id
+            ResourceIdentifier("users", id)
         }
         this.users = HasMany(*userResourceIdentifiers.toTypedArray())
     }

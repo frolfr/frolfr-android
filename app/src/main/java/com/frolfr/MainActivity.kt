@@ -13,6 +13,7 @@ import androidx.appcompat.widget.Toolbar
 import androidx.core.net.toUri
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
@@ -23,9 +24,13 @@ import com.bumptech.glide.request.RequestOptions
 import com.frolfr.api.FrolfrAuthorization
 import com.frolfr.config.PreferenceKeys
 import com.frolfr.db.FrolfrDatabase
+import com.frolfr.domain.model.User
 import com.frolfr.ui.UserViewModel
-import com.frolfr.ui.data.LoginDataSource
+import com.frolfr.ui.login.data.LoginDataSource
 import com.frolfr.ui.login.LoginActivity
+import com.frolfr.ui.login.LoginViewModel
+import com.frolfr.ui.login.LoginViewModelFactory
+import com.frolfr.ui.login.data.LoginRepository
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.navigation.NavigationView
 
@@ -86,16 +91,15 @@ class MainActivity : AppCompatActivity() {
         val userImageView = headerLayout.findViewById<ImageView>(R.id.navHeaderUserImage)
         val userNameTextView = headerLayout.findViewById<TextView>(R.id.navHeaderUserName)
 
-        // TODO we already have this info now - just pull it from memory
         userViewModel.currentUser.observe(this, Observer { user ->
-            Glide.with(this).load(user?.avatarUrl?.toUri())
+            Glide.with(this).load(user?.avatarUri?.toUri())
                 .apply(
                     RequestOptions()
                         .circleCrop()
                         .placeholder(R.drawable.loading_animation)
                         .error(R.drawable.ic_broken_image)
                 ).into(userImageView)
-            userNameTextView.text = "${user?.firstName} ${user?.lastName}".trim()
+            userNameTextView.text = "${user?.nameFirst} ${user?.nameLast}".trim()
         })
 
         try {
@@ -106,7 +110,9 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun logout() {
-        LoginDataSource(applicationContext).logout()
+        LoginRepository(
+            dataSource = LoginDataSource(applicationContext)
+        ).logout()
         navigateToLoginActivity()
     }
 

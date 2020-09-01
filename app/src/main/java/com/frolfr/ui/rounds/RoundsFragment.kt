@@ -7,10 +7,8 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.frolfr.R
 import com.frolfr.databinding.FragmentRoundsBinding
-import com.frolfr.ui.scorecard.ScorecardFragmentDirections
 import java.text.DateFormat
 
 class RoundsFragment : Fragment() {

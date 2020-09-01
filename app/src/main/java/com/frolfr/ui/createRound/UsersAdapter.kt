@@ -9,7 +9,7 @@ import android.widget.Filter
 import android.widget.Filterable
 import android.widget.TextView
 import com.frolfr.R
-import com.frolfr.api.model.User
+import com.frolfr.domain.model.User
 
 class UsersAdapter(context: Context)
     : ArrayAdapter<User>(context, R.layout.layout_player_item, R.id.text_player_item_name), Filterable {
@@ -24,7 +24,7 @@ class UsersAdapter(context: Context)
             val layoutInflater = LayoutInflater.from(parent.context)
             view = layoutInflater.inflate(R.layout.layout_player_item, parent, false)
         }
-        view!!.findViewById<TextView>(R.id.text_player_item_name).text = "${user.firstName} ${user.lastName}"
+        view!!.findViewById<TextView>(R.id.text_player_item_name).text = "${user.nameFirst} ${user.nameLast}"
         return view
     }
 
@@ -39,7 +39,7 @@ class UsersAdapter(context: Context)
     private var userFilter: Filter = object : Filter() {
         override fun convertResultToString(resultValue: Any): CharSequence {
             val user = resultValue as User
-            return "${user.firstName} ${user.lastName}"
+            return "${user.nameFirst} ${user.nameLast}"
         }
 
         override fun performFiltering(constraint: CharSequence?): FilterResults {

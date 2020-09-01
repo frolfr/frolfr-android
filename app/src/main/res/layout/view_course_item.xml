@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="course"
+            type="com.frolfr.domain.model.Course" />
+        <variable
+            name="clickListener"
+            type="com.frolfr.ui.courses.CourseClickListener" />
+    </data>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="@{() -> clickListener.onClick(course)}"
+        android:paddingStart="16dp"
+        android:paddingTop="4dp"
+        android:paddingEnd="16dp"
+        android:paddingBottom="4dp"
+        android:textSize="24sp">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2" >
+
+            <TextView
+                android:id="@+id/text_course_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{course.name}"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="Perkerson Park" />
+
+            <TextView
+                android:id="@+id/text_course_location"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{course.getLocation()}"
+                app:layout_constraintStart_toStartOf="@+id/text_course_name"
+                app:layout_constraintTop_toBottomOf="@+id/text_course_name"
+                tools:text="Atlanta, GA" />
+
+            <TextView
+                android:id="@+id/text_course_dotify"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="4dp"
+                android:paddingRight="4dp"
+                android:text="·"
+                app:layout_constraintEnd_toStartOf="@+id/text_course_hole_count"
+                app:layout_constraintStart_toEndOf="@+id/text_course_location"
+                app:layout_constraintTop_toTopOf="@+id/text_course_location" />
+
+            <TextView
+                android:id="@+id/text_course_hole_count"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{String.valueOf(course.holeCount)}"
+                app:layout_constraintStart_toEndOf="@+id/text_course_dotify"
+                app:layout_constraintTop_toTopOf="@+id/text_course_location"
+                tools:text="18" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
+</layout>

@@ -4,8 +4,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import android.util.Patterns
-import com.frolfr.ui.data.LoginRepository
-import com.frolfr.ui.data.Result
+import com.frolfr.ui.login.data.LoginRepository
+import com.frolfr.ui.login.data.Result
 import kotlinx.coroutines.*
 
 import com.frolfr.R

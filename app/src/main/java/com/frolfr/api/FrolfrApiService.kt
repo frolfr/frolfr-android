@@ -100,9 +100,9 @@ interface FrolfrApiService {
     suspend fun users(
         @Query("page[number]") page: Int? = null,
         @Query("page[size]") perPage: Int? = null,
-        @Query("sort") sort: String? = null,
+        @Query("sort") sort: String? = "id",
         @Query("include") includes: String? = null
-    ): List<User>
+    ): ArrayDocument<User>
 
     @PATCH("turns/{turn}")
     suspend fun reportTurn(

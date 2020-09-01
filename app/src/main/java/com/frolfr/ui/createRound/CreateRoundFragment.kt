@@ -12,8 +12,9 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import com.frolfr.R
+import com.frolfr.api.FrolfrAuthorization
 import com.frolfr.domain.model.Course
-import com.frolfr.api.model.User
+import com.frolfr.domain.model.User
 import com.frolfr.databinding.FragmentCreateRoundBinding
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
@@ -71,14 +72,30 @@ class CreateRoundFragment : Fragment() {
         binding.editTextPlayer.onItemClickListener = playerSelectedListener
 
         viewModel.users.observe(viewLifecycleOwner, Observer { userList ->
-            playersAdapter.clear()
-            playersAdapter.addAll(userList)
+
+            if (userList.isEmpty() && !viewModel.fetchedUsers()) {
+                viewModel.fetchUsers()
+            } else {
+                playersAdapter.clear()
+                playersAdapter.addAll(userList)
+                if (!viewModel.fetchedAdditionalUsers()) {
+                    viewModel.fetchAdditionalUsers()
+                }
+
+                // TODO Could/should store the current User itself in FrolfrAuthorization,
+                //      in which case we could add the user outside this observer.
+                //      Maybe use a different class or move it outside of the api package.
+                val currentUser = userList.find { it.id == FrolfrAuthorization.userId }
+                if (currentUser != null) {
+                    viewModel.addUser(currentUser)
+                }
+            }
         })
 
         viewModel.selectedUsers.observe(viewLifecycleOwner, Observer { selectedUsers ->
             if (selectedUsers.isNotEmpty()) {
                 binding.textSelectedPlayers.text = selectedUsers.map { user ->
-                    "${user.firstName} ${user.lastName}"
+                    "${user.nameFirst} ${user.nameLast}"
                 }.reduce {
                     acc, string -> "${acc}\n${string}"
                 }
@@ -95,7 +112,7 @@ class CreateRoundFragment : Fragment() {
             if (round != null) {
                 findNavController().navigate(
                     CreateRoundFragmentDirections.actionCreateRoundFragmentToRoundReportingFragment(
-                        round.id.toInt()
+                        round.id
                     )
                 )
                 viewModel.onRoundNavigated()

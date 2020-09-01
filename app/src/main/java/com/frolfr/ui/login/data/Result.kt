@@ -1,4 +1,4 @@
-package com.frolfr.ui.data
+package com.frolfr.ui.login.data
 
 /**
  * A generic class that holds a value with its loading status.

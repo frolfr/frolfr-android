@@ -69,8 +69,6 @@ class RoundsViewModel : ViewModel() {
         GlobalScope.launch(Dispatchers.Main) {
             coroutineScope.launch {
                 RoundRepository().fetchRoundsPage(1)
-                // TODO Should store in the db whether or not we've fetched all historical
-                //      rounds. If not, we need to call a "fetchRoundsBefore"
             }.join()
             _refreshComplete.value = true
         }

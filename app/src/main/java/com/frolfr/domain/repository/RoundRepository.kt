@@ -5,13 +5,13 @@ import androidx.lifecycle.Transformations
 import com.frolfr.api.FrolfrApi
 import com.frolfr.api.PaginationLinksAdapter
 import com.frolfr.api.model.PaginationLinks
-import com.frolfr.api.model.User
 import com.frolfr.db.FrolfrDatabase
 import com.frolfr.db.mapper.RoundMapper
 import com.frolfr.db.model.ApiSyncEntity
 import com.frolfr.db.model.EntityType
 import com.frolfr.domain.model.Course
 import com.frolfr.domain.model.Round
+import com.frolfr.domain.model.User
 import java.util.*
 
 class RoundRepository {
@@ -111,15 +111,15 @@ class RoundRepository {
         persistRounds(rounds)
     }
 
-    // TODO all inputs/outputs should be using domain models
-    suspend fun createRound(course: Course, users: List<User>): com.frolfr.api.model.Round {
+    suspend fun createRound(course: Course, users: List<User>): Round {
         val roundBody = com.frolfr.api.model.Round()
         roundBody.setCourse(course.id)
-        roundBody.setUsers(users)
+        roundBody.setUsers(users.map { it.id })
         val apiRound = FrolfrApi.retrofitService.createRound(roundBody)
+
         val round = apiRoundMapper.toDomain(apiRound)
         persistRound(round)
-        return apiRound
+        return round
     }
 
 }

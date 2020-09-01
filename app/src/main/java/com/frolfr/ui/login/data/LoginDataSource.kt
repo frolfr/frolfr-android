@@ -1,4 +1,4 @@
-package com.frolfr.ui.data
+package com.frolfr.ui.login.data
 
 import android.content.Context
 import android.util.Log
@@ -8,7 +8,7 @@ import com.frolfr.api.FrolfrAuth
 import com.frolfr.api.FrolfrAuthorization
 import com.frolfr.api.model.LoginRequest
 import com.frolfr.config.PreferenceKeys
-import com.frolfr.ui.data.model.LoggedInUser
+import com.frolfr.ui.login.data.LoggedInUser
 
 /**
  * Class that handles authentication w/ login credentials and retrieves user information.

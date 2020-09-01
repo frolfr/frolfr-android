@@ -4,16 +4,12 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.frolfr.api.FrolfrApi
-import com.frolfr.api.FrolfrAuthorization
-import com.frolfr.api.PaginationLinksAdapter
-import com.frolfr.api.model.PaginationLinks
-import com.frolfr.api.model.User
-import com.frolfr.api.model.Round
-import com.frolfr.config.PaginationConfig
 import com.frolfr.domain.model.Course
+import com.frolfr.domain.model.Round
+import com.frolfr.domain.model.User
 import com.frolfr.domain.repository.CourseRepository
 import com.frolfr.domain.repository.RoundRepository
+import com.frolfr.domain.repository.UserRepository
 import kotlinx.coroutines.*
 
 class CreateRoundViewModel : ViewModel() {
@@ -22,7 +18,7 @@ class CreateRoundViewModel : ViewModel() {
     val courses: LiveData<List<Course>>
         get() = _courses
 
-    private val _users = MutableLiveData<List<User>>()
+    private val _users: LiveData<List<User>> = loadUsers()
     val users: LiveData<List<User>>
         get() = _users
 
@@ -45,16 +41,18 @@ class CreateRoundViewModel : ViewModel() {
     private val _coursesFetched = MutableLiveData<Boolean>()
     private val _additionalCoursesFetched = MutableLiveData<Boolean>()
 
+    private val _usersFetched = MutableLiveData<Boolean>()
+    private val _additionalUsersFetched = MutableLiveData<Boolean>()
+
     private var viewModelJob = Job()
     private val ioScope = CoroutineScope(viewModelJob + Dispatchers.IO)
     private val mainScope = CoroutineScope(viewModelJob + Dispatchers.Main)
 
     init {
         // TODO findNearbyCourses()
-        loadUsers(1)
     }
 
-    private fun loadCourses(): LiveData<List<com.frolfr.domain.model.Course>> {
+    private fun loadCourses(): LiveData<List<Course>> {
         return CourseRepository().getCourses()
     }
 
@@ -80,39 +78,30 @@ class CreateRoundViewModel : ViewModel() {
         return _additionalCoursesFetched.value ?: false
     }
 
-    private fun loadUsers(pageNum: Int) {
-        mainScope.launch {
-            var users = emptyList<User>()
-            ioScope.launch {
-                try {
-                    users = FrolfrApi.retrofitService.users(pageNum, PaginationConfig.MAX_PAGE_SIZE)
-                } catch (t: Throwable) {
-                    Log.i("frolfrFriends", "Got error result", t)
-                }
-            }.join()
+    private fun loadUsers(): LiveData<List<User>> {
+        return UserRepository().getUsers()
+    }
 
-            if (users.isEmpty()) {
-                return@launch
-            }
-
-            _users.value = _users.value?.plus(users) ?: users
-
-            val thisUser = users.find { user ->
-                user.id.toInt() == FrolfrAuthorization.userId
-            }
-            if (thisUser != null) {
-                addUser(thisUser)
-            }
-
-            val paginationLinks = users.first().document.links.get<PaginationLinks>(
-                PaginationLinksAdapter()
-            ) as PaginationLinks
-
-            val hasNextPage = paginationLinks.hasNextPage()
-            if (hasNextPage) {
-                loadUsers(pageNum + 1)
-            }
+    fun fetchUsers() {
+        _usersFetched.value = true
+        ioScope.launch {
+            UserRepository().fetchAllUsers()
         }
+    }
+
+    fun fetchAdditionalUsers() {
+        _additionalUsersFetched.value = true
+        ioScope.launch {
+            UserRepository().fetchMissingUsers()
+        }
+    }
+
+    fun fetchedUsers(): Boolean {
+        return _usersFetched.value ?: false
+    }
+
+    fun fetchedAdditionalUsers(): Boolean {
+        return _additionalUsersFetched.value ?: false
     }
 
     fun selectCourse(course: Course?) {
