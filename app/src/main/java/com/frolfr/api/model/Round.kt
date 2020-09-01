@@ -30,8 +30,8 @@ class Round : Resource() {
     }
 
     fun setUsers(userIds: List<Int>) {
-        val userResourceIdentifiers = userIds.map { id
-            ResourceIdentifier("users", id)
+        val userResourceIdentifiers = userIds.map {
+            ResourceIdentifier("users", it.toString())
         }
         this.users = HasMany(*userResourceIdentifiers.toTypedArray())
     }

@@ -55,8 +55,10 @@ class CourseRepository {
 
             val courses = coursesDocument.map { apiCourseMapper.toDomain(it) }
 
-            coursesSync.minId = coursesSync.minId.coerceAtMost(courses.first().id)
-            coursesSync.maxId = coursesSync.maxId.coerceAtLeast(courses.last().id)
+            if (courses.isNotEmpty()) {
+                coursesSync.minId = coursesSync.minId.coerceAtMost(courses.first().id)
+                coursesSync.maxId = coursesSync.maxId.coerceAtLeast(courses.last().id)
+            }
             coursesSync.lastSyncedAt = Date().time
 
             persistCourses(courses)

@@ -43,8 +43,10 @@ class RoundRepository {
 
             val rounds = roundsDocument.map { apiRoundMapper.toDomain(it) }
 
-            roundsSync.minId = roundsSync.minId.coerceAtMost(rounds.first().id)
-            roundsSync.maxId = roundsSync.maxId.coerceAtLeast(rounds.last().id)
+            if (rounds.isNotEmpty()) {
+                roundsSync.minId = roundsSync.minId.coerceAtMost(rounds.first().id)
+                roundsSync.maxId = roundsSync.maxId.coerceAtLeast(rounds.last().id)
+            }
             roundsSync.lastSyncedAt = Date().time
 
             persistRounds(rounds)
