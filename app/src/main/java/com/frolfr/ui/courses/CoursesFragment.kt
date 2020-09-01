@@ -1,9 +1,8 @@
 package com.frolfr.ui.courses
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -36,27 +35,29 @@ class CoursesFragment : Fragment() {
                 course -> coursesViewModel.onCourseClicked(course)
         })
 
-        coursesViewModel.courses.observe(viewLifecycleOwner, Observer { courses ->
-            if (courses.isEmpty() && !coursesViewModel.fetchedCourses()) {
+        coursesViewModel.coursesWithLastPlayed.observe(viewLifecycleOwner, Observer { coursesWithLastPlayed ->
+            if (coursesWithLastPlayed.isEmpty() && !coursesViewModel.fetchedCourses()) {
                 coursesViewModel.fetchCourses()
             } else {
-                courseAdapter.submitList(courses)
+                courseAdapter.submitList(coursesWithLastPlayed)
                 if (!coursesViewModel.fetchedAdditionalCourses()) {
                     coursesViewModel.fetchAdditionalCourses()
                 }
             }
         })
+        coursesViewModel.courses.observe(viewLifecycleOwner, Observer { courses ->
+            if (courses.isNotEmpty()) {
+                coursesViewModel.loadCoursesWithLastPlayed()
+            }
+        })
 
         coursesViewModel.navigateToCourseDetail.observe(viewLifecycleOwner, Observer { course ->
             course?.let {
-                // TODO course detail
-//                this.findNavController().navigate(
-//                    CoursesFragmentDirections.actionNavCoursesToScorecardFragment(
-//                        course.id,
-//                        course.course.name,
-//                        courseDF.format(course.createdAt)
-//                    )
-//                )
+                this.findNavController().navigate(
+                    CoursesFragmentDirections.actionNavCoursesToCourseFragment(
+                        course.id
+                    )
+                )
                 coursesViewModel.onCourseNavigated()
             }
         })
@@ -74,6 +75,22 @@ class CoursesFragment : Fragment() {
             }
         })
 
+        setHasOptionsMenu(true)
+
         return binding.root
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, menuInflater: MenuInflater) {
+        menuInflater.inflate(R.menu.courses, menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.action_toggle_played -> {
+                coursesViewModel.toggleShowHideUnplayed()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
     }
 }

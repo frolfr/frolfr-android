@@ -12,7 +12,13 @@ interface UserScorecardDAO {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(userScorecards: List<UserScorecardEntity>)
 
-    @Query("SELECT r.courseId, MAX(r.createdAt) as lastPlayed FROM UserScorecard s JOIN Round r ON s.roundId = r.id WHERE s.userId = :userId GROUP BY r.courseId")
+    @Query("""
+        SELECT r.courseId, MAX(r.createdAt) as lastPlayed
+        FROM UserScorecard s
+        JOIN Round r ON s.roundId = r.id
+        WHERE s.userId = :userId
+        GROUP BY r.courseId
+        """)
     fun getLastPlayedPerCourse(userId: Int): List<CourseLastPlayed>
 }
 

@@ -20,12 +20,28 @@ class CourseRepository {
     private val dbCourseMapper = CourseMapper()
     private val apiCourseMapper = com.frolfr.api.mapper.CourseMapper()
 
+    fun getCourse(courseId: Int): LiveData<Course> {
+        val dbCourse = dbService.courseDAO.get(courseId)
+        return Transformations.map(dbCourse) {
+            it?.let {
+                dbCourseMapper.fromModel(it)
+            }
+        }
+    }
+
     fun getCourses(): LiveData<List<Course>> {
-        val dbCourses = dbService.courseDAO.getAll()
+        val dbCourses = dbService.courseDAO.getAllLive()
         return Transformations.map(dbCourses) { dbCourses ->
             dbCourses.map { dbCourse ->
                 dbCourseMapper.fromModel(dbCourse)
             }
+        }
+    }
+
+    fun getCoursesRaw(): List<Course> {
+        val dbCourses = dbService.courseDAO.getAll()
+        return dbCourses.map { dbCourse ->
+            dbCourseMapper.fromModel(dbCourse)
         }
     }
 

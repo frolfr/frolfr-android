@@ -4,7 +4,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.frolfr.domain.model.Course
-import com.frolfr.domain.model.UserScorecard
 import com.frolfr.domain.repository.CourseRepository
 import com.frolfr.domain.repository.ScorecardRepository
 import kotlinx.coroutines.*
@@ -12,12 +11,13 @@ import java.util.*
 
 class CoursesViewModel : ViewModel() {
 
+    var coursesWithLastPlayedFull: List<CourseWithLastPlayed> = emptyList()
+    val coursesWithLastPlayed = MutableLiveData<List<CourseWithLastPlayed>>()
+    private var hideUnplayed = false
+
     val courses: LiveData<List<Course>> = loadCourses()
     private val _coursesFetched = MutableLiveData<Boolean>()
     private val _additionalCoursesFetched = MutableLiveData<Boolean>()
-
-    // TODO get this into the UI
-    val lastPlayedByCourse = MutableLiveData<Map<Int, Date>>()
 
     private val _navigateToCourseDetail = MutableLiveData<Course>()
     val navigateToCourseDetail: LiveData<Course>
@@ -31,7 +31,7 @@ class CoursesViewModel : ViewModel() {
     private val coroutineScope = CoroutineScope(viewModelJob + Dispatchers.IO)
 
     init {
-        loadLastPlayedByCourse()
+        loadCoursesWithLastPlayed()
     }
 
     fun onCourseClicked(course: Course) {
@@ -81,13 +81,27 @@ class CoursesViewModel : ViewModel() {
         _refreshComplete.value = false
     }
 
-    private fun loadLastPlayedByCourse() {
+    fun loadCoursesWithLastPlayed() {
         GlobalScope.launch(Dispatchers.Main) {
-            var lastPlayedByCourseResult: Map<Int, Date>? = null
+            var courses: List<Course> = emptyList()
+            var lastPlayedByCourse: Map<Int, Date> = emptyMap()
             coroutineScope.launch {
-                lastPlayedByCourseResult = ScorecardRepository().getLastPlayedByCourse()
+                courses = CourseRepository().getCoursesRaw()
+                lastPlayedByCourse = ScorecardRepository().getLastPlayedByCourse()
             }.join()
-            lastPlayedByCourse.value = lastPlayedByCourseResult
+            coursesWithLastPlayedFull = courses.map {
+                CourseWithLastPlayed(it, lastPlayedByCourse[it.id])
+            }
+            coursesWithLastPlayed.value = coursesWithLastPlayedFull
+        }
+    }
+
+    fun toggleShowHideUnplayed() {
+        hideUnplayed = !hideUnplayed
+        if (hideUnplayed) {
+            coursesWithLastPlayed.value = coursesWithLastPlayedFull.filter { it.lastPlayed != null }
+        } else {
+            coursesWithLastPlayed.value = coursesWithLastPlayedFull
         }
     }
 

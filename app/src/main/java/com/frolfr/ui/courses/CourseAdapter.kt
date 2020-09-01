@@ -9,7 +9,7 @@ import com.frolfr.domain.model.Course
 import com.frolfr.databinding.ViewCourseItemBinding
 
 class CourseAdapter(private val clickListener: CourseClickListener) :
-    ListAdapter<Course, CourseItemViewHolder>(CourseDiffCallback()) {
+    ListAdapter<CourseWithLastPlayed, CourseItemViewHolder>(CourseDiffCallback()) {
 
     override fun onBindViewHolder(holder: CourseItemViewHolder, position: Int) {
         val course = getItem(position)
@@ -25,10 +25,10 @@ class CourseItemViewHolder private constructor(private val binding: ViewCourseIt
     RecyclerView.ViewHolder(binding.root) {
 
     fun bind(
-        course: Course,
+        course: CourseWithLastPlayed,
         clickListener: CourseClickListener
     ) {
-        binding.course = course
+        binding.courseLastPlayed = course
         binding.clickListener = clickListener
 
         binding.executePendingBindings()
@@ -43,12 +43,12 @@ class CourseItemViewHolder private constructor(private val binding: ViewCourseIt
     }
 }
 
-class CourseDiffCallback : DiffUtil.ItemCallback<Course>() {
-    override fun areItemsTheSame(oldItem: Course, newItem: Course): Boolean {
-        return oldItem.id == newItem.id
+class CourseDiffCallback : DiffUtil.ItemCallback<CourseWithLastPlayed>() {
+    override fun areItemsTheSame(oldItem: CourseWithLastPlayed, newItem: CourseWithLastPlayed): Boolean {
+        return oldItem.course.id == newItem.course.id
     }
 
-    override fun areContentsTheSame(oldItem: Course, newItem: Course): Boolean {
+    override fun areContentsTheSame(oldItem: CourseWithLastPlayed, newItem: CourseWithLastPlayed): Boolean {
         return oldItem == newItem
     }
 }

@@ -74,6 +74,8 @@ class RoundsFragment : Fragment() {
             }
         })
 
+        setHasOptionsMenu(true)
+
         return binding.root
     }
 

@@ -16,5 +16,11 @@ interface CourseDAO {
     fun insert(courses: List<CourseEntity>)
 
     @Query("SELECT * FROM Course ORDER BY name ASC")
-    fun getAll(): LiveData<List<CourseEntity>>
+    fun getAllLive(): LiveData<List<CourseEntity>>
+
+    @Query("SELECT * FROM Course ORDER BY name ASC")
+    fun getAll(): List<CourseEntity>
+
+    @Query("SELECT * FROM Course WHERE id = :courseId")
+    fun get(courseId: Int): LiveData<CourseEntity>
 }
