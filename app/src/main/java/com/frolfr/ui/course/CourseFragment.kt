@@ -9,8 +9,12 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.frolfr.R
 import com.frolfr.databinding.FragmentCourseBinding
-import com.frolfr.databinding.FragmentCourseOverviewBinding
+import com.frolfr.ui.course.tab.CourseLeaderboardFragment
+import com.frolfr.ui.course.tab.CourseOverviewFragment
+import com.frolfr.ui.course.tab.CourseRoundsFragment
 import com.google.android.material.tabs.TabLayoutMediator
+import kotlin.reflect.KClass
+import kotlin.reflect.full.createInstance
 
 class CourseFragment : Fragment() {
 
@@ -50,56 +54,32 @@ class CourseFragment : Fragment() {
 
         val tabLayout = binding.tabLayoutCourse
         TabLayoutMediator(tabLayout, viewPager) { tab, position ->
-            tab.text = when (position) {
-                0 -> "Overview"
-                1 -> "Rounds"
-                else -> "Leaderboard"
-            }
+            tab.text = tabConfig[position].name
         }.attach()
     }
 
 }
+
+data class TabInfo(
+    val name: String,
+    val fragment: KClass<out Fragment>
+)
+
+private val tabConfig = listOf(
+    TabInfo("Overview", CourseOverviewFragment::class),
+    TabInfo("Rounds", CourseRoundsFragment::class),
+    TabInfo("Leaderboard", CourseLeaderboardFragment::class)
+)
 
 class CourseTabsAdapter(fragment: Fragment, val courseId: Int) : FragmentStateAdapter(fragment) {
 
     override fun getItemCount(): Int = 3
 
     override fun createFragment(position: Int): Fragment {
-        // Return a NEW fragment instance in createFragment(int)
-        val fragment = DemoObjectFragment()
+        val fragment = tabConfig[position].fragment.createInstance()
         fragment.arguments = Bundle().apply {
             putInt("courseId", courseId)
         }
         return fragment
     }
-}
-
-// Instances of this class are fragments representing a single
-// object in our collection.
-class DemoObjectFragment : Fragment() {
-
-    private lateinit var courseViewModel: CourseViewModel
-
-    private lateinit var binding: FragmentCourseOverviewBinding
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        binding = DataBindingUtil.inflate(
-            inflater, R.layout.fragment_course_overview, container, false
-        )
-
-        val courseId = arguments!!.getInt("courseId")
-
-        courseViewModel =
-            ViewModelProviders.of(this.parentFragment!!, CourseViewModelFactory(courseId))
-                .get(CourseViewModel::class.java)
-
-        binding.courseViewModel = courseViewModel
-
-        return binding.root
-    }
-
 }

@@ -89,4 +89,7 @@
             android:name="courseId"
             app:argType="integer" />
     </fragment>
+    <action
+        android:id="@+id/action_global_scorecardFragment"
+        app:destination="@id/scorecardFragment" />
 </navigation>

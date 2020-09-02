@@ -33,6 +33,15 @@ class RoundRepository {
         }
     }
 
+    fun getCourseRounds(courseId: Int): LiveData<List<Round>> {
+        val dbRounds = dbService.roundDAO.getAllRoundsWithRelationsForCourse(courseId)
+        return Transformations.map(dbRounds) { dbRounds ->
+            dbRounds.map { dbRound ->
+                dbRoundMapper.fromModel(dbRound)
+            }
+        }
+    }
+
     suspend fun fetchAllRounds() {
         var roundsSync = dbService.apiSyncDAO.get(EntityType.ROUND) ?: ApiSyncEntity(EntityType.ROUND)
         var page = 1

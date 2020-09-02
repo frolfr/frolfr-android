@@ -92,12 +92,16 @@ class CoursesViewModel : ViewModel() {
             coursesWithLastPlayedFull = courses.map {
                 CourseWithLastPlayed(it, lastPlayedByCourse[it.id])
             }
-            coursesWithLastPlayed.value = coursesWithLastPlayedFull
+            filterCourses()
         }
     }
 
     fun toggleShowHideUnplayed() {
         hideUnplayed = !hideUnplayed
+        filterCourses()
+    }
+
+    private fun filterCourses() {
         if (hideUnplayed) {
             coursesWithLastPlayed.value = coursesWithLastPlayedFull.filter { it.lastPlayed != null }
         } else {

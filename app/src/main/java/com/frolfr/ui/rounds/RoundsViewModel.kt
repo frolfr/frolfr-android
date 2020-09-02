@@ -7,7 +7,7 @@ import com.frolfr.domain.model.Round
 import com.frolfr.domain.repository.RoundRepository
 import kotlinx.coroutines.*
 
-class RoundsViewModel : ViewModel() {
+class RoundsViewModel(val roundRestrictions: RoundRestrictions) : ViewModel() {
 
     val rounds: LiveData<List<Round>> = loadRounds()
 
@@ -35,6 +35,9 @@ class RoundsViewModel : ViewModel() {
     }
 
     private fun loadRounds(): LiveData<List<Round>> {
+        roundRestrictions.courseId?.let {
+            return RoundRepository().getCourseRounds(it)
+        }
         return RoundRepository().getRounds()
     }
 

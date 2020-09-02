@@ -11,7 +11,7 @@ import com.frolfr.R
 import com.frolfr.databinding.FragmentRoundsBinding
 import java.text.DateFormat
 
-class RoundsFragment : Fragment() {
+open class RoundsFragment : Fragment() {
 
     private lateinit var roundsViewModel: RoundsViewModel
 
@@ -28,8 +28,9 @@ class RoundsFragment : Fragment() {
             inflater, R.layout.fragment_rounds, container, false
         )
 
-        roundsViewModel =
-            ViewModelProviders.of(this).get(RoundsViewModel::class.java)
+        val roundRestrictions = getRoundRestrictions()
+        roundsViewModel = ViewModelProviders.of(this, RoundsViewModelFactory(roundRestrictions))
+            .get(roundRestrictions.toString(), RoundsViewModel::class.java)
 
         binding.roundsViewModel = roundsViewModel
 
@@ -51,7 +52,8 @@ class RoundsFragment : Fragment() {
         roundsViewModel.navigateToRoundDetail.observe(viewLifecycleOwner, Observer { round ->
             round?.let {
                 this.findNavController().navigate(
-                    RoundsFragmentDirections.actionNavRoundsToScorecardFragment(
+//                    RoundsFragmentDirections.actionNavRoundsToScorecardFragment(
+                    RoundsFragmentDirections.actionGlobalScorecardFragment(
                         round.id,
                         round.course.name,
                         roundDF.format(round.createdAt)
@@ -92,5 +94,9 @@ class RoundsFragment : Fragment() {
             }
             else -> super.onOptionsItemSelected(item)
         }
+    }
+
+    open fun getRoundRestrictions(): RoundRestrictions {
+        return RoundRestrictions().withCurrentUser()
     }
 }
