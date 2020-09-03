@@ -13,6 +13,9 @@
         <variable
             name="score"
             type="int" />
+        <variable
+            name="isComplete"
+            type="boolean" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

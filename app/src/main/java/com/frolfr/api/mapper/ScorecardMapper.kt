@@ -17,7 +17,10 @@ class ScorecardMapper : Mapper<com.frolfr.api.model.Scorecard, UserScorecard> {
             userMapper.toDomain(scorecard.getUser()),
             strokes,
             score,
-            turns
+            turns,
+            turns.all {
+                it.isComplete()
+            }
         )
     }
 

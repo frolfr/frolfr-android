@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModel
 import com.frolfr.api.FrolfrApi
 import com.frolfr.api.model.Round
 import com.frolfr.api.model.Turn
+import com.frolfr.domain.repository.RoundRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -210,7 +211,9 @@ class RoundReportingViewModel(private val roundId: Int) : ViewModel() {
                 Log.i("reportTurn", "All turns reported: $turnIds")
 
                 if (currentHole.value == round.value!!.getCourse().holeCount) {
-                    _navigateToRoundScorecard.value = round.value!!.id.toInt()
+                    val roundId = round.value!!.id.toInt()
+//                    RoundRepository().markCompleted(roundId)
+                    _navigateToRoundScorecard.value = roundId
                 } else {
                     _currentHole.value = currentHole.value?.plus(1)
                     onHoleChanged()

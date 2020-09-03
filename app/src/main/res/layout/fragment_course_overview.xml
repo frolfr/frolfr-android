@@ -5,20 +5,158 @@
 
     <data>
         <variable
-            name="courseViewModel"
-            type="com.frolfr.ui.course.CourseViewModel" />
+            name="courseOverviewViewModel"
+            type="com.frolfr.ui.course.overview.CourseOverviewViewModel" />
     </data>
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
         <TextView
             android:id="@+id/text_course_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@{courseViewModel.course.name}"/>
+            android:layout_marginTop="8dp"
+            android:text="@{String.valueOf(courseOverviewViewModel.course.name)}"
+            android:textAlignment="viewStart"
+            android:textSize="28sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Perkerson Park" />
 
-    </LinearLayout>
+        <LinearLayout
+            android:id="@+id/layout_course_details"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/text_course_name">
+
+            <TextView
+                android:id="@+id/text_course_hole_count"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{String.valueOf(courseOverviewViewModel.course.holeCount)}" />
+
+            <TextView
+                android:id="@+id/text_dotify"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="4dp"
+                android:text="·" />
+
+            <TextView
+                android:id="@+id/text_course_location"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="4dp"
+                android:text="@{String.valueOf(courseOverviewViewModel.course.getLocation())}" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/layout_stats"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/layout_course_details">
+
+            <LinearLayout
+                android:id="@+id/layout_stat_labels"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/text_completed_scorecards_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Completed Scorecards:"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:id="@+id/text_score_average_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Average Score:"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:id="@+id/text_score_best_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Best Score:"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:id="@+id/text_strokes_average_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Average Strokes:"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:id="@+id/text_strokes_best_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Best Strokes:"
+                    android:textSize="18sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/layout_stat_values"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/text_completed_scorecards"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{String.valueOf(courseOverviewViewModel.stats.completedScorecards)}"
+                    tools:text="7"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:id="@+id/text_score_average"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{String.valueOf(courseOverviewViewModel.stats.averageScore)}"
+                    tools:text="-2.5"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:id="@+id/text_score_best"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{String.valueOf(courseOverviewViewModel.stats.bestScore)}"
+                    tools:text="-7"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:id="@+id/text_strokes_average"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{String.valueOf(courseOverviewViewModel.stats.averageStrokes)}"
+                    tools:text="42"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:id="@+id/text_strokes_best"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{String.valueOf(courseOverviewViewModel.stats.bestStrokes)}"
+                    tools:text="40"
+                    android:textSize="18sp" />
+            </LinearLayout>
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </layout>

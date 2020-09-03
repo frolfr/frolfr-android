@@ -10,4 +10,8 @@ data class Turn (
     fun getScore(): Int {
         return strokes?.minus(par) ?: 0
     }
+
+    fun isComplete(): Boolean {
+        return strokes != null && strokes!! > 0
+    }
 }

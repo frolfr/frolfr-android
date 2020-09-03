@@ -33,4 +33,7 @@
     <string name="course_tab_leaderboard">Leaderboard</string>
     
     <string name="scorecard_strokes">(%d)</string>
+
+    <string name="textStyle_normal">normal</string>
+    <string name="textStyle_italic">italic</string>
 </resources>

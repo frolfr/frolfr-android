@@ -8,7 +8,7 @@ import com.frolfr.db.dao.*
 import com.frolfr.db.model.*
 
 @Database(
-    version = 9,
+    version = 10,
     exportSchema = false,
     entities = [
         CourseEntity::class,

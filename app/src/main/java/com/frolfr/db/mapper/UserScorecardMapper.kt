@@ -18,7 +18,8 @@ class UserScorecardMapper : Mapper<UserScorecardEntityWithRelations, UserScoreca
             userScorecard.userScorecard.score,
             userScorecard.turns.map {
                 turnMapper.fromModel(it)
-            }
+            },
+            userScorecard.userScorecard.isComplete
         )
     }
 
@@ -29,7 +30,8 @@ class UserScorecardMapper : Mapper<UserScorecardEntityWithRelations, UserScoreca
             userScorecard.roundId,
             user.id,
             userScorecard.strokes,
-            userScorecard.score
+            userScorecard.score,
+            userScorecard.isComplete
         )
         val turns = userScorecard.turns.map {
             turnMapper.toModel(it)

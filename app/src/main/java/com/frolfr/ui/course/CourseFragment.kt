@@ -9,9 +9,9 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.frolfr.R
 import com.frolfr.databinding.FragmentCourseBinding
-import com.frolfr.ui.course.tab.CourseLeaderboardFragment
-import com.frolfr.ui.course.tab.CourseOverviewFragment
-import com.frolfr.ui.course.tab.CourseRoundsFragment
+import com.frolfr.ui.course.leaderboard.CourseLeaderboardFragment
+import com.frolfr.ui.course.overview.CourseOverviewFragment
+import com.frolfr.ui.course.rounds.CourseRoundsFragment
 import com.google.android.material.tabs.TabLayoutMediator
 import kotlin.reflect.KClass
 import kotlin.reflect.full.createInstance
@@ -30,6 +30,7 @@ class CourseFragment : Fragment() {
         binding = DataBindingUtil.inflate(
             inflater, R.layout.fragment_course, container, false
         )
+        binding.lifecycleOwner = this   // TODO need this here? where else?
 
         val courseId = arguments!!.getInt("courseId")
 
@@ -42,7 +43,12 @@ class CourseFragment : Fragment() {
         // TODO Why must I observe to get the LiveData returned from Room to get set?
         //      Additionally, if I try to return a pure entity from the DAO, not LiveData,
         //      the course isn't populated on first load (subsequent ones it shows up...)
-        courseViewModel.course.observe(this, Observer { })
+        // See NOTE above on setting the binding lifecycleOwner
+//        courseViewModel.course.observe(this, Observer { course ->
+//            if (course != null) {
+//                requireActivity().title = course.name
+//            }
+//        })
 
         return binding.root
     }

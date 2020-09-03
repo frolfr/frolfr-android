@@ -6,5 +6,6 @@ data class UserScorecard (
     val user: User,
     val strokes: Int,
     val score: Int,
-    val turns: List<Turn>
+    val turns: List<Turn>,
+    val isComplete: Boolean
 )

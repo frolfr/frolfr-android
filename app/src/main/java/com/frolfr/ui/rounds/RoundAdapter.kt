@@ -1,5 +1,6 @@
 package com.frolfr.ui.rounds
 
+import android.graphics.Typeface
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.net.toUri
@@ -47,6 +48,10 @@ class RoundItemViewHolder private constructor(private val binding: ViewRoundItem
             val user = userScorecard.user
             userScoreBinding.userId = user.id
             userScoreBinding.score = userScorecard.score
+            userScoreBinding.isComplete = userScorecard.isComplete
+            if (!userScorecard.isComplete) {
+                userScoreBinding.textUserRoundScore.setTypeface(null, Typeface.ITALIC)
+            }
             Glide.with(binding.root.context).load(user.avatarUri?.toUri())
                 .apply(
                     RequestOptions()

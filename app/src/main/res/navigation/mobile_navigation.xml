@@ -84,10 +84,13 @@
     <fragment
         android:id="@+id/courseFragment"
         android:name="com.frolfr.ui.course.CourseFragment"
-        android:label="Course">
+        android:label="{courseName}">
         <argument
             android:name="courseId"
             app:argType="integer" />
+        <argument
+            android:name="courseName"
+            app:argType="string" />
     </fragment>
     <action
         android:id="@+id/action_global_scorecardFragment"

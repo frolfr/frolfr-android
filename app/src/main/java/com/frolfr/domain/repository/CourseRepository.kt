@@ -10,6 +10,7 @@ import com.frolfr.db.mapper.CourseMapper
 import com.frolfr.db.model.ApiSyncEntity
 import com.frolfr.db.model.EntityType
 import com.frolfr.domain.model.Course
+import com.frolfr.domain.model.ScorecardStats
 import java.util.*
 
 class CourseRepository {
@@ -43,6 +44,14 @@ class CourseRepository {
         return dbCourses.map { dbCourse ->
             dbCourseMapper.fromModel(dbCourse)
         }
+    }
+
+    fun getScorecardStats(courseId: Int): LiveData<ScorecardStats> {
+        return dbService.courseDAO.getScorecardStats(courseId)
+    }
+
+    fun getShotBreakdown() {
+        // TODO
     }
 
     suspend fun fetchAllCourses() {

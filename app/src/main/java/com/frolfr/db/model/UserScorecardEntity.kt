@@ -10,5 +10,6 @@ data class UserScorecardEntity(
     var roundId: Int = 0,
     var userId: Int = 0,
     var strokes: Int = 0,
-    var score: Int = 0
+    var score: Int = 0,
+    val isComplete: Boolean = false
 )

@@ -1,4 +1,4 @@
-package com.frolfr.ui.course.tab
+package com.frolfr.ui.course.rounds
 
 import com.frolfr.ui.rounds.RoundRestrictions
 import com.frolfr.ui.rounds.RoundsFragment

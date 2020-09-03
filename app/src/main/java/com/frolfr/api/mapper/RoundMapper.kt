@@ -15,7 +15,11 @@ class RoundMapper : Mapper<com.frolfr.api.model.Round, Round> {
             round.getScorecards().map {
                 scorecardMapper.toDomain(it)
             },
-            true // TODO
+            round.getScorecards().all { s ->
+                s.getTurns().all { t ->
+                    t.isComplete()
+                }
+            }
         )
     }
 

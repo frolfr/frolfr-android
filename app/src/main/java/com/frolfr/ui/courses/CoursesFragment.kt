@@ -55,7 +55,8 @@ class CoursesFragment : Fragment() {
             course?.let {
                 this.findNavController().navigate(
                     CoursesFragmentDirections.actionNavCoursesToCourseFragment(
-                        course.id
+                        course.id,
+                        course.name
                     )
                 )
                 coursesViewModel.onCourseNavigated()

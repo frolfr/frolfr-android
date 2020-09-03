@@ -20,6 +20,9 @@ interface UserScorecardDAO {
         GROUP BY r.courseId
         """)
     fun getLastPlayedPerCourse(userId: Int): List<CourseLastPlayed>
+
+    @Query("UPDATE UserScorecard SET isComplete = 1 WHERE roundId = :roundId")
+    fun completeByRound(roundId: Int)
 }
 
 data class CourseLastPlayed(

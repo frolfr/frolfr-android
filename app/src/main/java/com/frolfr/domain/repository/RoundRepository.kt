@@ -133,4 +133,9 @@ class RoundRepository {
         return round
     }
 
+    fun markCompleted(roundId: Int) {
+        dbService.roundDAO.completeRound(roundId)
+        dbService.userScorecardDAO.completeByRound(roundId)
+    }
+
 }
