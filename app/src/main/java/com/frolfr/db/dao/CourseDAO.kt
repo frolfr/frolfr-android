@@ -27,16 +27,17 @@ interface CourseDAO {
 
     @Query("""
         SELECT
-            COUNT(r.id) AS completedScorecards,
+            SUM(s.isComplete) AS completedScorecards,
+            SUM(CASE WHEN s.isComplete THEN 0 ELSE 1 END) AS incompleteScorecards,
             AVG(s.score) AS averageScore,
             MIN(s.score) AS bestScore,
             AVG(s.strokes) AS averageStrokes,
             MIN(s.strokes) AS bestStrokes
         FROM Course c
         JOIN Round r ON r.courseId = c.id
-        JOIN UserScorecard s ON s.roundId = r.id AND s.isComplete = 1
-        WHERE c.id = :courseId
-        GROUP BY r.id
+        JOIN UserScorecard s ON s.roundId = r.id
+        WHERE c.id = :courseId AND (s.userId = :userId OR :userId IS NULL)
+        GROUP BY c.id
     """)
-    fun getScorecardStats(courseId: Int): LiveData<ScorecardStats>
+    fun getScorecardStats(courseId: Int, userId: Int?): LiveData<ScorecardStats>
 }

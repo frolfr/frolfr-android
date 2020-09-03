@@ -3,6 +3,7 @@ package com.frolfr.domain.repository
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations
 import com.frolfr.api.FrolfrApi
+import com.frolfr.api.FrolfrAuthorization
 import com.frolfr.api.PaginationLinksAdapter
 import com.frolfr.api.model.PaginationLinks
 import com.frolfr.db.FrolfrDatabase
@@ -47,7 +48,7 @@ class CourseRepository {
     }
 
     fun getScorecardStats(courseId: Int): LiveData<ScorecardStats> {
-        return dbService.courseDAO.getScorecardStats(courseId)
+        return dbService.courseDAO.getScorecardStats(courseId, FrolfrAuthorization.userId)
     }
 
     fun getShotBreakdown() {

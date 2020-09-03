@@ -76,43 +76,56 @@
                     android:id="@+id/text_completed_scorecards_label"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Completed Scorecards:"
-                    android:textSize="18sp" />
+                    android:text="Completed Scorecards"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/text_incomplete_scorecards_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Incomplete Scorecards"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/text_score_average_label"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Average Score:"
-                    android:textSize="18sp" />
+                    android:text="Average Score"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/text_score_best_label"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Best Score:"
-                    android:textSize="18sp" />
+                    android:text="Best Score"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/text_strokes_average_label"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Average Strokes:"
-                    android:textSize="18sp" />
+                    android:text="Average Strokes"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/text_strokes_best_label"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Best Strokes:"
-                    android:textSize="18sp" />
+                    android:text="Best Strokes"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
             </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/layout_stat_values"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="8dp"
+                android:layout_marginLeft="16dp"
                 android:orientation="vertical">
 
                 <TextView
@@ -120,6 +133,14 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@{String.valueOf(courseOverviewViewModel.stats.completedScorecards)}"
+                    tools:text="7"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:id="@+id/text_incomplete_scorecards"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{String.valueOf(courseOverviewViewModel.stats.incompleteScorecards)}"
                     tools:text="7"
                     android:textSize="18sp" />
 
