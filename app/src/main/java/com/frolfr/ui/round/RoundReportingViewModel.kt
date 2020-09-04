@@ -109,14 +109,6 @@ class RoundReportingViewModel(private val roundId: Int) : ViewModel() {
         return strokes
     }
 
-    fun getStrokesStrForUser(userId: Int): String {
-        val strokes = getStrokesForUser(userId)
-        if (strokes == 0) {
-            return "-"
-        }
-        return strokes.toString()
-    }
-
     fun getPar(holeIndex: Int = currentHole.value!!): Int {
         return if (parMap.value != null) parMap.value!!.getOrDefault(holeIndex, 3) else 3
     }

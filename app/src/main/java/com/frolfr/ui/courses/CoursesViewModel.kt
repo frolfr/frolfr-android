@@ -13,7 +13,7 @@ class CoursesViewModel : ViewModel() {
 
     private var coursesWithLastPlayedFull: List<CourseWithLastPlayed> = emptyList()
     val coursesWithLastPlayed = MutableLiveData<List<CourseWithLastPlayed>>()
-    private var hideUnplayed = false
+    private var hideUnplayed = true
 
     val courses: LiveData<List<Course>> = loadCourses()
     private val _coursesFetched = MutableLiveData<Boolean>()
