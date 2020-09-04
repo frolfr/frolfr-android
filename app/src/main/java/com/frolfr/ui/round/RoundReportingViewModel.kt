@@ -8,7 +8,6 @@ import androidx.lifecycle.ViewModel
 import com.frolfr.api.FrolfrApi
 import com.frolfr.api.model.Round
 import com.frolfr.api.model.Turn
-import com.frolfr.domain.repository.RoundRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -21,7 +20,7 @@ class RoundReportingViewModel(private val roundId: Int) : ViewModel() {
         get() = _round
 
     private val _parMap = MutableLiveData<MutableMap<Int, Int>>()
-    val parMap: LiveData<MutableMap<Int, Int>>
+    private val parMap: LiveData<MutableMap<Int, Int>>
         get() = _parMap
 
     private val _currentPar = MutableLiveData<Int>()
@@ -33,8 +32,6 @@ class RoundReportingViewModel(private val roundId: Int) : ViewModel() {
         get() = _currentHole
 
     private val _userStrokes = ObservableArrayMap<Pair<Int, Int>, Int>()
-    val userStrokes: ObservableMap<Pair<Int, Int>, Int>
-        get() = _userStrokes
 
     // TODO Do I need to unsubscribe the UI from observing this guy? Is that even possible?
     //      Would it be better to go back to the RecyclerView and try out 2-way data binding?
@@ -82,7 +79,7 @@ class RoundReportingViewModel(private val roundId: Int) : ViewModel() {
 
                     scorecard.getTurns().forEach { turn ->
                         if (turn.strokes != null) {
-                            userStrokes[Pair(scorecardUser.id.toInt(), turn.holeNumber)] =
+                            _userStrokes[Pair(scorecardUser.id.toInt(), turn.holeNumber)] =
                                 turn.strokes
                             currentUserScores[scorecardUser.id.toInt()] =
                                 currentUserScores[scorecardUser.id.toInt()]?.plus(turn.getScore())
@@ -105,7 +102,7 @@ class RoundReportingViewModel(private val roundId: Int) : ViewModel() {
     }
 
     private fun getStrokesForUser(userId: Int): Int {
-        val strokes = userStrokes[Pair(userId, currentHole.value!!)]
+        val strokes = _userStrokes[Pair(userId, currentHole.value!!)]
         if (strokes == null || strokes == 0) {
             return 0
         }
@@ -128,28 +125,28 @@ class RoundReportingViewModel(private val roundId: Int) : ViewModel() {
         _currentPar.value = getPar()
 
         for (user in round.value!!.getUsers()) {
-            currentUserStrokes[user.id.toInt()] = userStrokes[Pair(user.id.toInt(), currentHole.value!!)] ?: 0
+            currentUserStrokes[user.id.toInt()] = _userStrokes[Pair(user.id.toInt(), currentHole.value!!)] ?: 0
         }
     }
 
     fun onStrokesMinusClicked(userId: Int) {
-        val strokes = userStrokes[Pair(userId, currentHole.value!!)]
+        val strokes = _userStrokes[Pair(userId, currentHole.value!!)]
         if (strokes == null || strokes == 0) {
             _userStrokes[Pair(userId, currentHole.value!!)] = getPar() - 1
         } else {
             _userStrokes[Pair(userId, currentHole.value!!)] = strokes - 1
         }
-        currentUserStrokes[userId] = userStrokes[Pair(userId, currentHole.value!!)]
+        currentUserStrokes[userId] = _userStrokes[Pair(userId, currentHole.value!!)]
     }
 
     fun onStrokesPlusClicked(userId: Int) {
-        val strokes = userStrokes[Pair(userId, _currentHole.value!!)]
+        val strokes = _userStrokes[Pair(userId, _currentHole.value!!)]
         if (strokes == null || strokes == 0) {
             _userStrokes[Pair(userId, currentHole.value!!)] = getPar()
         } else {
             _userStrokes[Pair(userId, currentHole.value!!)] = strokes + 1
         }
-        currentUserStrokes[userId] = userStrokes[Pair(userId, currentHole.value!!)]
+        currentUserStrokes[userId] = _userStrokes[Pair(userId, currentHole.value!!)]
     }
 
     fun onPreviousHoleClicked() {
@@ -166,10 +163,11 @@ class RoundReportingViewModel(private val roundId: Int) : ViewModel() {
 
         for (user in round.value!!.getUsers()) {
             val userStrokes = getStrokesForUser(user.id.toInt())
-            if (userStrokes == null || userStrokes < 1) {
-                _error.value = "Must finish reporting strokes!"
-                return
-            }
+//            if (userStrokes == null || userStrokes < 1) {
+//                // TODO maybe a "Confirm" modal? Still want to allow incomplete scorecards
+////                _error.value = "Must finish reporting strokes!"
+////                return
+//            }
 
             val scorecard = round.value!!.getScorecards().find { scorecard ->
                 scorecardToUserMap[scorecard.id.toInt()] == user.id.toInt()
@@ -182,14 +180,14 @@ class RoundReportingViewModel(private val roundId: Int) : ViewModel() {
             turn.id = existingTurn!!.id
             turn.holeNumber = existingTurn.holeNumber
             turn.par = currentPar.value!!
-            turn.strokes = userStrokes
+            turn.strokes = if (userStrokes > 0) userStrokes else null
 
             if (existingTurn.par != turn.par || existingTurn.strokes != turn.strokes) {
                 turns.add(turn)
 
                 userScoreChanges[user.id.toInt()] = turn.getScore().minus(existingTurn.getScore())
-            } else {
-                userScoreChanges[user.id.toInt()] = 0
+                existingTurn.par = turn.par
+                existingTurn.strokes = turn.strokes
             }
         }
 
@@ -200,19 +198,14 @@ class RoundReportingViewModel(private val roundId: Int) : ViewModel() {
                 }
 
                 for (user in round.value!!.getUsers()) {
-                    currentUserScores[user.id.toInt()] = currentUserScores[user.id.toInt()]
-                        ?.plus(userScoreChanges[user.id.toInt()]!!)
+                    userScoreChanges[user.id.toInt()]?.let {
+                        currentUserScores[user.id.toInt()] =
+                            currentUserScores[user.id.toInt()]?.plus(it)
+                    }
                 }
-
-                val turnIds = turns.map { turn ->
-                    turn.id
-                }.fold("") { acc, string -> "${acc}\n${string}"}
-
-                Log.i("reportTurn", "All turns reported: $turnIds")
 
                 if (currentHole.value == round.value!!.getCourse().holeCount) {
                     val roundId = round.value!!.id.toInt()
-//                    RoundRepository().markCompleted(roundId)
                     _navigateToRoundScorecard.value = roundId
                 } else {
                     _currentHole.value = currentHole.value?.plus(1)

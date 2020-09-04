@@ -31,7 +31,4 @@ interface RoundDAO {
     @Transaction
     @Query("SELECT * FROM Round WHERE round.courseId = :courseId ORDER BY createdAt DESC")
     fun getAllRoundsWithRelationsForCourse(courseId: Int): LiveData<List<RoundWithRelations>>
-
-    @Query("UPDATE Round SET isComplete = 1 WHERE id = :roundId")
-    fun completeRound(roundId: Int)
 }
