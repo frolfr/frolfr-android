@@ -11,7 +11,7 @@ import java.util.*
 
 class CoursesViewModel : ViewModel() {
 
-    var coursesWithLastPlayedFull: List<CourseWithLastPlayed> = emptyList()
+    private var coursesWithLastPlayedFull: List<CourseWithLastPlayed> = emptyList()
     val coursesWithLastPlayed = MutableLiveData<List<CourseWithLastPlayed>>()
     private var hideUnplayed = false
 

@@ -17,4 +17,21 @@ interface UserDAO {
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     fun insert(users: List<UserEntity>)
+
+    @Query("""
+        SELECT * FROM User
+        WHERE id IN (
+            SELECT DISTINCT s.userId
+            FROM Round r
+            JOIN UserScorecard s ON s.roundId = r.id
+            WHERE r.id IN (
+                SELECT r.id
+                FROM Round r
+                JOIN UserScorecard s ON s.roundId = r.id
+                WHERE s.userId = :userId
+            ) AND s.userId <> :userId
+        )
+        ORDER BY nameFirst ASC, nameLast ASC
+    """)
+    fun getAllFriends(userId: Int): LiveData<List<UserEntity>>
 }

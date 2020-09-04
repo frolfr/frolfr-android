@@ -6,4 +6,8 @@ data class User (
     val nameFirst: String,
     val nameLast: String?,
     val avatarUri: String?
-)
+) {
+    fun getFullName(): String {
+        return "$nameFirst $nameLast"
+    }
+}

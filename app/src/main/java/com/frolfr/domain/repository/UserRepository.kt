@@ -93,4 +93,21 @@ class UserRepository {
         dbService.userDAO.insert(dbUsers)
     }
 
+    fun getFriends(): LiveData<List<User>> {
+        val dbFriends = dbService.userDAO.getAllFriends(FrolfrAuthorization.userId!!)
+        return Transformations.map(dbFriends) { dbFriends ->
+            dbFriends.map { dbUser ->
+                dbUserMapper.fromModel(dbUser)
+            }
+        }
+    }
+
+    fun fetchAllFriends() {
+        // TODO("Not yet implemented")
+    }
+
+    fun fetchMissingFriends() {
+        // TODO("Not yet implemented")
+    }
+
 }
