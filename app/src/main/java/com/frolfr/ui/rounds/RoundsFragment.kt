@@ -9,6 +9,9 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import com.frolfr.R
 import com.frolfr.databinding.FragmentRoundsBinding
+import com.frolfr.ui.course.CourseFragment
+import com.frolfr.ui.course.CourseFragmentDirections
+import com.frolfr.ui.courses.CoursesFragmentDirections
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import java.text.DateFormat
 
@@ -79,7 +82,15 @@ open class RoundsFragment : Fragment() {
 
         val fab: FloatingActionButton = binding.buttonCreateRound
         fab.setOnClickListener {
-            findNavController().navigate(R.id.action_nav_rounds_to_createRoundFragment)
+            if (parentFragment is CourseFragment) {
+                (parentFragment as CourseFragment).findNavController().navigate(
+                    CourseFragmentDirections.actionCourseFragmentToCreateRoundFragment(
+                        roundRestrictions.courseId ?: 0
+                    )
+                )
+            } else {
+                findNavController().navigate(R.id.action_nav_rounds_to_createRoundFragment)
+            }
         }
 
         setHasOptionsMenu(true)

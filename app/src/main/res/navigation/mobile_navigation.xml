@@ -60,6 +60,9 @@
             app:destination="@id/roundReportingFragment"
             app:popUpTo="@id/nav_rounds"
             app:popUpToInclusive="false" />
+        <argument
+            android:name="courseId"
+            app:argType="integer" />
     </fragment>
     <action
         android:id="@+id/action_global_createRoundFragment"
@@ -94,6 +97,9 @@
         <argument
             android:name="courseName"
             app:argType="string" />
+        <action
+            android:id="@+id/action_courseFragment_to_createRoundFragment"
+            app:destination="@id/createRoundFragment" />
     </fragment>
     <action
         android:id="@+id/action_global_scorecardFragment"

@@ -37,6 +37,8 @@ class CreateRoundFragment : Fragment() {
 
         binding.viewModel = viewModel
 
+        val courseId = arguments?.getInt("courseId")
+
         val courseSelectedListener = CourseSelectedListener { course ->
             viewModel.selectCourse(course)
         }
@@ -54,6 +56,12 @@ class CreateRoundFragment : Fragment() {
                 coursesAdapter.addAll(courseList)
                 if (!viewModel.fetchedAdditionalCourses()) {
                     viewModel.fetchAdditionalCourses()
+                }
+                if (courseId != null) {
+                    val courseIndex = courseList.indexOfFirst { course ->
+                        course.id == courseId
+                    }
+                    binding.spinnerCourses.setSelection(courseIndex, true)
                 }
             }
         })
