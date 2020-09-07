@@ -13,6 +13,9 @@
         <action
             android:id="@+id/action_nav_rounds_to_scorecardFragment"
             app:destination="@id/scorecardFragment" />
+        <action
+            android:id="@+id/action_nav_rounds_to_createRoundFragment"
+            app:destination="@id/createRoundFragment" />
     </fragment>
     <fragment
         android:id="@+id/nav_courses"

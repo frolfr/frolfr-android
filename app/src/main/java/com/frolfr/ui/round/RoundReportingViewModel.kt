@@ -12,8 +12,13 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
+import kotlin.math.min
 
 class RoundReportingViewModel(private val roundId: Int) : ViewModel() {
+
+    companion object {
+        private const val MAX_STROKES = 8
+    }
 
     private val _round = MutableLiveData<Round>()
     val round: LiveData<Round>
@@ -47,6 +52,10 @@ class RoundReportingViewModel(private val roundId: Int) : ViewModel() {
         get() = _navigateToRoundScorecard
 
     private val scorecardToUserMap: MutableMap<Int, Int> = mutableMapOf()
+
+    private val _showIncompleteScoresDialog = MutableLiveData<Boolean>()
+    val showIncompleteScoresDialog: LiveData<Boolean>
+        get() = _showIncompleteScoresDialog
 
     private var viewModelJob = Job()
     private val coroutineScope = CoroutineScope(viewModelJob + Dispatchers.Main)
@@ -136,7 +145,7 @@ class RoundReportingViewModel(private val roundId: Int) : ViewModel() {
         if (strokes == null || strokes == 0) {
             _userStrokes[Pair(userId, currentHole.value!!)] = getPar()
         } else {
-            _userStrokes[Pair(userId, currentHole.value!!)] = strokes + 1
+            _userStrokes[Pair(userId, currentHole.value!!)] = min(strokes + 1, MAX_STROKES)
         }
         currentUserStrokes[userId] = _userStrokes[Pair(userId, currentHole.value!!)]
     }
@@ -149,17 +158,28 @@ class RoundReportingViewModel(private val roundId: Int) : ViewModel() {
     }
 
     fun onSubmitHoleClicked() {
+        var hasIncompleteScores = false
+        for (user in round.value!!.getUsers()) {
+            val userStrokes = getStrokesForUser(user.id.toInt())
+            if (userStrokes == null || userStrokes < 1) {
+                hasIncompleteScores = true
+                break
+            }
+        }
+        if (hasIncompleteScores) {
+            _showIncompleteScoresDialog.value = true
+        } else {
+            submitHole()
+        }
+    }
+
+    fun submitHole() {
         val turns: MutableList<Turn> = mutableListOf()
 
         val userScoreChanges = mutableMapOf<Int, Int>()
 
         for (user in round.value!!.getUsers()) {
             val userStrokes = getStrokesForUser(user.id.toInt())
-//            if (userStrokes == null || userStrokes < 1) {
-//                // TODO maybe a "Confirm" modal? Still want to allow incomplete scorecards
-////                _error.value = "Must finish reporting strokes!"
-////                return
-//            }
 
             val scorecard = round.value!!.getScorecards().find { scorecard ->
                 scorecardToUserMap[scorecard.id.toInt()] == user.id.toInt()

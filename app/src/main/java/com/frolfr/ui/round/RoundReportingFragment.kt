@@ -9,6 +9,7 @@ import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.core.net.toUri
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -21,7 +22,7 @@ import com.frolfr.databinding.ViewUserHoleInputBinding
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import java.text.DateFormat
 
-class RoundReportingFragment : Fragment() {
+class RoundReportingFragment : Fragment(), IncompleteScoresDialog.IncompleteScoresDialogListener {
 
     private lateinit var binding: FragmentHoleInputBinding
     private var userViewBindings: MutableList<ViewUserHoleInputBinding> = mutableListOf()
@@ -40,9 +41,6 @@ class RoundReportingFragment : Fragment() {
             inflater, R.layout.fragment_hole_input, container, false
         )
         binding.setLifecycleOwner { lifecycle } // TODO why don't I need this elsewhere?
-
-        val fab: FloatingActionButton = activity!!.findViewById(R.id.fab)
-        fab.hide()
 
         val roundId = arguments!!.getInt("roundId")
 
@@ -137,6 +135,12 @@ class RoundReportingFragment : Fragment() {
             }
         })
 
+        viewModel.showIncompleteScoresDialog.observe(viewLifecycleOwner, Observer { show ->
+            if (show) {
+                showIncompleteScoresDialog()
+            }
+        })
+
         return binding.root
     }
 
@@ -158,10 +162,24 @@ class RoundReportingFragment : Fragment() {
         override fun onNothingSelected(parent: AdapterView<*>?) {}
     }
 
-    override fun onPause() {
-        super.onPause()
+    private fun showIncompleteScoresDialog() {
+        // Create an instance of the dialog fragment and show it
+        // Seems a little hacky to be able to use the callbacks in this Fragment rather
+        // than the Activity, but here we are...
+        // https://stackoverflow.com/questions/13733304/callback-to-a-fragment-from-a-dialogfragment
+        val dialog = IncompleteScoresDialog()
+        dialog.setTargetFragment(this, 1)
+        dialog.show(requireFragmentManager(), "IncompleteScoresDialog")
+    }
 
-        val fab: FloatingActionButton = activity!!.findViewById(R.id.fab)
-        fab.show()
+    // The dialog fragment receives a reference to this Activity through the
+    // Fragment.onAttach() callback, which it uses to call the following methods
+    // defined by the NoticeDialogFragment.NoticeDialogListener interface
+    override fun onDialogPositiveClick(dialog: DialogFragment) {
+        viewModel.submitHole()
+    }
+
+    override fun onDialogNegativeClick(dialog: DialogFragment) {
+        // Do nothing
     }
 }

@@ -9,6 +9,7 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import com.frolfr.R
 import com.frolfr.databinding.FragmentRoundsBinding
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import java.text.DateFormat
 
 open class RoundsFragment : Fragment() {
@@ -75,6 +76,11 @@ open class RoundsFragment : Fragment() {
                 binding.viewRounds.layoutManager?.scrollToPosition(0)
             }
         })
+
+        val fab: FloatingActionButton = binding.buttonCreateRound
+        fab.setOnClickListener {
+            findNavController().navigate(R.id.action_nav_rounds_to_createRoundFragment)
+        }
 
         setHasOptionsMenu(true)
 

@@ -37,9 +37,6 @@ class CreateRoundFragment : Fragment() {
 
         binding.viewModel = viewModel
 
-        val fab: FloatingActionButton = activity!!.findViewById(R.id.fab)
-        fab.hide()
-
         val courseSelectedListener = CourseSelectedListener { course ->
             viewModel.selectCourse(course)
         }
@@ -127,13 +124,6 @@ class CreateRoundFragment : Fragment() {
         })
 
         return binding.root
-    }
-
-    override fun onPause() {
-        super.onPause()
-
-        val fab: FloatingActionButton = activity!!.findViewById(R.id.fab)
-        fab.show()
     }
 }
 

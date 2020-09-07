@@ -36,4 +36,8 @@
 
     <string name="textStyle_normal">normal</string>
     <string name="textStyle_italic">italic</string>
+
+    <string name="dialog_incomplete_scores">Not all scores have been reported! Continue?</string>
+    <string name="action_continue">Continue</string>
+    <string name="action_cancel">Cancel</string>
 </resources>

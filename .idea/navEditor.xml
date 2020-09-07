@@ -18,6 +18,11 @@
                       <LayoutPositions />
                     </value>
                   </entry>
+                  <entry key="action_global_scorecardFragment">
+                    <value>
+                      <LayoutPositions />
+                    </value>
+                  </entry>
                   <entry key="courseFragment">
                     <value>
                       <LayoutPositions>
@@ -35,8 +40,8 @@
                       <LayoutPositions>
                         <option name="myPosition">
                           <Point>
-                            <option name="x" value="311" />
-                            <option name="y" value="418" />
+                            <option name="x" value="488" />
+                            <option name="y" value="-538" />
                           </Point>
                         </option>
                         <option name="myPositions">
@@ -71,6 +76,15 @@
                             <option name="x" value="12" />
                             <option name="y" value="12" />
                           </Point>
+                        </option>
+                        <option name="myPositions">
+                          <map>
+                            <entry key="action_nav_courses_to_courseFragment">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
+                          </map>
                         </option>
                       </LayoutPositions>
                     </value>
@@ -110,6 +124,11 @@
                         </option>
                         <option name="myPositions">
                           <map>
+                            <entry key="action_nav_rounds_to_createRoundFragment">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
                             <entry key="action_nav_rounds_to_scorecardFragment">
                               <value>
                                 <LayoutPositions />
@@ -125,8 +144,8 @@
                       <LayoutPositions>
                         <option name="myPosition">
                           <Point>
-                            <option name="x" value="518" />
-                            <option name="y" value="415" />
+                            <option name="x" value="800" />
+                            <option name="y" value="-539" />
                           </Point>
                         </option>
                         <option name="myPositions">
@@ -146,8 +165,8 @@
                       <LayoutPositions>
                         <option name="myPosition">
                           <Point>
-                            <option name="x" value="645" />
-                            <option name="y" value="-229" />
+                            <option name="x" value="655" />
+                            <option name="y" value="-71" />
                           </Point>
                         </option>
                         <option name="myPositions">

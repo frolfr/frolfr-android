@@ -13,7 +13,6 @@ import androidx.appcompat.widget.Toolbar
 import androidx.core.net.toUri
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
@@ -24,14 +23,10 @@ import com.bumptech.glide.request.RequestOptions
 import com.frolfr.api.FrolfrAuthorization
 import com.frolfr.config.PreferenceKeys
 import com.frolfr.db.FrolfrDatabase
-import com.frolfr.domain.model.User
 import com.frolfr.ui.UserViewModel
 import com.frolfr.ui.login.data.LoginDataSource
 import com.frolfr.ui.login.LoginActivity
-import com.frolfr.ui.login.LoginViewModel
-import com.frolfr.ui.login.LoginViewModelFactory
 import com.frolfr.ui.login.data.LoginRepository
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.navigation.NavigationView
 
 class MainActivity : AppCompatActivity() {
@@ -80,11 +75,6 @@ class MainActivity : AppCompatActivity() {
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
-
-        val fab: FloatingActionButton = findViewById(R.id.fab)
-        fab.setOnClickListener {
-            navController.navigate(R.id.action_global_createRoundFragment)
-        }
 
         // TODO better way using ViewModel?
         val headerLayout: View = navView.getHeaderView(0)
