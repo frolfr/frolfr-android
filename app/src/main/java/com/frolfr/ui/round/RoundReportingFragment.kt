@@ -105,12 +105,14 @@ class RoundReportingFragment : Fragment(), IncompleteScoresDialog.IncompleteScor
                 val holeAdapter = ArrayAdapter<Int>(context!!, R.layout.layout_hole_selected_item, holeArray)
                 holeAdapter.setDropDownViewResource(R.layout.layout_hole_list_item)
                 binding.spinnerHole.adapter = holeAdapter
+                binding.spinnerHole.setSelection(viewModel.currentHole.value?.minus(1) ?: 0)
                 binding.spinnerHole.onItemSelectedListener = HoleChangeListener(viewModel)
 
                 val parArray = Array(3) { i -> i + 3 }
                 val parAdapter = ArrayAdapter<Int>(context!!, R.layout.layout_par_selected_item, parArray)
                 parAdapter.setDropDownViewResource(R.layout.layout_par_list_item)
                 binding.spinnerPar.adapter = parAdapter
+                binding.spinnerPar.setSelection(viewModel.currentPar.value?.minus(3) ?: 0)
                 binding.spinnerPar.onItemSelectedListener = ParChangeListener(viewModel)
             }
         })

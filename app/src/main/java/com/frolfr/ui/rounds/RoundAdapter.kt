@@ -49,9 +49,6 @@ class RoundItemViewHolder private constructor(private val binding: ViewRoundItem
             userScoreBinding.userId = user.id
             userScoreBinding.score = userScorecard.score
             userScoreBinding.isComplete = userScorecard.isComplete
-            if (!userScorecard.isComplete) {
-                userScoreBinding.textUserRoundScore.setTypeface(null, Typeface.ITALIC)
-            }
             Glide.with(binding.root.context).load(user.avatarUri?.toUri())
                 .apply(
                     RequestOptions()
