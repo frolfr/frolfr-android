@@ -24,6 +24,10 @@ class CreateRoundFragment : Fragment() {
 
     private lateinit var viewModel: CreateRoundViewModel
 
+    companion object {
+        const val KEY_SPINNER_COURSE_SELECTION = "spinnerCourseSelection"
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -57,11 +61,14 @@ class CreateRoundFragment : Fragment() {
                 if (!viewModel.fetchedAdditionalCourses()) {
                     viewModel.fetchAdditionalCourses()
                 }
-                if (courseId != null) {
+                var selectedCourseId = savedInstanceState?.getInt(KEY_SPINNER_COURSE_SELECTION) ?: courseId
+
+                if (selectedCourseId != null) {
                     val courseIndex = courseList.indexOfFirst { course ->
-                        course.id == courseId
+                        course.id == selectedCourseId
                     }
-                    binding.spinnerCourses.setSelection(courseIndex, true)
+                    val animateSelection = savedInstanceState == null
+                    binding.spinnerCourses.setSelection(courseIndex, animateSelection)
                 }
             }
         })
@@ -132,6 +139,11 @@ class CreateRoundFragment : Fragment() {
         })
 
         return binding.root
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putInt(KEY_SPINNER_COURSE_SELECTION, (binding.spinnerCourses.selectedItem as Course).id)
     }
 }
 
